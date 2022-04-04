@@ -1,7 +1,6 @@
 import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import subprocess
-from django.conf import settings
 
 
 def get_length(path: str) -> int:
@@ -16,15 +15,14 @@ def get_length(path: str) -> int:
     return int(float(result.stdout))
 
 
-def video2segments(path: str, segment_len: int = 10, stride: int = 5) -> int:
+def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
     split video given by path into segments
     """
-    duration = get_length(path)
+    duration = get_length(path + filename)
     c = 0
-    path2 = str(settings.BASE_DIR) + '/pages'
     for i in range(0, duration, stride):
-        ffmpeg_extract_subclip(path, i, i + segment_len, targetname=path2 + f"/video_{c}.mp4")
+        ffmpeg_extract_subclip(path + filename, i, i + segment_len, targetname=path + f"video_{c}.mp4")
         c += 1
     return c
 
