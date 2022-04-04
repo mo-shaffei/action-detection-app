@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response, request, redirect, url_for, flash, jsonify
 import threading
 import logic
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -12,7 +13,13 @@ def homepage():
 
 @app.route('/logs')
 def logs():
-    return render_template('logs.html')
+    path = "video/"
+    df = pd.read_csv(path + "results.csv")  # load results csv file to dataframe
+    # multiply confidence by 100 to get percentage then round to get integer
+    df.confidence = df.confidence * 100
+    df.confidence = df.confidence.round()
+    # return response containing the dataframe
+    return render_template('logs.html', columns=df.columns, rows=df.to_dict('records'))
 
 
 @app.route('/connect')
