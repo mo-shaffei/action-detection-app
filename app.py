@@ -2,9 +2,13 @@ from flask import Flask, render_template, Response, request, redirect, url_for, 
 import threading
 import logic
 import pandas as pd
+import pymongo
+
 
 app = Flask(__name__)
 
+client = pymongo.MongoClient('localhost', 27017)
+db = client.user_login_system
 
 @app.route('/')
 def homepage():
