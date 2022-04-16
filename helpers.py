@@ -1,6 +1,7 @@
 import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import subprocess
+import app
 
 
 def get_length(path: str) -> int:
@@ -33,5 +34,6 @@ def inference(path: str, model_name: str) -> dict:
     return response.json()
 
 
-def output(file, time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
-    file.write(f'{time_beg},{time_end},{action},{confidence}, {reference}\n')
+def output(time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
+    app.results_data.insert_one({"start": time_beg, "end": time_end, "action": action,
+                                "confidence": confidence * 100, "clip": reference})

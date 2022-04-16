@@ -148,11 +148,27 @@
                                                 Camera ID
                                             </th>
                                             <!--                                            add column headers from columns sent by logs function-->
-                                            {% for col in columns %}
-                                                <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                                    {{ col }}
-                                                </th>
-                                            {% endfor %}
+
+                                            <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                Start
+                                            </th>
+
+                                            <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                End
+                                            </th>
+
+                                            <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                Action
+                                            </th>
+
+                                            <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                Confidence
+                                            </th>
+
+                                            <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                Clip
+                                            </th>
+
                                             <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                 Location
                                             </th>
@@ -160,7 +176,7 @@
                                         </thead>
                                         <tbody class="u-table-body">
                                         <!--                                        add rows from dataframe sent by logs function to the table-->
-                                        {% for row in rows %}
+                                        {% for row in results %}
                                             <tr style="height: 46px;">
                                             <td class="u-table-cell">0001</td>
                                             <td class="u-table-cell">{{ row.start }}</td>
