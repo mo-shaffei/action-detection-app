@@ -13,21 +13,13 @@ results_data = db.results
 
 @app.route('/')
 def homepage():
-    #results_data.remove()
+    results_data.remove({})
     return render_template('homepage.html')
 
 
 @app.route('/logs')
 def logs():
-    path = "video/"
-    results = results_data.find()
-    # columns = {"start", "end", "action", "confidence", "clip"}
-    #df = pd.read_csv(path + "results.csv")  # load results csv file to dataframe
-    # multiply confidence by 100 to get percentage then round to get integer
-    #df.confidence = df.confidence * 100
-    #df.confidence = df.confidence.round()
-    # return response containing the dataframe
-    #return render_template('logs.html', columns=df.columns, rows=df.to_dict('records'))
+    results = results_data.find()  # getting all results stored in the database
     return render_template('logs.html', results=results)
 
 

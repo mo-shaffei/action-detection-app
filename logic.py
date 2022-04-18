@@ -17,8 +17,7 @@ def connect_thread():
     # number of segments
     segments = helpers.video2segments(path, "video.mp4", segment_len=segment_len, stride=stride)
     # segments = 10
-    # with open(path + "results.csv", 'w') as file:  # create results file and add column headers to it
-    #    file.write("start,end,action,confidence,clip\n")
+
 
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
@@ -28,8 +27,6 @@ def connect_thread():
         if confidence >= confidence_thresh:  # only store action if confidence >= threshold
             beg = i * stride  # beg time of segment = current segment index * stride length
             end = beg + segment_len  # end time of segment = beg time + segment length
-            # with open(path + "/results.csv", 'a') as file:  # append data to the results file
-            # helpers.output(1, 2, "eatinggg", 23, i)
             helpers.output(beg, end, action, confidence, i)
 
     print("done!")

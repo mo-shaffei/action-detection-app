@@ -35,5 +35,7 @@ def inference(path: str, model_name: str) -> dict:
 
 
 def output(time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
-    app.results_data.insert_one({"start": time_beg, "end": time_end, "action": action,
-                                "confidence": confidence * 100, "clip": reference})
+    confidence = round(confidence * 100)
+    app.results_data.insert_one({"start": time_beg, "end": time_end,
+                                 "action": action, "confidence": confidence,
+                                 "clip": reference})  # inserting results into database
