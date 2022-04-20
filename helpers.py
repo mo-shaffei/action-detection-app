@@ -28,6 +28,9 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
 
 
 def inference(path: str, model_name: str) -> dict:
+    """
+    Predict actions in a video given the inference server
+    """
     url = 'http://127.0.0.1:8080/predictions/' + model_name
     response = requests.put(url, data=open(path, 'rb').read())
     return response.json()
