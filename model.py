@@ -20,29 +20,29 @@ from pytorchvideo.models.hub import slowfast_r50_detection  # Another option is 
 from visualization import VideoVisualizer
 
 label_map, allowed_class_ids = AvaLabeledVideoFramePaths.read_label_map('ava_action_list.pbtxt')
+DEVICE = 'cpu'
 
 
-def load_slowfast(device: str = 'cuda'):
+def load_slowfast():
     """
     loads the slowfast action detection model
-    @param device: device used either 'cuda' or 'cpu'
     return: slowfast model
     """
     video_model = slowfast_r50_detection(True)  # Another option is slowfast_r50_detection
-    video_model = video_model.eval().to(device)
+    video_model = video_model.eval().to(DEVICE)
     return video_model
 
 
-def load_detectron2(device: str = 'cuda'):
+def load_detectron2():
     """
-    @param device: device used either 'cuda' or 'cpu'
+    load the detectron2 person detector model
     return: detectron2 model
     """
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.55  # set threshold for this model
     cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml")
-    cfg.MODEL.DEVICE = 'cpu'
+    cfg.MODEL.DEVICE = DEVICE
     predictor = DefaultPredictor(cfg)
     return predictor
 
@@ -119,7 +119,7 @@ def ava_inference_transform(
     return clip, torch.from_numpy(boxes), ori_boxes
 
 
-def get_actions(video_path: str, detection_predictor, person_predictor, device='cuda', top_k=1, visualize=False):
+def get_actions(video_path: str, detection_predictor, person_predictor, top_k=1, visualize=False):
     encoded_vid = pytorchvideo.data.encoded_video.EncodedVideo.from_path(video_path, decode_audio=False)
     print("Generating predictions for clip: {}".format(video_path))
     # Generate clip around the designated time stamps
@@ -145,10 +145,10 @@ def get_actions(video_path: str, detection_predictor, person_predictor, device='
     # Generate actions predictions for the bounding boxes in the clip.
     # The model here takes in the pre-processed video clip and the detected bounding boxes.
     if isinstance(inputs, list):
-        inputs = [inp.unsqueeze(0).to(device) for inp in inputs]
+        inputs = [inp.unsqueeze(0).to(DEVICE) for inp in inputs]
     else:
-        inputs = inputs.unsqueeze(0).to(device)
-    preds = detection_predictor(inputs, inp_boxes.to(device))
+        inputs = inputs.unsqueeze(0).to(DEVICE)
+    preds = detection_predictor(inputs, inp_boxes.to(DEVICE))
 
     # get top k predictions and corresponding scores for each bounding box
     top_scores, top_classes = torch.topk(preds, k=top_k)

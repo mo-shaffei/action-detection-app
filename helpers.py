@@ -4,9 +4,8 @@ import subprocess
 import app
 import model
 
-DEVICE = 'cpu'
-detectron = model.load_detectron2(DEVICE)
-slowfast = model.load_slowfast(DEVICE)
+detectron = model.load_detectron2()
+slowfast = model.load_slowfast()
 
 
 def get_length(path: str) -> int:
@@ -34,7 +33,7 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
 
 
 def inference(path: str, video_duration: int) -> dict:
-    persons = model.get_actions(path, slowfast, detectron, device=DEVICE, top_k=1, visualize=False)
+    persons = model.get_actions(path, slowfast, detectron, top_k=1, visualize=False)
     return persons
 
 
