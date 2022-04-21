@@ -119,10 +119,8 @@ def ava_inference_transform(
     return clip, torch.from_numpy(boxes), ori_boxes
 
 
-def get_actions(video_path: str, detection_predictor, person_predictor, video_duration, clip_duration=1, device='cuda', top_k=1, visualize=False):
-    assert video_duration >= clip_duration
+def get_actions(video_path: str, detection_predictor, person_predictor, device='cuda', top_k=1, visualize=False):
     encoded_vid = pytorchvideo.data.encoded_video.EncodedVideo.from_path(video_path, decode_audio=False)
-    time_stamp = int(video_duration / 0.5)
     print("Generating predictions for clip: {}".format(video_path))
     # Generate clip around the designated time stamps
     inp_imgs = encoded_vid.get_clip(0, encoded_vid.duration)

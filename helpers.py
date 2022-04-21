@@ -34,9 +34,7 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
 
 
 def inference(path: str, video_duration: int) -> dict:
-    persons = model.get_actions(path, slowfast, detectron, video_duration=video_duration, clip_duration=1,
-                                device=DEVICE, top_k=1,
-                                visualize=False)
+    persons = model.get_actions(path, slowfast, detectron, device=DEVICE, top_k=1, visualize=False)
     return persons
 
 
