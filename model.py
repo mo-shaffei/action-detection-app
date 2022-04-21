@@ -160,7 +160,7 @@ def get_actions(video_path: str, detection_predictor, person_predictor, video_du
     for person_top_classes, person_top_scores in zip(top_classes,
                                                      top_scores):  # loop over each person's actions scores pairs
         person_top_classes = [label_map.get(top_class + 1, "N/A" + str(top_class)) for top_class in person_top_classes]
-        current_person = dict(zip(person_top_classes, list(map(lambda x: round(x * 100), person_top_scores))))
+        current_person = dict(zip(person_top_classes, person_top_scores))
         persons.append(current_person)
 
     if visualize:  # output video visualization
