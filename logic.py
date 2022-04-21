@@ -10,8 +10,8 @@ def connect_thread():
 
     print("thread started")
     confidence_thresh = 0.2  # minimum confidence threshold in top1 action to store it
-    stride = 5  # stride length (in seconds) of temporal window which segments the input video
-    segment_len = 10  # segment length (in seconds) of each mini video segment
+    stride = 2  # stride length (in seconds) of temporal window which segments the input video
+    segment_len = 2  # segment length (in seconds) of each mini video segment
     path = 'video/'  # store path of videos
     # segment the input video into multiple segments as required by segment_len and stride, return the resulting
     # number of segments
@@ -25,29 +25,32 @@ def connect_thread():
 
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
-        response = helpers.inference(path + f"video_{i}.mp4", "slowfast_rec")  # perform inference on current segment
-        action = list(response.keys())[0]  # get top1 action
-        confidence = list(response.values())[0]  # get confidence of top1 action
-        if confidence >= confidence_thresh:  # only store action if confidence >= threshold
+        persons = helpers.inference(path + f"video_{i}.mp4", segment_len)  # perform inference on current segment
+        if not persons:
+            continue
 
-            if action == previous_action:
-                last_row = app.results_data.find_one(
-                    {}, sort=[('_id', pymongo.DESCENDING)])
-                app.results_data.delete_one(last_row)
-                beg = previous_beg
-                end = i * stride + segment_len
-                confidence = (confidence + previous_confidence) / 2
-                clips.append(i)
-                helpers.output(beg, end, action, confidence, clips)
+        for person in persons:
+            action = list(person.keys())[0]  # get top1 action
+            confidence = list(person.values())[0]  # get confidence of top1 action
+            if confidence >= confidence_thresh:  # only store action if confidence >= threshold
 
-            else:
+                # if action == previous_action:
+                #     last_row = app.results_data.find_one(
+                #         {}, sort=[('_id', pymongo.DESCENDING)])
+                #     app.results_data.delete_one(last_row)
+                #     beg = previous_beg
+                #     end = i * stride + segment_len
+                #     confidence = (confidence + previous_confidence) / 2
+                #     clips.append(i)
+                #     helpers.output(beg, end, action, confidence, clips)
+                #
+                # else:
                 beg = i * stride  # beg time of segment = current segment index * stride length
                 end = beg + segment_len  # end time of segment = beg time + segment length
-                clips = [i]
+                # clips = [i]
                 helpers.output(beg, end, action, confidence, i)
 
-            previous_action = action
-            previous_beg = beg
-            previous_confidence = confidence
-
-    print("done!")
+                # previous_action = action
+                # previous_beg = beg
+                # previous_confidence = confidence
+    print("Done!")

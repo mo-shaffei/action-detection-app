@@ -2,6 +2,11 @@ import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import subprocess
 import app
+import model
+
+DEVICE = 'cpu'
+detectron = model.load_detectron2(DEVICE)
+slowfast = model.load_slowfast(DEVICE)
 
 
 def get_length(path: str) -> int:
@@ -28,10 +33,11 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
     return c
 
 
-def inference(path: str, model_name: str) -> dict:
-    url = 'http://127.0.0.1:8080/predictions/' + model_name
-    response = requests.put(url, data=open(path, 'rb').read())
-    return response.json()
+def inference(path: str, video_duration: int) -> dict:
+    persons = model.get_actions(path, slowfast, detectron, video_duration=video_duration, clip_duration=1,
+                                device=DEVICE, top_k=1,
+                                visualize=False)
+    return persons
 
 
 def output(time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
