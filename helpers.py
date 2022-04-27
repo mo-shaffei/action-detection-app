@@ -2,10 +2,6 @@ import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import subprocess
 import app
-import model
-
-detectron = model.load_detectron2()
-slowfast = model.load_slowfast()
 
 
 def get_length(path: str) -> int:
@@ -30,11 +26,6 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
         ffmpeg_extract_subclip(path + filename, i, i + segment_len, targetname=path + f"video_{c}.mp4")
         c += 1
     return c
-
-
-def inference(path: str, video_duration: int) -> dict:
-    persons = model.get_actions(path, slowfast, detectron, top_k=1, visualize=False)
-    return persons
 
 
 def output(time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
