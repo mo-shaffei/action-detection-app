@@ -1,6 +1,8 @@
 import pymongo
 import helpers
 import app
+from models.recognizer import RecognizerModel
+from models.detection import DetectionModel
 
 
 def connect_thread():
@@ -9,9 +11,9 @@ def connect_thread():
     """
 
     print("thread started")
-    confidence_thresh = 0.2  # minimum confidence threshold in top1 action to store it
+    confidence_thresh = 0  # minimum confidence threshold in top1 action to store it
     stride = 2  # stride length (in seconds) of temporal window which segments the input video
-    segment_len = 2  # segment length (in seconds) of each mini video segment
+    segment_len = 3  # segment length (in seconds) of each mini video segment
     path = 'video/'  # store path of videos
     # segment the input video into multiple segments as required by segment_len and stride, return the resulting
     # number of segments
@@ -22,10 +24,12 @@ def connect_thread():
     previous_beg = 0
     previous_confidence = 0
     clips = []
-
+    # model = RecognizerModel(model_name='mvit', person_bbox_threshold=0.35, device='cpu')
+    model = DetectionModel(person_bbox_threshold=0.35, device='cpu')
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
-        persons = helpers.inference(path + f"video_{i}.mp4", segment_len)  # perform inference on current segment
+        # persons = helpers.inference(path + f"video_{i}.mp4", segment_len)  # perform inference on current segment
+        persons = model.inference(path + f"video_{i}.mp4", visualize=True)
         if not persons:
             continue
 
