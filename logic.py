@@ -1,37 +1,47 @@
 import pymongo
 import helpers
-import app
 from models.recognizer import RecognizerModel
 from models.detection import DetectionModel
 import time
 
 
-def connect_thread():
+def connect_thread(app):
     """
     wrapper around connect button function to make it run in a separate thread
     """
 
     print("thread started")
-    confidence_thresh = 0  # minimum confidence threshold in top1 action to store it
-    stride = 2  # stride length (in seconds) of temporal window which segments the input video
-    segment_len = 3  # segment length (in seconds) of each mini video segment
+    # minimum confidence threshold in top1 action to store it
+    print(app.config)
+    confidence_thresh = app.config["model"]["recognition_threshold"]
+    # stride length (in seconds) of temporal window which segments the input video
+    stride = app.config["video"]["stride"]
+    # segment length (in seconds) of each mini video segment
+    segment_len = app.config["video"]["clip_length"]
     path = 'video/'  # store path of videos
+    video_name = app.config["video"]["video_name"]
     # segment the input video into multiple segments as required by segment_len and stride, return the resulting
     # number of segments
-    segments = helpers.video2segments(path, "video.mp4", segment_len=segment_len, stride=stride)
+    segments = helpers.video2segments(path, video_name, segment_len=segment_len, stride=stride)
     # segments = 10
 
     previous_action = " "
     previous_beg = 0
     previous_confidence = 0
     clips = []
-    model = RecognizerModel(model_name='mvit', person_bbox_threshold=0.5, device='cpu')
-    # model = DetectionModel(person_bbox_threshold=0.35, device='cpu')
+    bbox_threshold = app.config["model"]["bbox_threshold"]
+    visualize = app.config["model"]["visualize"]
+    device = app.config["model"]["device"]
+    if app.config["model"]["model_type"] == "recognition":
+        model_name = app.config["model"]["model_name"]
+        model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
+    else:
+        model = DetectionModel(person_bbox_threshold=bbox_threshold, device=device)
     start_time = time.time()
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
         # persons = helpers.inference(path + f"video_{i}.mp4", segment_len)  # perform inference on current segment
-        persons = model.inference(path + f"video_{i}.mp4", visualize=True)
+        persons = model.inference(path + f"video_{i}.mp4", visualize=visualize)
         if not persons:
             continue
 
