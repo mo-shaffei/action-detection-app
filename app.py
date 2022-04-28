@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, Response, request, redirect, url_for, flash, jsonify, session
 import threading
 import logic
 import pandas as pd
@@ -11,7 +11,8 @@ app = Flask(__name__)
 mongo_Client = pymongo.MongoClient('localhost', 27016)
 db = mongo_Client.webapp
 results_data = db.results
-
+# secret key is needed for session
+#app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
 
 @app.route('/')
 def homepage():
@@ -138,7 +139,7 @@ def filtering():
     print("results type is {}".format(type(results)))
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
-    
+    #session["filtered_data"]=results
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
@@ -147,6 +148,7 @@ def sorting():
     """"
     
     """
+    #results=session.get("filtered_data",None)
     sorting = request.form.get("sorting")
     sorting_order=request.form.get("sorting_order")
     if sorting_order=="Descending":
