@@ -29,6 +29,7 @@ class RecognizerModel:
             self._create_mvit_transform()
         else:
             raise Exception(f'Invalid model name {model_name}')
+        self._model = self._model.eval().to(device)
         self._load_label_map()
         self._device = device
         self._person_bbox_threshold = person_bbox_threshold
@@ -208,6 +209,7 @@ class RecognizerModel:
                 preds = self._model(person_data[None, ...])
             self._preds = self._post_act(preds)
             actions.append(self._process_preds())
+            # actions.append(self._get_top_k())
 
         if visualize:
             labels = []
