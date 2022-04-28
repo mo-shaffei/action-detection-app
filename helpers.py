@@ -19,6 +19,7 @@ def get_length(path: str) -> int:
 
 def video2segments2(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
+    (OLD FUNCTION, not used as it produced some bugs)
     split video given by path into segments
     """
     duration = get_length(path + filename)
