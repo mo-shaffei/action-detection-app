@@ -138,6 +138,7 @@ def filtering():
     print("results type is {}".format(type(results)))
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
+    
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
