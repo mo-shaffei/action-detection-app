@@ -24,8 +24,8 @@ def connect_thread():
     previous_beg = 0
     previous_confidence = 0
     clips = []
-    # model = RecognizerModel(model_name='mvit', person_bbox_threshold=0.35, device='cpu')
-    model = DetectionModel(person_bbox_threshold=0.35, device='cpu')
+    model = RecognizerModel(model_name='mvit', person_bbox_threshold=0.5, device='cpu')
+    # model = DetectionModel(person_bbox_threshold=0.35, device='cpu')
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
         # persons = helpers.inference(path + f"video_{i}.mp4", segment_len)  # perform inference on current segment
