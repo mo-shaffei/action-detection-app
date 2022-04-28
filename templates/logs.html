@@ -196,15 +196,38 @@
                </div>
             </div>
          </form>
-         <form action="{{ url_for("sorting")}}" method="post">
-            <div
-
-               <!--sorting options will be put here-->
-
-         </div>
-         </form>
+         
 
       </section>
+
+      <section>
+         <form action="{{ url_for("sorting")}}" method="post">
+            <div class="u-clearfix u-sheet u-sheet-1">
+               <h4 class="u-text u-text-default u-text-1">Sort by:</h4>
+               <div class="u-clearfix u-custom-html u-custom-html-1">
+                  <label for="sorting">Sort By:</label>
+                  <select name="sorting" id="sorting" multiple>
+                     <option value="confidence" selected>confidence</option>
+                     <option value="start" selected>start</option>
+                     <option value="end" selected>end</option>
+                     <option value="action" selected>action</option>
+                     <option value="clip" selected>clip</option>
+                     <option value="camera_id" selected>camera_id</option>
+                     <option value="location" selected>location</option>
+
+                  </select>
+
+                  <select name="sorting_order" id="sorting_order" multiple>
+                     <option value="Ascending" selected>Ascending</option>
+                     <option value="Descending" selected>Descending</option>
+                  </select>
+                  
+               <input type="submit" name="sorting" value="sorting">
+               </div>
+            </div>
+         </form>         
+      </section>
+
       <section class="u-clearfix u-palette-4-base u-section-2" id="carousel_dd2b">
          <div class="u-clearfix u-layout-wrap u-layout-wrap-1">
             <div class="u-gutter-0 u-layout">

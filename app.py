@@ -8,7 +8,7 @@ import uuid
 
 app = Flask(__name__)
 
-mongo_Client = pymongo.MongoClient('localhost', 27017)
+mongo_Client = pymongo.MongoClient('localhost', 27016)
 db = mongo_Client.webapp
 results_data = db.results
 
@@ -30,8 +30,17 @@ def connect():
 # Added trailing slashes to all routes
 @app.route('/logs/')
 def logs():
+    results_data.insert_one({"camera_id": '001', "start": 0, "end": 1,
+                                 "action": "action", "confidence": 50,
+                                 "clip": 2, "location": 'location'}) 
+    results_data.insert_one({"camera_id": '002', "start": 5, "end": 6,
+                                 "action": "eating", "confidence": 30,
+                                 "clip": 5, "location": 'location'})  
+    results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
+                                 "action": "drinking", "confidence": 30,
+                                 "clip": 9, "location": 'location2'})                                                         
     n = 1000
-    results = results_data.find().limit(n)  # getting results stored in the database (last n)
+    results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
     return render_template('logs.html', results=results, raw_results=results)
 
 
@@ -135,9 +144,16 @@ def filtering():
 @app.route('/sorting/', methods=["GET", "POST"])
 def sorting():
     """"
-    sorting function will be implemented here
+    
     """
-    return None
+    sorting = request.form.get("sorting")
+    sorting_order=request.form.get("sorting_order")
+    if sorting_order=="Descending":
+        results = results_data.find({},sort=[(sorting, pymongo.DESCENDING)])
+    else:
+        results = results_data.find().sort([(sorting, pymongo.ASCENDING)])
+
+    return render_template('logs.html', results=results, raw_results=results_data)
 
 
 if __name__ == '__main__':
