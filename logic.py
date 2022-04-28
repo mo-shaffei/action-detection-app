@@ -3,6 +3,7 @@ import helpers
 import app
 from models.recognizer import RecognizerModel
 from models.detection import DetectionModel
+import time
 
 
 def connect_thread():
@@ -26,6 +27,7 @@ def connect_thread():
     clips = []
     model = RecognizerModel(model_name='mvit', person_bbox_threshold=0.5, device='cpu')
     # model = DetectionModel(person_bbox_threshold=0.35, device='cpu')
+    start_time = time.time()
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
         # persons = helpers.inference(path + f"video_{i}.mp4", segment_len)  # perform inference on current segment
@@ -57,4 +59,6 @@ def connect_thread():
                 # previous_action = action
                 # previous_beg = beg
                 # previous_confidence = confidence
+    stop_time = time.time()
     print("Done!")
+    print(f"Time elapsed: {stop_time - start_time}")
