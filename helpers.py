@@ -1,5 +1,6 @@
 import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import subprocess
 import app
 
@@ -16,7 +17,7 @@ def get_length(path: str) -> int:
     return int(float(result.stdout))
 
 
-def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
+def video2segments2(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
     split video given by path into segments
     """
@@ -25,6 +26,19 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
     for i in range(0, duration, stride):
         ffmpeg_extract_subclip(path + filename, i, i + segment_len, targetname=path + f"video_{c}.mp4")
         c += 1
+    return c
+
+
+def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
+    """
+    split video given by path into segments
+    """
+    with VideoFileClip(path + filename) as video:
+        c = 0
+        for i in range(0, int(video.duration), stride):
+            new = video.subclip(i, i + segment_len)
+            new.write_videofile(path + f"video_{c}.mp4")
+            c += 1
     return c
 
 
