@@ -235,8 +235,8 @@
          <form action="{{ url_for("sorting")}}" method="post">
             <div class="u-clearfix u-sheet u-sheet-1">
                <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Sort by:</h4>
-               <div class="u-clearfix u-custom-html u-custom-html-1">
-                  <select style="color:black" name="sorting" id="sorting" >
+               <div style=" margin-left: 32%" class="u-clearfix u-custom-html u-custom-html-2">
+                  <select style="color:black; " class="selectpicker" data-style="btn-info" name="sorting" id="sorting" >
                      <option  value="confidence" selected>confidence</option>
                      <option  value="start" selected>start</option>
                      <option  value="end" selected>end</option>
@@ -247,12 +247,13 @@
 
                   </select>
 
-                  <select style="color:black" name="sorting_order" id="sorting_order"  >
+                  <select style="color:black; " class="selectpicker" data-style="btn-info" name="sorting_order" id="sorting_order"  >
                      <option  value="Ascending" selected>Ascending</option>
                      <option  value="Descending" selected>Descending</option>
                   </select>
-
-               <input type="submit" name="sorting" value="sort" style="margin-left: 29.6%; color:black;">
+<br>
+<br>
+               <input type="submit" name="sorting" value="sort" style="margin-left: 25.8%; color:black;">
 
                <br>
 
