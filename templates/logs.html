@@ -27,6 +27,13 @@
       <meta name="theme-color" content="#478ac9">
       <meta property="og:title" content="logs">
       <meta property="og:type" content="website">
+
+
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
    </head>
    <body class="u-body u-overlap u-overlap-contrast u-palette-1-base u-xl-mode">
       <header class="u-clearfix u-header u-header" id="sec-8760">
@@ -127,7 +134,7 @@
                   <!--                -->
                   <!--                value: Specifies the "default" value of an <input> element.-->
                   <label for="action">Choose an action/s:</label>
-                  <select name="action" id="action" multiple>
+                  <select class="selectpicker" multiple data-live-search="true"  name="action" id="action" data-style="btn-info" multiple>
                      <option value="All" selected>All</option>
                      {% for a in raw_results.distinct('action') %}
                      <option  value="{{a}}"> {{a}} </option>
@@ -145,7 +152,7 @@
                   <br>
 
                   <label for="location">Choose a location/s:</label>
-                  <select name="location" id="location" multiple>
+                  <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
                      <option value="All" selected>All</option>
                      <option value="test">test</option>
                      {% for a in raw_results.distinct('location') %}
@@ -160,7 +167,8 @@
                <div class="u-clearfix u-custom-html u-custom-html-2">
 
                   <label for="start">Choose the camera/s:</label>
-                  <select name="camera_id" id="camera_id" multiple >
+
+                  <select class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
                      <option value="All" selected>All</option>
                      <option value=1af065df-7139-4bc3-999d-60514750bb44>1af065df-7139-4bc3-999d-60514750bb44</option>
                      {% for a in raw_results.distinct('camera_id') %}
@@ -168,7 +176,7 @@
                      {% endfor %}
                   </select>
                   <br>
-
+                  
                   <label for="start">Choose the start timestamp:</label>
                   <input type="number" id="start" name="start"
                          value = "" min = 0>

@@ -8,7 +8,7 @@ import uuid
 
 app = Flask(__name__)
 
-mongo_Client = pymongo.MongoClient('localhost', 27016)
+mongo_Client = pymongo.MongoClient('localhost', 27015)
 db = mongo_Client.webapp
 results_data = db.results
 # secret key is needed for session
@@ -122,7 +122,8 @@ def filtering():
             print("****------camera_id filter-----")
             print(key, value)
             # store the value of "camera_id" to be the uuid of the input value in the filters dict
-            filters[key] = uuid.UUID(value)
+            #filters[key] = uuid.UUID(value)
+            filters[key] = value
             print(filters[key], type(filters[key]))
 
         #### action, location

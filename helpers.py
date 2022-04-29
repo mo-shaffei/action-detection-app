@@ -36,7 +36,7 @@ def inference(path: str, model_name: str) -> dict:
     return response.json()
 
 
-def output(camera_id: uuid, time_beg: int, time_end: int, action: str,
+def output(camera_id: str, time_beg: int, time_end: int, action: str,
            confidence: float, reference: int, location: str) -> None:
 
     confidence = round(confidence * 100)
