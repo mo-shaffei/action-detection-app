@@ -119,88 +119,111 @@
          </div>
       </section>
       <!-- filtering options -->
-      <section class="u-clearfix u-image u-section-3" id="sec-4181" data-image-width="250" data-image-height="215">
+      <section style=" background: #96dbe3;">
 <!--         <form action="/action_page.php">-->
           <form action="{{ url_for("filtering")}}" method="post">
-            <div class="u-clearfix u-sheet u-sheet-1">
-               <h4 class="u-text u-text-default u-text-1">Filter by:</h4>
-               <div class="u-clearfix u-custom-html u-custom-html-1">
-                  <!--                type: button/date/submit/text/url/...-->
-                  <!--                id: Specifies a "unique id" for an HTML element-->
-                  <!--                    Used to point to a "style" in a "style sheet", and by JavaScript to manipulate the element.-->
-                  <!--                -->
-                  <!--                ** name: to reference elements in a JavaScript, or to reference "form" data after a form is submitted.-->
-                  <!--                      Only form elements with a name attribute will have their values passed when submitting a form.-->
-                  <!--                -->
-                  <!--                value: Specifies the "default" value of an <input> element.-->
-                  <label for="action">Choose an action/s:</label>
-                  <select class="selectpicker" multiple data-live-search="true"  name="action" id="action" data-style="btn-info" multiple>
-                     <option value="All" selected>All</option>
-                     {% for a in raw_results.distinct('action') %}
-                     <option  value="{{a}}"> {{a}} </option>
-                     {% endfor %}
-                  </select>
+            <br>
+
+            <div class="u-clearfix u-sheet u-sheet-1" style="width: 100%; display: table; ">
+         <!--       <div style="display: table-row; ">
+                  <div  style=" display: table-cell;"> -->
+          <!--        </div>
+               </div> -->
+               <div style="display: table-row; "></div>
+               <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Filter by:</h4>
+                  <div  style=" width: 30%; display: table-cell;">
+                     <!--                type: button/date/submit/text/url/...-->
+                     <!--                id: Specifies a "unique id" for an HTML element-->
+                     <!--                    Used to point to a "style" in a "style sheet", and by JavaScript to manipulate the element.-->
+                     <!--                -->
+                     <!--                ** name: to reference elements in a JavaScript, or to reference "form" data after a form is submitted.-->
+                     <!--                      Only form elements with a name attribute will have their values passed when submitting a form.-->
+                     <!--                -->
+                     <!--                value: Specifies the "default" value of an <input> element.-->
+                     <label for="action" style="color:#01486b">Choose an action/s:</label>
+                     <select class="selectpicker" multiple data-live-search="true"  name="action" id="action" data-style="btn-info" multiple>
+                        <option value="All" selected>All</option>
+                        {% for a in raw_results.distinct('action') %}
+                        <option  value="{{a}}"> {{a}} </option>
+                        {% endfor %}
+                     </select>
+
                   <br>
-                  <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
                   <br>
 
-                  <label for="confidence">Choose the minimum confidence percentage level:</label>
-<!--                  The value will be the minimum threshold -->
-                  <input type="range" id="confidence" name="confidence"
-                         value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
-                  <output>20</output>
+                   <label for="confidence" style="color:#01486b">Minimum confidence percentage level:</label>
+                    <!--                   The value will be the minimum threshold -->
+                     <input type="range" id="confidence" name="confidence"
+                                 value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
+                     <output>20</output>
+                     <br>
+
+                    
+                  </div>
+
+                  <div style="margin-left: 35%; width: 30%; display: table-cell;">
+
+                     <label for="start" style="color:#01486b">Choose the camera/s:</label>
+
+                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
+                        <option value="All" selected>All</option>
+                        <option value=1af065df-7139-4bc3-999d-60514750bb44>1af065df-7139-4bc3-999d-60514750bb44</option>
+                        {% for a in raw_results.distinct('camera_id') %}
+                        <option  value="{{a}}"> {{a}} </option>
+                        {% endfor %}
+                     </select>
+                  <br>
                   <br>
 
-                  <label for="location">Choose a location/s:</label>
-                  <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
-                     <option value="All" selected>All</option>
-                     <option value="test">test</option>
-                     {% for a in raw_results.distinct('location') %}
-                     <option  value="{{a}}"> {{a}} </option>
-                     {% endfor %}
-                  </select>
+                    <label for="start" style="color:#01486b">Choose the start timestamp:</label>
+                     <input type="number" id="start" name="start"
+                           value = "" min = 0>
+                     <br> 
+   <!--                  <input type="date"-->
+   <!--                     id="start_date" name="start_date"-->
+   <!--                      min="2001-01-01" max="2099-12-31">-->
+   <!--                  <br>-->
+   <!--                  <input type="time"-->
+   <!--                     id="start_time" name="start_time"-->
+   <!--                     min="00:00" max="24:00" >-->
+   <!--                  <br>-->
 
-                  <input type="submit" name="filter" value="Filter">
+                    
+   <!--                  <input type="date"-->
+   <!--                     id="end_date" name="end_date"-->
+   <!--                     min="2001-01-01" max="2099-12-31">-->
+   <!--                  <br>-->
+   <!--                  <input type="time"-->
+   <!--                     id="end_time" name="end_time"-->
+   <!--                     min="00:00" max="24:00" >-->
+                  </div>
+
+                  <div  style="margin-left: 70%; width: 30%; display: table-cell;">
+                     <label for="location" style="color:#01486b">Choose a location/s:</label>
+                     <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
+                        <option value="All" selected>All</option>
+                        <option value="test">test</option>
+                        {% for a in raw_results.distinct('location') %}
+                        <option  value="{{a}}"> {{a}} </option>
+                        {% endfor %}
+                     </select>
+
+                     <br>
                   <br>
+                     <label for="end" style="color:#01486b">Choose the end timestamp:</label>
+                     <input type="number" id="end" name="end"
+                           value = "" min = 1> 
+
+                  </div>
                </div>
 
-               <div class="u-clearfix u-custom-html u-custom-html-2">
+               <div style="display: table-row; ">
+                  <div  style="margin-left: 50%;  display: table-cell;">
+                     <br>
 
-                  <label for="start">Choose the camera/s:</label>
-
-                  <select class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
-                     <option value="All" selected>All</option>
-                     <option value=1af065df-7139-4bc3-999d-60514750bb44>1af065df-7139-4bc3-999d-60514750bb44</option>
-                     {% for a in raw_results.distinct('camera_id') %}
-                     <option  value="{{a}}"> {{a}} </option>
-                     {% endfor %}
-                  </select>
-                  <br>
-                  
-                  <label for="start">Choose the start timestamp:</label>
-                  <input type="number" id="start" name="start"
-                         value = "" min = 0>
-                  <br>
-<!--                  <input type="date"-->
-<!--                     id="start_date" name="start_date"-->
-<!--                      min="2001-01-01" max="2099-12-31">-->
-<!--                  <br>-->
-<!--                  <input type="time"-->
-<!--                     id="start_time" name="start_time"-->
-<!--                     min="00:00" max="24:00" >-->
-<!--                  <br>-->
-
-                  <label for="end">Choose the end timestamp:</label>
-                  <input type="number" id="end" name="end"
-                         value = "" min = 1>
-<!--                  <input type="date"-->
-<!--                     id="end_date" name="end_date"-->
-<!--                     min="2001-01-01" max="2099-12-31">-->
-<!--                  <br>-->
-<!--                  <input type="time"-->
-<!--                     id="end_time" name="end_time"-->
-<!--                     min="00:00" max="24:00" >-->
-                  <br>
+                     <input type="submit" name="filter" value="Filter" style="margin-left: 1400%; color:black;">
+                     <br>
+                  </div>
                </div>
             </div>
          </form>
@@ -208,10 +231,10 @@
 
       </section>
 
-      <section>
+      <section style=" background: #96dbe3;">
          <form action="{{ url_for("sorting")}}" method="post">
             <div class="u-clearfix u-sheet u-sheet-1">
-               <h4 class="u-text u-text-default u-text-1">Sort by:</h4>
+               <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Sort by:</h4>
                <div class="u-clearfix u-custom-html u-custom-html-1">
                   <select style="color:black" name="sorting" id="sorting" >
                      <option  value="confidence" selected>confidence</option>
@@ -229,9 +252,14 @@
                      <option  value="Descending" selected>Descending</option>
                   </select>
 
-               <input style="color:black" type="submit" name="sorting" value="sort">
+               <input type="submit" name="sorting" value="sort" style="margin-left: 29.6%; color:black;">
+
+               <br>
+
                </div>
             </div>
+            <br>
+
          </form>         
       </section>
 
