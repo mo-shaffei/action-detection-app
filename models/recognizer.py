@@ -297,7 +297,7 @@ class RecognizerModel:
         if visualize:  # if visualization is enabled
             labels = []  # create labels from top 1 and confidence of each person
             for p in actions:
-                labels.append(f"{list(p.keys())[0]} round({list(p.values())[0]}*100)")
+                labels.append(f"{list(p.keys())[0]} {round(100 * list(p.values())[0])}")
             # output video with bboxes and labels
             self._draw_bboxes(video_path, predicted_boxes, labels)
         return actions
