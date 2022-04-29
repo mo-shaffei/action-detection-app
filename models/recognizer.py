@@ -6,7 +6,6 @@ import skvideo.io
 import torch
 import json
 from torchvision.transforms import Compose, Lambda
-from torchvision.utils import draw_bounding_boxes
 from torchvision.transforms._transforms_video import (
     CenterCropVideo,
     NormalizeVideo,
@@ -17,6 +16,7 @@ from pytorchvideo.transforms import (
 )
 from pytorchvideo.models.hub.vision_transformers import mvit_base_32x3
 from pytorchvideo.models.hub.slowfast import slowfast_r50
+import cv2
 
 
 class RecognizerModel:
@@ -229,7 +229,8 @@ class RecognizerModel:
         # sort dict by confidence before returning it
         return {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)}
 
-    def _draw_bboxes(self, video_name: str, predicted_boxes: np.ndarray, labels):
+    def _draw_bboxes(self, video_name: str, predicted_boxes: np.ndarray, labels, box_color=(0, 114, 110),
+                     text_background_color=(0, 114, 110), font_color=(255, 255, 255)):
         """
         Draw bounding boxes around detected persons in video then write this video to disk
         @param video_name: name of video to save
@@ -237,14 +238,26 @@ class RecognizerModel:
         @param labels: list of strings containing label for each bounding box
         @return: None
         """
-        predicted_boxes = torch.from_numpy(predicted_boxes)  # convert bboxes to tensor
-        for i in range(self._video_data.shape[1]):  # loop over all frames and draw bbox in each one
-            self._video_data[:, i, :, :] = draw_bounding_boxes(self._video_data[:, i, :, :], predicted_boxes,
-                                                               labels=labels,
-                                                               width=1, font_size=10, fill=True, colors="black")
-        video_data = self._video_data.numpy()  # convert video to numpy
-        # save video
-        skvideo.io.vwrite(video_name, np.einsum('klij->lijk', video_data))
+
+        def get_optimal_font_scale(text, width):
+            for scale in reversed(range(0, 60, 1)):
+                text_size = cv2.getTextSize(text, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=scale / 10, thickness=1)
+                new_width = text_size[0][0]
+                if new_width <= width:
+                    return scale / 10
+            return 1
+
+        self._video_data = np.einsum('klij->lijk', self._video_data.numpy())
+        for i in range(self._video_data.shape[0]):  # loop over all frames and draw bbox in each one
+            img = self._video_data[i, :, :, :]
+            for i, box in enumerate(predicted_boxes):
+                x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+                img = cv2.rectangle(img, (x1, y1), (x2, y2), box_color)
+                img = cv2.rectangle(img, (x1, y1), (x2, y1 - 20), text_background_color, -1)
+                scale = get_optimal_font_scale(labels[i], x2 - x1)
+                img = cv2.putText(img, labels[i], (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, scale, font_color, 1)
+            self._video_data[i, :, :, :] = img
+        skvideo.io.vwrite(video_name, self._video_data)
 
     def inference(self, video_path: str, visualize=False):
         """
@@ -282,7 +295,7 @@ class RecognizerModel:
         if visualize:  # if visualization is enabled
             labels = []  # create labels from top 1 and confidence of each person
             for p in actions:
-                labels.append(f"{list(p.keys())[0]}\n{round(100 * list(p.values())[0])}")
+                labels.append(f"{list(p.keys())[0]}")
             # output video with bboxes and labels
             self._draw_bboxes(video_path, predicted_boxes, labels)
         return actions
