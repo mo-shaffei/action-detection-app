@@ -31,6 +31,7 @@ def video2segments2(path: str, filename: str, segment_len: int = 10, stride: int
     return c
 
 
+
 def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
     split video given by path into segments
