@@ -5,6 +5,7 @@ import pandas as pd
 import pymongo
 from pymongo import MongoClient
 import uuid
+from bson.json_util import dumps
 
 app = Flask(__name__)
 
@@ -12,7 +13,7 @@ mongo_Client = pymongo.MongoClient('localhost', 27015)
 db = mongo_Client.webapp
 results_data = db.results
 # secret key is needed for session
-#app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
+app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
 
 @app.route('/')
 def homepage():
@@ -140,7 +141,8 @@ def filtering():
     print("results type is {}".format(type(results)))
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
-    #session["filtered_data"]=results
+    #session["filtered_data"]=dumps(results_data.find(filter=filters))
+    session["filters"]=filters
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
@@ -149,14 +151,15 @@ def sorting():
     """"
     
     """
-    #results=session.get("filtered_data",None)
+    filters=session.get("filters",None)
     sorting = request.form.get("sorting")
     sorting_order=request.form.get("sorting_order")
     if sorting_order=="Descending":
-        results = results_data.find({},sort=[(sorting, pymongo.DESCENDING)])
+        results = results_data.find(filter=filters,sort=[(sorting, pymongo.DESCENDING)])
     else:
-        results = results_data.find().sort([(sorting, pymongo.ASCENDING)])
+        results = results_data.find(filter=filters).sort([(sorting, pymongo.ASCENDING)])
 
+    session["filters"]={}
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
