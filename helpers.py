@@ -1,6 +1,9 @@
 import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import subprocess
+import app
+import uuid
 
 
 def get_length(path: str) -> int:
@@ -15,8 +18,9 @@ def get_length(path: str) -> int:
     return int(float(result.stdout))
 
 
-def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
+def video2segments2(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
+    (OLD FUNCTION, not used as it produced some bugs)
     split video given by path into segments
     """
     duration = get_length(path + filename)
@@ -27,14 +31,25 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
     return c
 
 
-def inference(path: str, model_name: str) -> dict:
+
+def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
-    Predict actions in a video given the inference server
+    split video given by path into segments
     """
-    url = 'http://127.0.0.1:8080/predictions/' + model_name
-    response = requests.put(url, data=open(path, 'rb').read())
-    return response.json()
+    with VideoFileClip(path + filename) as video:
+        c = 0
+        for i in range(0, int(video.duration), stride):
+            new = video.subclip(i, i + segment_len)
+            new.write_videofile(path + f"video_{c}.mp4")
+            c += 1
+    return c
 
 
-def output(file, time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
-    file.write(f'{time_beg},{time_end},{action},{confidence}, {reference}\n')
+def output(camera_id: str, time_beg: int, time_end: int, action: str,
+           confidence: float, reference: int, location: str) -> None:
+
+    confidence = round(confidence * 100)
+    print("Did the type of conf change? {} {}".format(confidence, type(confidence)))
+    app.results_data.insert_one({"camera_id": camera_id, "start": time_beg, "end": time_end,
+                                 "action": action, "confidence": confidence,
+                                 "clip": reference, "location": location})  # inserting results into database
