@@ -1,5 +1,6 @@
 import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import subprocess
 import app
 import uuid
@@ -17,8 +18,9 @@ def get_length(path: str) -> int:
     return int(float(result.stdout))
 
 
-def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
+def video2segments2(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
     """
+    (OLD FUNCTION, not used as it produced some bugs)
     split video given by path into segments
     """
     duration = get_length(path + filename)
@@ -29,11 +31,17 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
     return c
 
 
-def inference(path: str, model_name: str) -> dict:
-    #url = 'http://127.0.0.1:8080/predictions/' + model_name
-    url = 'http://7db7-82-129-198-85.ngrok.io/predictions/' + model_name
-    response = requests.put(url, data=open(path, 'rb').read())
-    return response.json()
+def video2segments(path: str, filename: str, segment_len: int = 10, stride: int = 5) -> int:
+    """
+    split video given by path into segments
+    """
+    with VideoFileClip(path + filename) as video:
+        c = 0
+        for i in range(0, int(video.duration), stride):
+            new = video.subclip(i, i + segment_len)
+            new.write_videofile(path + f"video_{c}.mp4")
+            c += 1
+    return c
 
 
 def output(camera_id: str, time_beg: int, time_end: int, action: str,

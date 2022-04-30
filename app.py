@@ -4,16 +4,23 @@ import logic
 import pandas as pd
 import pymongo
 from pymongo import MongoClient
+import json
 import uuid
 from bson.json_util import dumps
 
-app = Flask(__name__)
+with open('config.json') as f:
+    config = json.load(f)
 
-mongo_Client = pymongo.MongoClient('localhost', 27015)
+
+app = Flask(__name__)
+app.config.update(config)
+mongo_Client = pymongo.MongoClient('localhost', 27017)
+
 db = mongo_Client.webapp
 results_data = db.results
 # secret key is needed for session
 app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
+
 
 @app.route('/')
 def homepage():
@@ -23,7 +30,7 @@ def homepage():
 
 @app.route('/connect/')
 def connect():
-    t = threading.Thread(target=logic.connect_thread)  # create new thread
+    t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
     t.setDaemon(True)
     t.start()  # start thread
     return Response(status=204)
