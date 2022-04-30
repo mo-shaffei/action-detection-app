@@ -2,7 +2,6 @@ import helpers
 from models.recognizer import RecognizerModel
 from models.detection import DetectionModel
 import time
-import uuid
 
 
 def connect_thread(app):
@@ -34,9 +33,9 @@ def connect_thread(app):
         model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
     else:
         model = DetectionModel(person_bbox_threshold=bbox_threshold, device=device)
-    
+
     # For now we will define a constant camera id and location
-    camera_id = uuid.uuid4()
+    camera_id = "NB-1001"
     location = "Studio"
     start_time = time.time()
     for i in range(segments):  # process segment by segment
