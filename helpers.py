@@ -2,6 +2,7 @@ import requests
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import subprocess
 import app
+import uuid
 
 
 def get_length(path: str) -> int:
@@ -29,13 +30,17 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
 
 
 def inference(path: str, model_name: str) -> dict:
-    url = 'http://127.0.0.1:8080/predictions/' + model_name
+    #url = 'http://127.0.0.1:8080/predictions/' + model_name
+    url = 'http://7db7-82-129-198-85.ngrok.io/predictions/' + model_name
     response = requests.put(url, data=open(path, 'rb').read())
     return response.json()
 
 
-def output(time_beg: int, time_end: int, action: str, confidence: float, reference: int) -> None:
+def output(camera_id: str, time_beg: int, time_end: int, action: str,
+           confidence: float, reference: int, location: str) -> None:
+
     confidence = round(confidence * 100)
-    app.results_data.insert_one({"start": time_beg, "end": time_end,
+    print("Did the type of conf change? {} {}".format(confidence, type(confidence)))
+    app.results_data.insert_one({"camera_id": camera_id, "start": time_beg, "end": time_end,
                                  "action": action, "confidence": confidence,
-                                 "clip": reference})  # inserting results into database
+                                 "clip": reference, "location": location})  # inserting results into database

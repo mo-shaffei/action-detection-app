@@ -1,6 +1,7 @@
 import pymongo
 import helpers
 import app
+import uuid
 
 
 def connect_thread():
@@ -13,9 +14,10 @@ def connect_thread():
     stride = 5  # stride length (in seconds) of temporal window which segments the input video
     segment_len = 10  # segment length (in seconds) of each mini video segment
     path = 'video/'  # store path of videos
+    video = 'video.mp4'
     # segment the input video into multiple segments as required by segment_len and stride, return the resulting
     # number of segments
-    segments = helpers.video2segments(path, "video.mp4", segment_len=segment_len, stride=stride)
+    segments = helpers.video2segments(path, video, segment_len=segment_len, stride=stride)
     # segments = 10
 
     previous_action = " "
@@ -23,11 +25,15 @@ def connect_thread():
     previous_confidence = 0
     clips = []
 
+    # For now we will define a constant camera id and location
+    camera_id = uuid.uuid4()
+    location = "Studio"
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
         response = helpers.inference(path + f"video_{i}.mp4", "slowfast_rec")  # perform inference on current segment
         action = list(response.keys())[0]  # get top1 action
         confidence = list(response.values())[0]  # get confidence of top1 action
+
         if confidence >= confidence_thresh:  # only store action if confidence >= threshold
 
             if action == previous_action:
@@ -38,13 +44,14 @@ def connect_thread():
                 end = i * stride + segment_len
                 confidence = (confidence + previous_confidence) / 2
                 clips.append(i)
-                helpers.output(beg, end, action, confidence, clips)
+                helpers.output(camera_id, beg, end, action, confidence, clips, location)
 
             else:
                 beg = i * stride  # beg time of segment = current segment index * stride length
                 end = beg + segment_len  # end time of segment = beg time + segment length
                 clips = [i]
-                helpers.output(beg, end, action, confidence, i)
+                helpers.output(camera_id, beg, end, action, confidence, i, location)
+            print("Let's see if the conf int or float: {} = {}".format(confidence, type(confidence)))
 
             previous_action = action
             previous_beg = beg
