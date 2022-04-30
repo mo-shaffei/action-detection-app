@@ -142,7 +142,7 @@ def filtering():
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
     #session["filtered_data"]=dumps(results_data.find(filter=filters))
-    session["filters"]=filters
+    session["filters"]=filters  #storing the filters to be used in the sorting function, to apply sorting on filtered data
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
@@ -151,15 +151,15 @@ def sorting():
     """"
     
     """
-    filters=session.get("filters",None)
-    sorting = request.form.get("sorting")
-    sorting_order=request.form.get("sorting_order")
+    filters=session.get("filters",None)  #getting the filters from the filtering function
+    sorting = request.form.get("sorting") #returns the option that the user want to sort by (ex: action, confidence, ...etc)
+    sorting_order=request.form.get("sorting_order") #returns ascending or descending
     if sorting_order=="Descending":
-        results = results_data.find(filter=filters,sort=[(sorting, pymongo.DESCENDING)])
+        results = results_data.find(filter=filters,sort=[(sorting, pymongo.DESCENDING)]) #sorting on filtered data Descendingly
     else:
-        results = results_data.find(filter=filters).sort([(sorting, pymongo.ASCENDING)])
+        results = results_data.find(filter=filters).sort([(sorting, pymongo.ASCENDING)]) #sorting on filtered data ASCENDINGly
 
-    session["filters"]={}
+    session["filters"]={} #remove the stored filters, so that if the user goes to the sorting option directly without filtering, it doesn't use the last stored filters, instead, it sorts the whole results
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
