@@ -2,6 +2,7 @@ import helpers
 from models.recognizer import RecognizerModel
 from models.detection import DetectionModel
 import time
+import uuid
 
 
 def connect_thread(app):
@@ -19,6 +20,7 @@ def connect_thread(app):
     # segment length (in seconds) of each mini video segment
     segment_len = app.config["video"]["clip_length"]
     path = 'video/'  # store path of videos
+
     video_name = app.config["video"]["video_name"]  # store name of video to process
     # segment the input video into multiple segments as required by segment_len and stride, return the resulting
     # number of segments
@@ -32,6 +34,10 @@ def connect_thread(app):
         model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
     else:
         model = DetectionModel(person_bbox_threshold=bbox_threshold, device=device)
+    
+    # For now we will define a constant camera id and location
+    camera_id = uuid.uuid4()
+    location = "Studio"
     start_time = time.time()
     for i in range(segments):  # process segment by segment
         print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
@@ -46,7 +52,7 @@ def connect_thread(app):
             if confidence >= confidence_thresh:  # only store action if confidence >= threshold
                 beg = i * stride  # beg time of segment = current segment index * stride length
                 end = beg + segment_len  # end time of segment = beg time + segment length
-                helpers.output(beg, end, action, confidence, i)
+                helpers.output(camera_id, beg, end, action, confidence, i, location)
 
     stop_time = time.time()
     print("Inference thread finished!")
