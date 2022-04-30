@@ -11,7 +11,6 @@ from bson.json_util import dumps
 with open('config.json') as f:
     config = json.load(f)
 
-
 app = Flask(__name__)
 app.config.update(config)
 mongo_Client = pymongo.MongoClient('localhost', 27017)
@@ -36,18 +35,8 @@ def connect():
     return Response(status=204)
 
 
-# Added trailing slashes to all routes
 @app.route('/logs/')
 def logs():
-    results_data.insert_one({"camera_id": '001', "start": 0, "end": 1,
-                                 "action": "action", "confidence": 50,
-                                 "clip": 2, "location": 'location'}) 
-    results_data.insert_one({"camera_id": '002', "start": 5, "end": 6,
-                                 "action": "eating", "confidence": 30,
-                                 "clip": 5, "location": 'location'})  
-    results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
-                                 "action": "drinking", "confidence": 30,
-                                 "clip": 9, "location": 'location2'})                                                         
     n = 1000
     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
     return render_template('logs.html', results=results, raw_results=results)
@@ -55,7 +44,6 @@ def logs():
 
 @app.route('/filtering/', methods=["GET", "POST"])
 def filtering():
-
     # Retrieve the desired filters from the user
     confidence = request.form.get("confidence")
     start = request.form.get("start")
@@ -75,7 +63,8 @@ def filtering():
         camera = request.form.get("camera_id")
 
     print("output\n action:{}\n conf:{}\n loc:{}\n cam:{}\n start:{}\n end:{}\n".format(action,
-          confidence, location, camera, len(start), len(end)))
+                                                                                        confidence, location, camera,
+                                                                                        len(start), len(end)))
 
     # keys = ["action", "confidence", "clip", "location", "camera",
     #        "start_date", "start_time", "end_date", "end_time"]
@@ -130,7 +119,7 @@ def filtering():
             print("****------camera_id filter-----")
             print(key, value)
             # store the value of "camera_id" to be the uuid of the input value in the filters dict
-            #filters[key] = uuid.UUID(value)
+            # filters[key] = uuid.UUID(value)
             filters[key] = value
             print(filters[key], type(filters[key]))
 
@@ -148,8 +137,9 @@ def filtering():
     print("results type is {}".format(type(results)))
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
-    #session["filtered_data"]=dumps(results_data.find(filter=filters))
-    session["filters"]=filters  #storing the filters to be used in the sorting function, to apply sorting on filtered data
+    # session["filtered_data"]=dumps(results_data.find(filter=filters))
+    session[
+        "filters"] = filters  # storing the filters to be used in the sorting function, to apply sorting on filtered data
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
@@ -158,15 +148,19 @@ def sorting():
     """"
     
     """
-    filters=session.get("filters",None)  #getting the filters from the filtering function
-    sorting = request.form.get("sorting") #returns the option that the user want to sort by (ex: action, confidence, ...etc)
-    sorting_order=request.form.get("sorting_order") #returns ascending or descending
-    if sorting_order=="Descending":
-        results = results_data.find(filter=filters,sort=[(sorting, pymongo.DESCENDING)]) #sorting on filtered data Descendingly
+    filters = session.get("filters", None)  # getting the filters from the filtering function
+    sorting = request.form.get(
+        "sorting")  # returns the option that the user want to sort by (ex: action, confidence, ...etc)
+    sorting_order = request.form.get("sorting_order")  # returns ascending or descending
+    if sorting_order == "Descending":
+        results = results_data.find(filter=filters,
+                                    sort=[(sorting, pymongo.DESCENDING)])  # sorting on filtered data Descendingly
     else:
-        results = results_data.find(filter=filters).sort([(sorting, pymongo.ASCENDING)]) #sorting on filtered data ASCENDINGly
+        results = results_data.find(filter=filters).sort(
+            [(sorting, pymongo.ASCENDING)])  # sorting on filtered data ASCENDINGly
 
-    session["filters"]={} #remove the stored filters, so that if the user goes to the sorting option directly without filtering, it doesn't use the last stored filters, instead, it sorts the whole results
+    session[
+        "filters"] = {}  # remove the stored filters, so that if the user goes to the sorting option directly without filtering, it doesn't use the last stored filters, instead, it sorts the whole results
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
