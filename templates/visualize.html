@@ -19,11 +19,24 @@
     <h2>Choose an action</h2>
     <input type="text" id="fname" name="fname" onchange="cb(this.value)">
     <div id="chart" class="chart"></div>
+    <div id='chart2' class='chart'”></div>
+    <div id='chart3' class='chart'”></div>
+
+
 </body>
 
 <script>
     d = {{ graphJSON | safe }};
     Plotly.newPlot('chart', d, {});
-    
 </script>
+
+<script type='text/javascript'>
+  var graphs = {{graph2JSON | safe}};
+  Plotly.plot('chart2',graphs,{});
+</script>
+
+<script type='text/javascript'>
+    var graphs = {{graph3JSON | safe}};
+    Plotly.plot('chart3',graphs,{});
+  </script>
 </html>

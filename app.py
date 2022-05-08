@@ -195,7 +195,7 @@ def cb():
    
 @app.route('/visualize/')
 def index():
-    return render_template('visualize.html',  graphJSON=gm())
+    return render_template('visualize.html',  graphJSON=gm(), graph2JSON=g2(), graph3JSON=g3())
 
 def gm(action='eating'):
     
@@ -224,8 +224,31 @@ def gm(action='eating'):
     return graphJSON
 
 
+def g2(): 
+
+    list_data = list(results_data.find())
+    df = DataFrame(list_data)
+    fig2 = px.bar(df, x='action', y='camera_id', color='location', 
+      barmode='group')
+
+    graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+    return graph2JSON
 
 
+def g3():
+    counted_actions = results_data.aggregate([
+        {
+            "$group" : {"_id" : "$action", "count": {"$sum" : 1}}  #counting the rows of this action for each start time
+        }
+    ])
+
+    list_data = list(counted_actions)
+    df = DataFrame(list_data)
+
+    fig3 = px.pie(df, values='count', names='_id')
+
+    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+    return graph3JSON
 
 
 if __name__ == '__main__':
