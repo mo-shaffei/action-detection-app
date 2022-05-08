@@ -7,6 +7,10 @@ from pymongo import MongoClient
 import json
 import uuid
 from bson.json_util import dumps
+import plotly
+import plotly.express as px
+from pandas import DataFrame
+
 
 with open('config.json') as f:
     config = json.load(f)
@@ -37,6 +41,27 @@ def connect():
 
 @app.route('/logs/')
 def logs():
+    results_data.insert_one({"camera_id": '001', "start": 0, "end": 1,
+                                 "action": "smoking", "confidence": 50,
+                                 "clip": 2, "location": 'location'}) 
+    results_data.insert_one({"camera_id": '002', "start": 5, "end": 6,
+                                 "action": "eating", "confidence": 30,
+                                 "clip": 5, "location": 'location'})  
+    results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
+                                 "action": "drinking", "confidence": 30,
+                                 "clip": 9, "location": 'location2'}) 
+    results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
+                                 "action": "eating", "confidence": 30,
+                                 "clip": 9, "location": 'location2'}) 
+    results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
+                                 "action": "drinking", "confidence": 40,
+                                 "clip": 9, "location": 'location2'})
+    results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
+                                 "action": "eating", "confidence": 70,
+                                 "clip": 10, "location": 'location2'}) 
+    results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
+                                 "action": "eating", "confidence": 80,
+                                 "clip": 10, "location": 'location2'})                                                                                                                      
     n = 1000
     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
     return render_template('logs.html', results=results, raw_results=results)
@@ -162,6 +187,45 @@ def sorting():
     session[
         "filters"] = {}  # remove the stored filters, so that if the user goes to the sorting option directly without filtering, it doesn't use the last stored filters, instead, it sorts the whole results
     return render_template('logs.html', results=results, raw_results=results_data)
+
+#Implementing visualizations
+@app.route('/callback', methods=['POST', 'GET'])
+def cb():
+    return gm(request.args.get('data'))
+   
+@app.route('/visualize/')
+def index():
+    return render_template('visualize.html',  graphJSON=gm())
+
+def gm(action='eating'):
+    
+    filtered_data = results_data.aggregate([
+    {
+        "$match" : {
+            "action" : {
+                "$eq" : action                               #filtering the entered action, then
+            } 
+        }
+    },
+    {
+        "$group" : {"_id" : "$start", "count": {"$sum" : 1}}  #counting the rows of this action for each start time
+    }
+])
+
+    list_data = list(filtered_data)
+    df = DataFrame(list_data)
+    df.head()
+
+    fig = px.line(df, x="_id", y="count", labels={'x': 'start'}).update_layout(xaxis_title="start time")
+    
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    print(fig.data[0])
+    
+    return graphJSON
+
+
+
+
 
 
 if __name__ == '__main__':
