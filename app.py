@@ -10,6 +10,7 @@ from bson.json_util import dumps
 import plotly
 import plotly.express as px
 from pandas import DataFrame
+import plotly.graph_objects as go
 
 
 with open('config.json') as f:
@@ -193,7 +194,7 @@ def sorting():
 def cb():
     return gm(request.args.get('data'))
    
-@app.route('/visualize/')
+@app.route('/visualize/', methods=['POST', 'GET'])
 def index():
     return render_template('visualize.html',  graphJSON=gm(), graph2JSON=g2(), graph3JSON=g3())
 
@@ -219,16 +220,33 @@ def gm(action='eating'):
     fig = px.line(df, x="_id", y="count", labels={'x': 'start'}).update_layout(xaxis_title="start time")
     
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    print(fig.data[0])
+    #print(fig.data[0])
     
     return graphJSON
 
 
 def g2(): 
 
+    #filtered_data = results_data.aggregate([
+    #    {
+    #        "$group" : {
+    #            "_id" :  {  "location": "$location", "action": "$action"} ,
+    #            "count": { "$sum" : 1 } }
+    #    },
+
+        #{
+        #    "$group" : {"_id" : "$_id.location", "actions": { 
+        #      "$push": { "action":"$_id.action", "count":"$count" }
+        #} } 
+        #}
+    #])
+    
     list_data = list(results_data.find())
     df = DataFrame(list_data)
-    fig2 = px.bar(df, x='action', y='camera_id', color='location', 
+    #print(df)
+    #print(type(df._id))
+
+    fig2 = px.bar(df, x="location", y="camera_id", color='action',
       barmode='group')
 
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
@@ -238,7 +256,7 @@ def g2():
 def g3():
     counted_actions = results_data.aggregate([
         {
-            "$group" : {"_id" : "$action", "count": {"$sum" : 1}}  #counting the rows of this action for each start time
+            "$group" : {"_id" : "$action", "count": {"$sum" : 1}}  
         }
     ])
 
@@ -251,5 +269,3 @@ def g3():
     return graph3JSON
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
