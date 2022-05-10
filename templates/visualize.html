@@ -1,6 +1,13 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/visualize.css">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -14,21 +21,131 @@
     </script>
 </head>
 
-<body style="font-family:arial, sans-serif">
-    <h1>Visualize Results</h1>
-    <h2>Choose an action</h2>
-    <input type="text" id="fname" name="fname" onchange="cb(this.value)">
-    <div id="chart" class="chart"></div>
-    <div id='chart2' class='chart'”></div>
-    <div id='chart3' class='chart'”></div>
+<body >
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name"></span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-box' ></i>
+            <span class="links_name">Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-list-ul' ></i>
+            <span class="links_name">Logs</span>
+          </a>
+        </li>
+        
+      </ul>
+  </div>
 
+    <section class="home-section">
+
+      <nav>
+        <div class="sidebar-button">
+          <i class='bx bx-menu sidebarBtn'></i>
+          <span class="dashboard">Dashboard</span>
+        </div>
+      </nav>
+
+    <div class="home-content">
+        <div class="overview-boxes">
+          <div class="box">
+            <div class="right-side">
+            </div>
+            
+          </div>
+          <div class="box">
+            <div class="right-side">
+             
+              </div>
+            </div>
+  
+          
+          <div class="box">
+            <div class="right-side">
+              
+              </div>
+            </div>
+            
+          
+          <div class="box">
+            <div class="right-side">
+              
+              </div>
+            </div>
+            
+        </div>
+  
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+              <div class="title"> </div>
+              <div id='chart2' class='chart'”></div>
+
+           </div>
+
+           <div class="top-sales box">
+            <div class="title">Top Actions</div>
+            <div id='chart3' class='chart'”></div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="home-section">
+
+
+    <div class="home-content">
+
+      <div class="sales-boxes2">
+        <div class="recent-sales2 box">
+          <div class="title">Choose an action </div>
+          
+          <input type="text" id="fname" name="fname" onchange="cb(this.value)">
+          <div id="chart" class="chart"></div> 
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</section>
+
+
+
+
+
+    <script>
+      let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".sidebarBtn");
+     sidebarBtn.onclick = function() {
+     sidebar.classList.toggle("active");
+     if(sidebar.classList.contains("active")){
+     sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+    }else
+     sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+    </script>
 
 </body>
 
 <script>
     d = {{ graphJSON | safe }};
     Plotly.newPlot('chart', d, {});
-</script>
+</script> 
 
 <script type='text/javascript'>
   var graphs = {{graph2JSON | safe}};
