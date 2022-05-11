@@ -94,19 +94,28 @@ def plots(results, action='eating'):       #returns all plots and statistics of 
         graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
         return graph4JSON
 
-    def s1():              #return statistics 1
-        actions=[] ; counts=[]
-        for item in list_counted_data:
-            actions.append(item.pop('_id'))
-            counts.append(item.pop('count'))
-        print(counts)  
-        print(actions)  
-        top_action_index=counts.index(max(counts))
-        top_action=actions[top_action_index]   
-        return top_action
-    
+    ###########################################################################################
+    results_data = list(results.find())
+    df_original = DataFrame(results_data)       
 
-    return [g1(action), g2() , g3(), g4(), s1()]
+    def s1():              #return statistics 1 (Top action)
+        top_action=df_original['action'].value_counts().idxmax() 
+        return top_action 
+
+    def s2():              #return statistics 2 (Top location)
+        top_location=df_original['location'].value_counts().idxmax()
+        return top_location
+
+    def s3():              #return statistics 3 (Top camera)
+        top_camera=df_original['camera_id'].value_counts().idxmax()  
+        return top_camera
+
+    def s4():              #return statistics 4 (camera that captured least actions)
+        min_camera=df_original['camera_id'].value_counts().idxmin()    
+        return min_camera
+
+
+    return [g1(action), g2() , g3(), g4(), s1(), s2(), s3(), s4()]
 
     
 #######################################################################################################
