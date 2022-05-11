@@ -196,7 +196,7 @@ def cb():
    
 @app.route('/visualize/', methods=['POST', 'GET'])
 def index():
-    return render_template('visualize.html',  graphJSON=gm(), graph2JSON=g2(), graph3JSON=g3())
+    return render_template('visualize.html',  graphJSON=gm(), graph2JSON=g2(), graph3JSON=g3(),graph4JSON=g4())
 
 def gm(action='eating'):
     
@@ -227,26 +227,34 @@ def gm(action='eating'):
 
 def g2(): 
 
-    #filtered_data = results_data.aggregate([
-    #    {
-    #        "$group" : {
-    #            "_id" :  {  "location": "$location", "action": "$action"} ,
-    #            "count": { "$sum" : 1 } }
-    #    },
+    filtered_data = results_data.aggregate([
+        {
+            "$group" : {
+                "_id" :  {  "location": "$location", "action": "$action"} ,
+                "count": { "$sum" : 1 } }
+        },
 
-        #{
-        #    "$group" : {"_id" : "$_id.location", "actions": { 
-        #      "$push": { "action":"$_id.action", "count":"$count" }
-        #} } 
-        #}
-    #])
+        {
+            "$group" : {"_id" : "$_id.location", "actions": { 
+              "$push": { "action":"$_id.action", "count":"$count" }
+        } } 
+        }
+    ])
     
-    list_data = list(results_data.find())
+    list_data = list(filtered_data)
     df = DataFrame(list_data)
-    #print(df)
-    #print(type(df._id))
+    x=[] , y=[] , z=[] , i=-1
+    for location in df._id:
+        i=i+1
+        for item in df.actions[i]:
+            x.append(item.pop('action'))
+            y.append(item.pop('count'))
+            z.append(location)
 
-    fig2 = px.bar(df, x="location", y="camera_id", color='action',
+    new_df=DataFrame(list(zip(x, y, z)),
+              columns=['action','count', 'location'])
+              
+    fig2 = px.bar(new_df, x="location", y="count", color='action',
       barmode='group')
 
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
@@ -268,4 +276,21 @@ def g3():
     graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     return graph3JSON
 
+def g4():
+    list_data = list(results_data.find())
+    df = DataFrame(list_data)
+    print(df)
+    x=df['action'].tolist();
+    y=df['camera_id'].tolist();
+    z=df['confidence'].tolist();
+
+    fig4 = go.Figure(data=go.Heatmap( {'z':z, 'x':x, 'y':y} ))
+
+    graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
+    return graph4JSON
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
