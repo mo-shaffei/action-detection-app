@@ -101,32 +101,29 @@
 
           </div>
         </div>
-      </div>
+<br>
 
-    </section>
-
-    <section class="home-section">
-
-
-    <div class="home-content">
-
-      <div class="sales-boxes2">
-        <div class="recent-sales2 box">
-          <div class="title">Choose an action </div>
+        <div class="sales-boxes">
+          <div class="recent-sales box">
+            <div class="title">Choose an action </div>
           
-          <input type="text" id="fname" name="fname" onchange="cb(this.value)">
-          <div id="chart" class="chart"></div> 
-      </div>
+            <input type="text" id="fname" name="fname" onchange="cb(this.value)">
+            <div id="chart" class="chart"></div> 
 
-    </div>
+        </div>
+
+        <div class="top-sales box">
+          <div class="title">Top Actions</div>
+          <div id='chart4' class='chart'”></div>
+
+        </div>
+        </div>
+
   </div>
+  <br>
 </div>
 
 </section>
-
-
-
-
 
     <script>
       let sidebar = document.querySelector(".sidebar");
@@ -156,4 +153,10 @@
     var graphs = {{graph3JSON | safe}};
     Plotly.plot('chart3',graphs,{});
   </script>
+
+<script type='text/javascript'>
+  var graphs = {{graph4JSON | safe}};
+  Plotly.plot('chart4',graphs,{});
+</script>
+
 </html>

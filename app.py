@@ -243,7 +243,10 @@ def g2():
     
     list_data = list(filtered_data)
     df = DataFrame(list_data)
-    x=[] , y=[] , z=[] , i=-1
+    x=[] 
+    y=[] 
+    z=[] 
+    i=-1
     for location in df._id:
         i=i+1
         for item in df.actions[i]:
@@ -253,7 +256,7 @@ def g2():
 
     new_df=DataFrame(list(zip(x, y, z)),
               columns=['action','count', 'location'])
-              
+
     fig2 = px.bar(new_df, x="location", y="count", color='action',
       barmode='group')
 
