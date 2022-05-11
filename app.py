@@ -243,10 +243,7 @@ def g2():
     
     list_data = list(filtered_data)
     df = DataFrame(list_data)
-    x=[] 
-    y=[] 
-    z=[] 
-    i=-1
+    x=[]; y=[]; z=[]; i=-1
     for location in df._id:
         i=i+1
         for item in df.actions[i]:
@@ -280,14 +277,31 @@ def g3():
     return graph3JSON
 
 def g4():
-    list_data = list(results_data.find())
-    df = DataFrame(list_data)
-    print(df)
-    x=df['action'].tolist();
-    y=df['camera_id'].tolist();
-    z=df['confidence'].tolist();
+    filtered_data = results_data.aggregate([
+            {
+                "$group" : {
+                    "_id" :  {  "location": "$location", "action": "$action"} ,
+                    "count": { "$sum" : 1 } }
+            },
 
-    fig4 = go.Figure(data=go.Heatmap( {'z':z, 'x':x, 'y':y} ))
+            {
+                "$group" : {"_id" : "$_id.location", "actions": { 
+                "$push": { "action":"$_id.action", "count":"$count" }
+            } } 
+            }
+        ])
+    
+    list_data = list(filtered_data)    
+    df = DataFrame(list_data)
+    x=[]; y=[]; z=[]; i=-1
+    for location in df._id:
+        i=i+1
+        for item in df.actions[i]:
+            x.append(item.pop('action'))
+            y.append(item.pop('count'))
+            z.append(location)
+
+    fig4 = go.Figure(data=go.Heatmap( {'z':y, 'x':x, 'y':z} ))
 
     graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
     return graph4JSON
