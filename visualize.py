@@ -6,7 +6,7 @@ import json
 from bson.json_util import dumps
 
 
-def plots(results, action='eating'):       #returns all plots of dashboard
+def plots(results, action='eating'):       #returns all plots and statistics of dashboard
 
     filtered_data = results.aggregate([     #filtered data for g2 and g4
             {
@@ -35,6 +35,15 @@ def plots(results, action='eating'):       #returns all plots of dashboard
         new_df=DataFrame(list(zip(x, y, z)),    #dataframe used in g2 and g4
                 columns=['action','count', 'location'])
     ############################################################################
+
+    counted_actions = results.aggregate([       #counted actions needed in g3 and s1
+            {
+                "$group" : {"_id" : "$action", "count": {"$sum" : 1}}  
+            }
+        ])
+    list_counted_data = list(counted_actions)
+    ############################################################################    
+
     def g1(action):              #plots graph 1 (g1)
         
         filtered_data = results.aggregate([
@@ -70,14 +79,8 @@ def plots(results, action='eating'):       #returns all plots of dashboard
 
 
     def g3():                 #plots graph 3 (g3)
-        counted_actions = results.aggregate([
-            {
-                "$group" : {"_id" : "$action", "count": {"$sum" : 1}}  
-            }
-        ])
 
-        list_data = list(counted_actions)
-        df = DataFrame(list_data)
+        df = DataFrame(list_counted_data)
 
         fig3 = px.pie(df, values='count', names='_id')   #pie chart of count of all actions
 
@@ -91,4 +94,21 @@ def plots(results, action='eating'):       #returns all plots of dashboard
         graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
         return graph4JSON
 
-    return [g1(action), g2() , g3(), g4()]
+    def s1():              #return statistics 1
+        actions=[] ; counts=[]
+        for item in list_counted_data:
+            actions.append(item.pop('_id'))
+            counts.append(item.pop('count'))
+        print(counts)  
+        print(actions)  
+        top_action_index=counts.index(max(counts))
+        top_action=actions[top_action_index]   
+        return top_action
+    
+
+    return [g1(action), g2() , g3(), g4(), s1()]
+
+    
+#######################################################################################################
+
+

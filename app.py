@@ -191,9 +191,9 @@ def cb():
    
 @app.route('/visualize/', methods=['POST', 'GET'])
 def index():
-    [g1, g2, g3, g4]= visualize.plots(results_data, action='eating')
+    [g1, g2, g3, g4, s1]= visualize.plots(results_data, action='eating')
     return render_template('visualize.html',  graphJSON=g1, graph2JSON=g2, 
-                          graph3JSON=g3, graph4JSON=g4)
+                          graph3JSON=g3, graph4JSON=g4, top_action=s1)
 
 if __name__ == '__main__':
     app.run(debug=True)
