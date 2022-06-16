@@ -6,7 +6,7 @@ import pymongo
 from pymongo import MongoClient
 import json
 import visualize
-
+from datetime import datetime
 
 with open('config.json') as f:
     config = json.load(f)
@@ -37,29 +37,33 @@ def connect():
 
 @app.route('/logs/')
 def logs():
-    results_data.insert_one({"camera_id": '001', "start": 0, "end": 1,
-                                 "action": "smoking", "confidence": 50,
-                                 "clip": 2, "location": 'location'}) 
-    results_data.insert_one({"camera_id": '002', "start": 5, "end": 6,
-                                 "action": "eating", "confidence": 30,
-                                 "clip": 5, "location": 'location'})  
-    results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
-                                 "action": "drinking", "confidence": 30,
-                                 "clip": 9, "location": 'location2'}) 
-    results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
-                                 "action": "eating", "confidence": 30,
-                                 "clip": 9, "location": 'location2'}) 
-    results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
-                                 "action": "drinking", "confidence": 40,
-                                 "clip": 9, "location": 'location2'})
-    results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
-                                 "action": "eating", "confidence": 70,
-                                 "clip": 10, "location": 'location2'}) 
-    results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
-                                 "action": "eating", "confidence": 80,
-                                 "clip": 10, "location": 'location2'})                                                                                                                      
+    # results_data.insert_one({"camera_id": '001', "start": 0, "end": 1,
+    #                              "action": "smoking", "confidence": 50,
+    #                              "clip": 2, "location": 'location'})
+    # results_data.insert_one({"camera_id": '002', "start": 5, "end": 6,
+    #                              "action": "eating", "confidence": 30,
+    #                              "clip": 5, "location": 'location'})
+    # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
+    #                              "action": "drinking", "confidence": 30,
+    #                              "clip": 9, "location": 'location2'})
+    # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
+    #                              "action": "eating", "confidence": 30,
+    #                              "clip": 9, "location": 'location2'})
+    # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
+    #                              "action": "drinking", "confidence": 40,
+    #                              "clip": 9, "location": 'location2'})
+    # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
+    #                              "action": "eating", "confidence": 70,
+    #                              "clip": 10, "location": 'location2'})
+    # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
+    #                              "action": "eating", "confidence": 80,
+    #                              "clip": 10, "location": 'location2'})
     n = 1000
     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
+    # print("RESULTS::::::\n")
+    # r = results
+    # for i in r:
+    #     print(i)
     return render_template('logs.html', results=results, raw_results=results)
 
 
@@ -67,8 +71,10 @@ def logs():
 def filtering():
     # Retrieve the desired filters from the user
     confidence = request.form.get("confidence")
-    start = request.form.get("start")
-    end = request.form.get("end")
+    start_date = request.form.get("start_date")
+    start_time = request.form.get("start_time")
+    end_date = request.form.get("end_date")
+    end_time = request.form.get("end_time")
 
     # For each of the action, location and camera_id, store them in a list if the user specified more than one value
     action = request.form.getlist("action")
@@ -83,21 +89,25 @@ def filtering():
     if len(camera) == 1:
         camera = request.form.get("camera_id")
 
-    print("output\n action:{}\n conf:{}\n loc:{}\n cam:{}\n start:{}\n end:{}\n".format(action,
-                                                                                        confidence, location, camera,
-                                                                                        len(start), len(end)))
+    # print("output\n action:{}\n conf:{}\n loc:{}\n cam:{}\n start:{}\n end:{}\n".format(action,
+    #                                                                                    confidence, location, camera,
+    #                                                                                    len(start), len(end)))
 
     # keys = ["action", "confidence", "clip", "location", "camera",
     #        "start_date", "start_time", "end_date", "end_time"]
+    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date,start_time,end_date,end_time))
 
     all_filters = {
         'action': action,
         'confidence': confidence,
         'location': location,
         'camera_id': camera,
-        'start': start,
-        'end': end,
+        'start': start_date + ', ' + start_time,
+        'end': end_date + ', ' + end_time
     }
+
+    print("ALL FILTERS:::\n")
+    print(all_filters)
 
     filters = {}
     for key, value in all_filters.items():
@@ -111,13 +121,13 @@ def filtering():
         if key == 'start':
             print("------start filter-----")
             # store the value of "start" to be greater than or equal to the input value in the filters dict
-            filters[key] = {'$gte': int(value)}
+            filters[key] = {'$gte': datetime.strptime(value, '%Y-%m-%d, %H:%M:%S')}
 
         #### end
         if key == 'end':
             print("------end filter-----")
             # store the value of "end" to be less than or equal to the input value in the filters dict
-            filters[key] = {'$lte': int(value)}
+            filters[key] = {'$lte': datetime.strptime(value, '%Y-%m-%d, %H:%M:%S')}
 
         #### confidence
         if key == 'confidence':
@@ -159,8 +169,9 @@ def filtering():
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
     # session["filtered_data"]=dumps(results_data.find(filter=filters))
-    session[
-        "filters"] = filters  # storing the filters to be used in the sorting function, to apply sorting on filtered data
+
+    # storing the filters to be used in the sorting function, to apply sorting on filtered data
+    session["filters"] = filters
     return render_template('logs.html', results=results, raw_results=results_data)
 
 
@@ -178,22 +189,26 @@ def sorting():
                                     sort=[(sorting, pymongo.DESCENDING)])  # sorting on filtered data Descendingly
     else:
         results = results_data.find(filter=filters).sort(
-            [(sorting, pymongo.ASCENDING)])  # sorting on filtered data ASCENDINGly
+            [(sorting, pymongo.ASCENDING)])  # sorting on filtered data Ascendingly,
 
-    session[
-        "filters"] = {}  # remove the stored filters, so that if the user goes to the sorting option directly without filtering, it doesn't use the last stored filters, instead, it sorts the whole results
+    # remove the stored filters, so that if the user goes to the sorting option directly without filtering,
+    # it doesn't use the last stored filters, instead, it sorts the whole results
+    session["filters"] = {}
     return render_template('logs.html', results=results, raw_results=results_data)
 
-#Implementing visualizations
+
+# Implementing visualizations
 @app.route('/callback', methods=['POST', 'GET'])
 def cb():
     return visualize.plots(results_data, request.args.get('data'))[0]
-   
+
+
 @app.route('/visualize/', methods=['POST', 'GET'])
 def index():
-    [g1, g2, g3, g4, s1, s2, s3, s4]= visualize.plots(results_data, action='eating')
+    [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results_data, action='eating')
     return render_template('visualize.html',  graphJSON=g1, graph2JSON=g2, 
                           graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

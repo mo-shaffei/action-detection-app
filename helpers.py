@@ -2,6 +2,7 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 import subprocess
 import app
+from datetime import datetime
 
 
 def get_length(path: str) -> int:
@@ -42,9 +43,9 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
     return c
 
 
-def output(camera_id: str, time_beg: int, time_end: int, action: str,
-           confidence: float, reference: int, location: str) -> None:
+def output(camera_id: str, time_beg: datetime, time_end: datetime, action: str,
+           confidence: float, reference: int, floor: str, location: str, building: str) -> None:
     confidence = round(confidence * 100)
     app.results_data.insert_one({"camera_id": camera_id, "start": time_beg, "end": time_end,
                                  "action": action, "confidence": confidence,
-                                 "clip": reference, "location": location})  # inserting results into database
+                                 "clip": reference, "floor": floor, "location": location, "building": building})  # inserting results into database

@@ -140,7 +140,9 @@
                      <!--                      Only form elements with a name attribute will have their values passed when submitting a form.-->
                      <!--                -->
                      <!--                value: Specifies the "default" value of an <input> element.-->
-                     <label for="action" style="color:#01486b">Choose an action/s:</label>
+
+<!--                     action-->
+                     <label for="action" style="color:#01486b">Action/s:</label>
                      <select class="selectpicker" multiple data-live-search="true"  name="action" id="action" data-style="btn-info" multiple>
                         <option value="All" selected>All</option>
                         {% for a in raw_results.distinct('action') %}
@@ -148,58 +150,24 @@
                         {% endfor %}
                      </select>
 
-                  <br>
-                  <br>
+<!--                  <br>-->
+<!--                  <br>-->
 
+<!--                     confidence-->
                    <label for="confidence" style="color:#01486b">Minimum confidence percentage level:</label>
                     <!--                   The value will be the minimum threshold -->
                      <input type="range" id="confidence" name="confidence"
                                  value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
                      <output>20</output>
                      <br>
-
-                    
                   </div>
 
                   <div style="margin-left: 35%; width: 30%; display: table-cell;">
 
-                     <label for="start" style="color:#01486b">Choose the camera/s:</label>
 
-                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
-                        <option value="All" selected>All</option>
-                        <option value=1af065df-7139-4bc3-999d-60514750bb44>1af065df-7139-4bc3-999d-60514750bb44</option>
-                        {% for a in raw_results.distinct('camera_id') %}
-                        <option  value="{{a}}"> {{a}} </option>
-                        {% endfor %}
-                     </select>
-                  <br>
-                  <br>
-
-                    <label for="start" style="color:#01486b">Choose the start timestamp:</label>
-                     <input type="number" id="start" name="start"
-                           value = "" min = 0>
-                     <br> 
-   <!--                  <input type="date"-->
-   <!--                     id="start_date" name="start_date"-->
-   <!--                      min="2001-01-01" max="2099-12-31">-->
-   <!--                  <br>-->
-   <!--                  <input type="time"-->
-   <!--                     id="start_time" name="start_time"-->
-   <!--                     min="00:00" max="24:00" >-->
-   <!--                  <br>-->
-
-                    
-   <!--                  <input type="date"-->
-   <!--                     id="end_date" name="end_date"-->
-   <!--                     min="2001-01-01" max="2099-12-31">-->
-   <!--                  <br>-->
-   <!--                  <input type="time"-->
-   <!--                     id="end_time" name="end_time"-->
-   <!--                     min="00:00" max="24:00" >-->
-                  </div>
-
+<!--                     location-->
                   <div  style="margin-left: 70%; width: 30%; display: table-cell;">
-                     <label for="location" style="color:#01486b">Choose a location/s:</label>
+                     <label for="location" style="color:#01486b">Location/s:</label>
                      <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
                         <option value="All" selected>All</option>
                         <option value="test">test</option>
@@ -208,11 +176,55 @@
                         {% endfor %}
                      </select>
 
+<!--                  <br>-->
+<!--                  <br>-->
+
+<!--                     <input type="number" id="start" name="start"-->
+<!--                           value = "" min = 0>-->
+<!--                     <br> -->
+
+<!--                     start-->
+                     <label for="start_date" style="color:#01486b">Start date:</label>
+                     <input type="date"
+                        id="start_date" name="start_date" style="color:black"
+                         min="2001-01-01" max="2099-12-31" value="2001-01-01">
+                     <br>
+
+                     <label for="start_time" style="color:#01486b">Start time:</label>
+                     <input type="time"
+                        id="start_time" name="start_time" step=1 style="color:black"
+                        min="00:00:00" max="24:00:00" value="00:00:00">
+                     <br>
+
+                  </div>
+
+               <!--                     camera-->
+                     <label for="camera_id" style="color:#01486b">Camera/s:</label>
+
+                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
+                        <option value="All" selected>All</option>
+                        {% for a in raw_results.distinct('camera_id') %}
+                        <option  value="{{a}}"> {{a}} </option>
+                        {% endfor %}
+                     </select>
                      <br>
                   <br>
-                     <label for="end" style="color:#01486b">Choose the end timestamp:</label>
-                     <input type="number" id="end" name="end"
-                           value = "" min = 1> 
+
+                     <!--                     end-->
+                     <label for="end_date" style="color:#01486b">End date:</label>
+                     <input type="date"
+                        id="end_date" name="end_date" style="color:black"
+                        min="2001-01-01" max="2099-12-31" value="2099-12-31">
+                     <br>
+
+                     <label for="end_time" style="color:#01486b">End time:</label>
+                     <input type="time"
+                        id="end_time" name="end_time" step=1 style="color:black"
+                        min="00:00:00" max="23:59:59" value="23:59:59">
+
+<!--                     <label for="end" style="color:#01486b">Choose the end timestamp:</label>-->
+<!--                     <input type="number" id="end" name="end"-->
+<!--                           value = "" min = 1> -->
 
                   </div>
                </div>
@@ -306,10 +318,10 @@
                                     </colgroup>
                                     <thead class="u-table-header u-table-header-1">
                                        <tr style="height: 47px;">
+                                          <!-- add column headers -->
                                           <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                              Camera ID
                                           </th>
-                                          <!--                                            add column headers from columns sent by logs function-->
                                           <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                              Start
                                           </th>
@@ -326,12 +338,18 @@
                                              Clip
                                           </th>
                                           <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                             Floor
+                                          </th>
+                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                              Location
+                                          </th>
+                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                             Building
                                           </th>
                                        </tr>
                                     </thead>
                                     <tbody class="u-table-body">
-                                       <!--                                        add rows from dataframe sent by logs function to the table-->
+                                       <!-- add rows from dataframe sent by logs function to the table-->
                                        {% for row in results %}
                                        <tr style="height: 46px;">
                                           <td class="u-table-cell">{{ row.camera_id }}</td>
@@ -340,7 +358,9 @@
                                           <td class="u-table-cell">{{ row.action }}</td>
                                           <td class="u-table-cell">{{ row.confidence }}%</td>
                                           <td class="u-table-cell">{{ row.clip }}</td>
+                                          <td class="u-table-cell">{{ row.floor }}</td>
                                           <td class="u-table-cell">{{ row.location }}</td>
+                                          <td class="u-table-cell">{{ row.building }}</td>
                                           {% endfor %}
                                     </tbody>
                                  </table>
