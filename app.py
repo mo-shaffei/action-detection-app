@@ -60,7 +60,7 @@ def logs():
     #                              "clip": 10, "location": 'location2'})
     n = 1000
     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
-    # print("RESULTS::::::\n")
+    # print("RESULTS:::::::\n")
     # r = results
     # for i in r:
     #     print(i)
@@ -95,7 +95,7 @@ def filtering():
 
     # keys = ["action", "confidence", "clip", "location", "camera",
     #        "start_date", "start_time", "end_date", "end_time"]
-    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date,start_time,end_date,end_time))
+    print("HEREEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date,start_time,end_date,end_time))
 
     all_filters = {
         'action': action,
