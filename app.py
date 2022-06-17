@@ -64,7 +64,7 @@ def logs():
     # r = results
     # for i in r:
     #     print(i)
-     return render_template('logs.html', results=results, raw_results=results)
+     return render_template('logs2.html', results=results, raw_results=results)
 
 
 @app.route('/filtering/', methods=["GET", "POST"])
