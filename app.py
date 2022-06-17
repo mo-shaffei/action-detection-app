@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request, redirect, url_for, flash, jsonify, session
+from flask import Flask, render_template, Response, request, redirect, url_for, flash, jsonify, session, flash
 import threading
 import logic
 import pandas as pd
@@ -30,6 +30,9 @@ def login():
 
         if (username == "Admin") & (password=="123"):
             return redirect(url_for("logs"))
+        else:
+            flash("Incorrect Username or Password!")
+
 
     return render_template('login.html')
 

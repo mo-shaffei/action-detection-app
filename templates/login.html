@@ -55,6 +55,10 @@
                           <button type="submit" class="btn btn-primary btn-block" style="color: #0A2558;  width: 80px; height: 30px; border-radius: 10%; border-color: transparent; font-weight: bold;">Log In</button>
                       </form>
                       <br>
+
+                      {% for message in get_flashed_messages() %}
+                     <div class="alert-error">{{ message }}</div>
+                      {% endfor %}
                       
                   </div>
               </div>
