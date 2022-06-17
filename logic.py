@@ -59,18 +59,18 @@ def connect_thread(app):
     # location = "Studio"
 
     # cameras' ids, the floor number, location, and the building in ZC
-    camera_floor_loc_build = [["CAM1", "2", "Computer Lab S008", "Helmy"],   # cam num
-                              ["CAM1", "2", "B06-S-CorridorA", "Nano"],
-                              ["CAM2", "2", "B06-S-CorridorA", "Nano"],      # predicted that there's camera 2 in this place
-                              ["CAM3", "2", "B06-S-CorridorA", "Nano"],
-                              ["CAM4", "2", "B06-S-CorridorA", "Nano"],
-                              ["CAM5", "2", "B06-S-CorridorA", "Nano"],
-                              ["CAM1", "0", "B06-G-Elevator", "Nano"],
-                              ["CAM1", "2", "B06-S-Elevator", "Nano"],
-                              ["CAM1", "0", "B06-G-Entrance", "Nano"],       # cam num
-                              ["CAM1", "2", "Computer Lab S013", "Nano"],    # cam num
-                              ["CAM1", "0", "Outdoor", "Gate1"],
-                              ["CAM2", "0", "Outdoor", "Gate1"]]
+    camera_floor_loc_build = [["CAM1", "Computer Lab S008", "Helmy"],   # cam num
+                              ["CAM1", "B06-S-CorridorA", "Nano"],
+                              ["CAM2", "B06-S-CorridorA", "Nano"],      # predicted that there's camera 2 in this place
+                              ["CAM3", "B06-S-CorridorA", "Nano"],
+                              ["CAM4", "B06-S-CorridorA", "Nano"],
+                              ["CAM5", "B06-S-CorridorA", "Nano"],
+                              ["CAM1", "B06-G-Elevator", "Nano"],
+                              ["CAM1", "B06-S-Elevator", "Nano"],
+                              ["CAM1", "B06-G-Entrance", "Nano"],       # cam num
+                              ["CAM1", "Computer Lab S013", "Nano"],    # cam num
+                              ["CAM1", "Outdoor", "Gate1"],
+                              ["CAM2", "Outdoor", "Gate1"]]
 
     start_time = time.time()
     for i in range(segments):  # process segment by segment
@@ -84,9 +84,8 @@ def connect_thread(app):
             continue
 
         camera_id = rand_choice[0]
-        floor = rand_choice[1]
-        location = rand_choice[2]
-        building = rand_choice[3]
+        location = rand_choice[1]
+        building = rand_choice[2]
 
         for person in persons:  # for each person detected
             action = list(person.keys())[0]  # get top1 action
@@ -96,7 +95,7 @@ def connect_thread(app):
                 end = beg + segment_len  # end time of segment = beg time + segment length
                 beg, end = map_time(beg, end)
 
-                helpers.output(camera_id, beg, end, action, confidence, i, floor, location, building)
+                helpers.output(camera_id, beg, end, action, confidence, i, location, building)
 
     stop_time = time.time()
     print("Inference thread finished!")
