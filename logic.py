@@ -1,6 +1,6 @@
 import helpers
-from models.recognizer import RecognizerModel
-from models.detection import DetectionModel
+#from models.recognizer import RecognizerModel
+#from models.detection import DetectionModel
 import time
 import random
 from datetime import datetime, timedelta
@@ -23,7 +23,7 @@ def map_time(beg, end):
 
 
 
-def connect_thread(app):
+#def connect_thread(app):
     """
     Wrapper around connect button function to make it run in a separate thread
     @param app: flask app (used to extract configurations for model and video)
