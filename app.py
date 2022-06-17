@@ -21,10 +21,17 @@ results_data = db.results
 app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
 
 
-@app.route('/')
-def homepage():
+@app.route("/", methods=["POST", "GET"])
+def login():
     results_data.remove({})
-    return render_template('homepage.html')
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("pass")
+
+        if (username == "Admin") & (password=="123"):
+            return redirect(url_for("logs"))
+
+    return render_template('login.html')
 
 
 @app.route('/connect/')
