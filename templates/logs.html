@@ -34,6 +34,53 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+<!--       for dropdown lists-->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+         <script>
+         var buildingObject = {
+           "Helmy": {
+             "Computer Lab S008": ["CAM1"]
+           },
+           "Nano": {
+             "B06-S-CorridorA": ["CAM1", "CAM2", "CAM3", "CAM4", "CAM5"],
+             "B06-G-Elevator": ["CAM1"]
+             "B06-S-Elevator": ["CAM1"]
+             "B06-G-Entrance": ["CAM1"]
+             "Computer Lab S013": ["CAM1"]
+           },
+           "Gate1": {
+             "Outdoor": ["CAM1", "CAM2"]
+           }
+         }
+         window.onload = function() {
+           var buildingSel = document.getElementById("building");
+           var locationSel = document.getElementById("location");
+           var camera_idSel = document.getElementById("camera_id");
+           for (var x in buildingObject) {
+             buildingSel.options[buildingSel.options.length] = new Option(x, x);
+           }
+           building.onchange = function() {
+            //empty camera_ids- and locations- dropdowns
+            camera_idSel.length = 1;
+            locationSel.length = 1;
+              //display correct values
+             for (var y in buildingObject[this.value]) {
+               locationSel.options[locationSel.options.length] = new Option(y, y);
+             }
+           }
+           locationSel.onchange = function() {
+             //empty camera_ids dropdown
+             camera_idSel.length = 1;
+             //display correct values
+             var z = buildingObject[buildingSel.value][this.value];
+             for (var i = 0; i < z.length; i++) {
+               camera_idSel.options[camera_idSel.options.length] = new Option(z[i], z[i]);
+             }
+           }
+         }
+         </script>
+
    </head>
    <body class="u-body u-overlap u-overlap-contrast u-palette-1-base u-xl-mode">
       <header class="u-clearfix u-header u-header" id="sec-8760">
@@ -150,11 +197,11 @@
                         {% endfor %}
                      </select>
 
-<!--                  <br>-->
-<!--                  <br>-->
+                  <br>
+                  <br>
 
 <!--                     confidence-->
-                   <label for="confidence" style="color:#01486b">Minimum confidence percentage level:</label>
+                   <label for="confidence" style="color:#01486b">Minimum Confidence Percentage:</label>
                     <!--                   The value will be the minimum threshold -->
                      <input type="range" id="confidence" name="confidence"
                                  value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
@@ -165,25 +212,31 @@
                   <div style="margin-left: 35%; width: 30%; display: table-cell;">
 
 
-<!--                     location-->
-                  <div  style="margin-left: 70%; width: 30%; display: table-cell;">
-                     <label for="location" style="color:#01486b">Location/s:</label>
-                     <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
+                      <!--                     building-->
+                     <label for="building" style="color:#01486b">Building/s:</label>
+                     <select class="selectpicker" multiple data-live-search="true"  name="building" id="building" data-style="btn-info" multiple>
                         <option value="All" selected>All</option>
-                        <option value="test">test</option>
-                        {% for a in raw_results.distinct('location') %}
+                        {% for a in raw_results.distinct('building') %}
                         <option  value="{{a}}"> {{a}} </option>
                         {% endfor %}
                      </select>
 
-<!--                  <br>-->
-<!--                  <br>-->
+                  <br>
+                  <br>
 
-<!--                     <input type="number" id="start" name="start"-->
-<!--                           value = "" min = 0>-->
-<!--                     <br> -->
+                     <!--                     location-->
+                     <label for="location" style="color:#01486b">Location/s:</label>
+                     <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
+                        <option value="All" selected>All</option>
+<!--                        {% for a in raw_results.distinct('location') %}-->
+<!--                        <option  value="{{a}}"> {{a}} </option>-->
+<!--                        {% endfor %}-->
+                     </select>
 
-<!--                     start-->
+                  <br>
+                  <br>
+
+                     <!--  start-->
                      <label for="start_date" style="color:#01486b">Start date:</label>
                      <input type="date"
                         id="start_date" name="start_date" style="color:black"
@@ -198,15 +251,18 @@
 
                   </div>
 
-               <!--                     camera-->
+                  <div  style="margin-left: 70%; width: 30%; display: table-cell;">
+
+<!--                     camera-->
                      <label for="camera_id" style="color:#01486b">Camera/s:</label>
 
                      <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
                         <option value="All" selected>All</option>
-                        {% for a in raw_results.distinct('camera_id') %}
-                        <option  value="{{a}}"> {{a}} </option>
-                        {% endfor %}
+<!--                        {% for a in raw_results.distinct('camera_id') %}-->
+<!--                        <option  value="{{a}}"> {{a}} </option>-->
+<!--                        {% endfor %}-->
                      </select>
+
                      <br>
                   <br>
 
@@ -221,10 +277,6 @@
                      <input type="time"
                         id="end_time" name="end_time" step=1 style="color:black"
                         min="00:00:00" max="23:59:59" value="23:59:59">
-
-<!--                     <label for="end" style="color:#01486b">Choose the end timestamp:</label>-->
-<!--                     <input type="number" id="end" name="end"-->
-<!--                           value = "" min = 1> -->
 
                   </div>
                </div>
@@ -243,24 +295,28 @@
 
       </section>
 
+<!--      Sorting-->
       <section style=" background: #96dbe3;">
          <form action="{{ url_for("sorting")}}" method="post">
             <div class="u-clearfix u-sheet u-sheet-1">
                <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Sort by:</h4>
                <div style=" margin-left: 32%" class="u-clearfix u-custom-html u-custom-html-2">
                   <select style="color:black; " class="selectpicker" data-style="btn-info" name="sorting" id="sorting" >
-                     <option  value="confidence" selected>confidence</option>
-                     <option  value="start" selected>start</option>
-                     <option  value="end" selected>end</option>
-                     <option  value="action" selected>action</option>
-                     <option  value="clip" selected>clip</option>
-                     <option  value="camera_id" selected>camera_id</option>
-                     <option  value="location" selected>location</option>
+                     <option  value="camera_id">Camera_id</option>
+                     <option  value="start" selected>Start</option>
+                     <option  value="end">End</option>
+                     <option  value="action">Action</option>
+                     <option  value="confidence">Confidence</option>
+                     <option  value="clip">Clip</option>
+                     <option  value="location">Location</option>
+                     <option  value="location">Building</option>
+
+
 
                   </select>
 
                   <select style="color:black; " class="selectpicker" data-style="btn-info" name="sorting_order" id="sorting_order"  >
-                     <option  value="Ascending" selected>Ascending</option>
+                     <option  value="Ascending">Ascending</option>
                      <option  value="Descending" selected>Descending</option>
                   </select>
 <br>
@@ -338,9 +394,6 @@
                                              Clip
                                           </th>
                                           <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Floor
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                              Location
                                           </th>
                                           <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
@@ -358,7 +411,6 @@
                                           <td class="u-table-cell">{{ row.action }}</td>
                                           <td class="u-table-cell">{{ row.confidence }}%</td>
                                           <td class="u-table-cell">{{ row.clip }}</td>
-                                          <td class="u-table-cell">{{ row.floor }}</td>
                                           <td class="u-table-cell">{{ row.location }}</td>
                                           <td class="u-table-cell">{{ row.building }}</td>
                                           {% endfor %}
