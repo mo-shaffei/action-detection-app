@@ -21,6 +21,18 @@
   border-color: white;
 }
 
+.btn {
+  padding: 5px!important;
+height: 30px;
+border-color: #2697FF;
+}
+
+.dropdown-menu>li>a {
+  font-size: small;
+  padding: 10px;
+}
+
+
 .filter-option {
   font-size: 13px;
 }
@@ -28,15 +40,12 @@
 .sidebar{
   position: fixed;
   height: 100%;
-  width: 260px;
+  width: 280px;
   background: #0A2558;
   transition: all 0.5s ease;
 }
 
 
-.sidebar .div-filters { 
-  width: 100%;
-}
 
 .sidebar.active{
   width: 60px;

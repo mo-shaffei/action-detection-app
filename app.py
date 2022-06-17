@@ -194,7 +194,7 @@ def sorting():
     # remove the stored filters, so that if the user goes to the sorting option directly without filtering,
     # it doesn't use the last stored filters, instead, it sorts the whole results
     session["filters"] = {}
-    return render_template('logs.html', results=results, raw_results=results_data)
+    return render_template('logs2.html', results=results, raw_results=results_data)
 
 
 # Implementing visualizations

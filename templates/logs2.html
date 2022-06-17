@@ -48,6 +48,7 @@
     <div class="logo-details">
       <!-- 
       <img src="\static\images\logo2.png" style="padding:20px; width: 123px; height: 110px; margin-top: 10px; margin-bottom: 10px; margin-left: 30px;" > -->
+
       <span class="logo_name"></span>
     </div>
       <ul class="nav-links">
@@ -65,11 +66,14 @@
           </a>
         </li>
 
-        <br>
-        <br>
-      
+        <br>      
 
       <form action="{{ url_for("filtering")}}" method="post">
+
+        <li>
+            <span style="color:white; font-size: 15px; font-weight: bold">Filter by:</span>
+          </a>
+        </li>
 
         <li>
         <div >
@@ -158,11 +162,42 @@
 
         <br>
         <li>
-        <input type="submit" name="filter" value="Filter" >
+        <input type="submit" name="filter" value="Filter" style="margin-left: 65px; background-color: rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;">
     </li>
        
 
     </form>
+
+
+    <form action="{{ url_for("sorting")}}" method="post">
+
+      <li>
+        <span style="color:white; font-size: 15px; font-weight: bold">Sort by:</span>
+      </a>
+    </li>
+
+      <li>
+        <div style="color:white">
+                <select  class="selectpicker" data-style="btn-custom" name="sorting" id="sorting">
+                      <option  value="confidence" selected>confidence</option>
+                      <option  value="start" selected>start</option>
+                      <option  value="end" selected>end</option>
+                      <option  value="action" selected>action</option>
+                      <option  value="clip" selected>clip</option>
+                      <option  value="camera_id" selected>camera_id</option>
+                      <option  value="location" selected>location</option>
+                   </select>
+                
+                   <select style="color:black; " class="selectpicker" data-style="btn-custom" name="sorting_order" id="sorting_order"  >
+                      <option  value="Ascending" selected>Ascending</option>
+                      <option  value="Descending" selected>Descending</option>
+                   </select>
+                  </div> 
+                </li>
+       
+                <input type="submit" name="sorting" value="sort" style="margin-left: 65px; background-color:  rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;" >
+
+              </form>
 
   </ul>
   </div>
@@ -182,7 +217,8 @@
   
         <div class="sales-boxes">
             <div class="recent-sales box">
-              <div class="title">History </div>
+              <div class="title" >History</div>
+
 
               <section class="u-clearfix u-palette-4-base u-section-2" id="carousel_dd2b">
                 <div class="u-clearfix u-layout-wrap u-layout-wrap-1">
@@ -209,31 +245,31 @@
                                            <thead class="u-table-header u-table-header-1">
                                               <tr style="height: 47px;">
                                                  <!-- add column headers -->
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Camera ID
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Start
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     End
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Action
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Confidence
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Clip
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Floor
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Location
                                                  </th>
-                                                 <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Building
                                                  </th>
                                               </tr>
