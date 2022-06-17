@@ -6,13 +6,38 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
+
+.bootstrap-select {
+  width: 100px !important;
+  height: 20px !important;
+}
+
+
+
+.btn-custom {
+  color: #fff;
+  background-color: transparent;
+  border-color: white;
+}
+
+.filter-option {
+  font-size: 13px;
+}
+
 .sidebar{
   position: fixed;
   height: 100%;
-  width: 240px;
+  width: 260px;
   background: #0A2558;
   transition: all 0.5s ease;
 }
+
+
+.sidebar .div-filters { 
+  width: 100%;
+}
+
 .sidebar.active{
   width: 60px;
 }
@@ -41,6 +66,9 @@
   list-style: none;
   height: 50px;
 }
+
+
+
 .sidebar .nav-links li a{
   height: 100%;
   width: 100%;
@@ -440,4 +468,6 @@ nav .profile-details i{
     left: 60px;
     width: calc(100% - 60px);
   }
+
+
 }

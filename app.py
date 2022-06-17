@@ -172,7 +172,7 @@ def filtering():
 
     # storing the filters to be used in the sorting function, to apply sorting on filtered data
     session["filters"] = filters
-    return render_template('logs.html', results=results, raw_results=results_data)
+    return render_template('logs2.html', results=results, raw_results=results_data)
 
 
 @app.route('/sorting/', methods=["GET", "POST"])

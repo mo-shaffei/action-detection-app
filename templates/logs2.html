@@ -56,20 +56,114 @@
             <span class="links_name">Dashboard</span>
           </a>
         </li>
-        <li>
-          <a href="#">
-            <i class='bx bx-box' ></i>
-            <span class="links_name">Home</span>
-          </a>
-        </li>
+        
         <li>
           <a href="#">
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Logs</span>
           </a>
         </li>
+
+        <br>
+        <br>
+      
+
+      <form action="{{ url_for("filtering")}}" method="post">
+
+        <li>
+        <div >
+          <label for="action" style="color:white; font-size: 13px">Action/s:   </label>
+                 <select class="selectpicker"  multiple data-live-search="true"  name="action" id="action" data-style="btn-custom" multiple>
+                    <option value="All" selected>All</option>
+                    {% for a in raw_results.distinct('action') %}
+                    <option  value="{{a}}"> {{a}} </option>
+                    {% endfor %}
+                 </select>
+        </div> 
+      </li>
+
+       
+      <li>
+        <div style="color:white">
+      <label for="confidence" style="font-size: 13px">Min confidence (%):</label>
+                     <input type="range" id="confidence" name="confidence" style="width: 50px; height: 10px; font-size: 10px;"
+                                 value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
+                     <output>20</output>
+                     <br>
+         </div> 
+       </li>
+
+        <li>
+         <div style="color:white">
+          <label for="location" style="font-size: 13px">Location/s:</label>
+          <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-custom" multiple>
+             <option value="All" selected>All</option>
+             <option value="test">test</option>
+             {% for a in raw_results.distinct('location') %}
+             <option  value="{{a}}"> {{a}} </option>
+             {% endfor %}
+          </select>
+          </div> 
+        </li>
+
+
         
-      </ul>
+
+
+        <li>
+         <div style="color:white">
+          <label for="camera_id" style="font-size: 13px">Camera/s:</label>
+                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-custom" multiple >
+                        <option value="All" selected>All</option>
+                        {% for a in raw_results.distinct('camera_id') %}
+                        <option  value="{{a}}"> {{a}} </option>
+                        {% endfor %}
+                     </select>
+          </div> 
+        </li>
+
+        <li>
+          <div style="color:white">
+           <label for="start_date" style="font-size: 13px">Start date:</label>
+                      <input type="date" style="width: 115px; height: 20px; color:black; font-size: 13px;"
+                         id="start_date" name="start_date" 
+                          min="2001-01-01" max="2099-12-31" value="2001-01-01">
+                      <br>
+ 
+                      <label for="start_time" style="font-size: 13px">Start time:</label>
+                      <input type="time"
+                         id="start_time" name="start_time" step=1 style="width: 115px; height: 20px; color:black; font-size: 13px;"
+                         min="00:00:00" max="24:00:00" value="00:00:00">
+                      <br>
+           </div> 
+         </li>
+
+         <br>
+
+        <li>
+          <div style="color:white">
+          <label for="end_date" style="font-size: 13px">End date:</label>
+          <input type="date"
+             id="end_date" name="end_date" style="width: 115px; height: 20px; color:black; font-size: 13px;"
+             min="2001-01-01" max="2099-12-31" value="2099-12-31">
+          <br>
+
+          <label for="end_time" style="font-size: 13px">End time:</label>
+          <input type="time"
+             id="end_time" name="end_time" step=1 style="width: 115px; height: 20px; color:black; font-size: 13px;"
+             min="00:00:00" max="23:59:59" value="23:59:59">
+          </div> 
+        </li>
+
+        <br>
+        <li>
+        <input type="submit" name="filter" value="Filter" >
+    </li>
+       
+
+    </form>
+
+  </ul>
   </div>
 
     <section class="home-section">
