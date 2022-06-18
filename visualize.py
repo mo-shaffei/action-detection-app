@@ -22,6 +22,7 @@ def plots(results, action='eating'):       #returns all plots and statistics of 
             }
         ])
         
+    filtered_data = filtered_data.find()    
     list_data = list(filtered_data)
     df = DataFrame(list_data)
     x=[]; y=[]; z=[]; i=-1

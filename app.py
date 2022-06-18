@@ -329,7 +329,7 @@ def filter_visualizations():
         # print("Key: {}\n value: {}".format(key, value))
     print("Filters dict: {}\n ".format(filters))
 
-    results = list(results_data.find(filter=filters))
+    results = results_data.find(filter=filters)
     print("results type is {}".format(type(results)))
     # print("results: {}".format(results))
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
