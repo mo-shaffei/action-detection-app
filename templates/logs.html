@@ -1,32 +1,38 @@
-<!DOCTYPE html>
-<html style="font-size: 16px;">
-   <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/logs2.css">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function cb(selection) {
+            $.getJSON({
+                url: "/callback", data: { 'data': selection }, success: function (result) {
+                    Plotly.newPlot('chart', result, {staticPlot: true});;
+                }
+            });
+        }
+    </script>
+
+    <!--                                             -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta charset="utf-8">
       <meta name="keywords"
          content="Mobile Development, Expertise, Nam ultrices ultrices nec tortor pulvinar esteras loremips est, Experiences, Get yours today, Software Development, Get a demo">
       <meta name="description" content="">
-      <meta name="page_type" content="np-template-header-footer-from-plugin">
       <title>logs</title>
       <link rel="stylesheet" href="../static/css/nicepage.css" media="screen">
-      <link rel="stylesheet" href="../static/css/logs.css" media="screen">
       <script class="u-script" type="text/javascript" src="../static/js/jquery.js" defer=""></script>
       <script class="u-script" type="text/javascript" src="../static/js/nicepage.js" defer=""></script>
       <meta name="generator" content="Nicepage 4.7.1, nicepage.com">
-      <link id="u-theme-google-font" rel="stylesheet"
-         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
-      <link id="u-page-google-font" rel="stylesheet"
-         href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
-      <script type="application/ld+json">{
-         "@context": "http://schema.org",
-         "@type": "Organization",
-         "name": "",
-         "logo": "../images/default-logo.png"
-         }
-      </script>
-      <meta name="theme-color" content="#478ac9">
-      <meta property="og:title" content="logs">
-      <meta property="og:type" content="website">
+
 
 
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
@@ -81,227 +87,150 @@
          }
          </script>
 
-   </head>
-   <body class="u-body u-overlap u-overlap-contrast u-palette-1-base u-xl-mode">
-      <header class="u-clearfix u-header u-header" id="sec-8760">
-         <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-            <a href="https://nicepage.com" class="u-image u-logo u-image-1">
-            <img src="../static/images/default-logo.png" class="u-logo-image u-logo-image-1">
-            </a>
-            <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
-               <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px;">
-                  <a class="u-button-style u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-active-color u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base"
-                     href="#">
-                     <svg class="u-svg-link" viewBox="0 0 24 24">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use>
-                     </svg>
-                     <svg class="u-svg-content" version="1.1" id="menu-hamburger" viewBox="0 0 16 16" x="0px" y="0px"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                           <rect y="1" width="16" height="2"></rect>
-                           <rect y="7" width="16" height="2"></rect>
-                           <rect y="13" width="16" height="2"></rect>
-                        </g>
-                     </svg>
-                  </a>
-               </div>
-               <div class="u-custom-menu u-nav-container">
-                  <ul class="u-nav u-unstyled u-nav-1">
-                     <li class="u-nav-item"><a
-                        class="u-button-style u-nav-link u-text-active-white u-text-hover-palette-2-base"
-                        href="homepage.html" style="padding: 10px 20px;">Home</a>
-                     </li>
-                     <li class="u-nav-item"><a
-                        class="u-button-style u-nav-link u-text-active-white u-text-hover-palette-2-base"
-                        href="logs.html" style="padding: 10px 20px;">Logs</a>
-                     </li>
-                  </ul>
-               </div>
-               <div class="u-custom-menu u-nav-container-collapse">
-                  <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
-                     <div class="u-inner-container-layout u-sidenav-overflow">
-                        <div class="u-menu-close"></div>
-                        <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2">
-                           <li class="u-nav-item"><a class="u-button-style u-nav-link" href="homepage.html">Home</a>
-                           </li>
-                           <li class="u-nav-item"><a class="u-button-style u-nav-link" href="logs.html">Logs</a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
-               </div>
-            </nav>
-         </div>
-      </header>
-      <section class="u-clearfix u-image u-shading u-section-1" id="sec-c0fd" data-image-width="1280" data-image-height="720">
-         <div class="u-clearfix u-sheet u-sheet-1">
-            <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
-               <div class="u-layout">
-                  <div class="u-layout-row">
-                     <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-60 u-layout-cell-1">
-                        <div class="u-container-layout u-container-layout-1">
-                           <h1 class="u-custom-font u-font-montserrat u-text u-text-palette-1-light-3 u-text-1">
-                              <span class="u-text-custom-color-1">Logs</span>
-                              <br>
-                           </h1>
-                           <div class="u-border-6 u-border-palette-1-base u-line u-line-horizontal u-line-1"></div>
-                           <ul class="u-text u-text-custom-color-2 u-text-2">
-                              <li>
-                                 <span style="font-size: 1.5rem;" class="u-text-grey-15">See the history of actions that have happened recently.</span>
-                              </li>
-                              <li>
-                                 <span style="font-size: 1.5rem;" class="u-text-grey-15">Filter by an action, place, start and end time.</span>
-                              </li>
-                              <li>
-                                 <span style="font-size: 1.5rem;"
-                                    class="u-text-grey-15">Visualize the results.</span>
-                              </li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-      <!-- filtering options -->
-      <section style=" background: #96dbe3;">
-<!--         <form action="/action_page.php">-->
-          <form action="{{ url_for("filtering")}}" method="post">
-            <br>
+</head>
 
-            <div class="u-clearfix u-sheet u-sheet-1" style="width: 100%; display: table; ">
-         <!--       <div style="display: table-row; ">
-                  <div  style=" display: table-cell;"> -->
-          <!--        </div>
-               </div> -->
-               <div style="display: table-row; "></div>
-               <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Filter by:</h4>
-                  <div  style=" width: 30%; display: table-cell;">
-                     <!--                type: button/date/submit/text/url/...-->
-                     <!--                id: Specifies a "unique id" for an HTML element-->
-                     <!--                    Used to point to a "style" in a "style sheet", and by JavaScript to manipulate the element.-->
-                     <!--                -->
-                     <!--                ** name: to reference elements in a JavaScript, or to reference "form" data after a form is submitted.-->
-                     <!--                      Only form elements with a name attribute will have their values passed when submitting a form.-->
-                     <!--                -->
-                     <!--                value: Specifies the "default" value of an <input> element.-->
+<body >
+  <div class="sidebar">
+    <div class="logo-details">
+      <!--
+      <img src="\static\images\logo2.png" style="padding:20px; width: 123px; height: 110px; margin-top: 10px; margin-bottom: 10px; margin-left: 30px;" > -->
 
-<!--                     action-->
-                     <label for="action" style="color:#01486b">Action/s:</label>
-                     <select class="selectpicker" multiple data-live-search="true"  name="action" id="action" data-style="btn-info" multiple>
-                        <option value="All" selected>All</option>
-                        {% for a in raw_results.distinct('action') %}
-                        <option  value="{{a}}"> {{a}} </option>
-                        {% endfor %}
-                     </select>
+      <span class="logo_name"></span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="/visualize/" >
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+        </li>
 
-                  <br>
-                  <br>
+        <li>
+          <a href="/logs/" class="active">
+            <i class='bx bx-list-ul' ></i>
+            <span class="links_name">Logs</span>
+          </a>
+        </li>
 
-<!--                     confidence-->
-                   <label for="confidence" style="color:#01486b">Minimum Confidence Percentage:</label>
-                    <!--                   The value will be the minimum threshold -->
-                     <input type="range" id="confidence" name="confidence"
+        <br>
+
+      <form action="{{ url_for("filtering")}}" method="post">
+
+
+
+        <li>
+        <div >
+          <span style="color:white; font-size: 15px; font-weight: bold; margin-bottom: 4px;">Filter by:</span>
+<br>
+          <label for="action" style="color:white; font-size: 13px; margin-top: 15px;">Action/s:   </label>
+                 <select class="selectpicker"  multiple data-live-search="true"  name="action" id="action" data-style="btn-custom" multiple>
+                    <option value="All" selected>All</option>
+                    {% for a in raw_results.distinct('action') %}
+                    <option  value="{{a}}"> {{a}} </option>
+                    {% endfor %}
+                 </select>
+        </div>
+      </li>
+
+
+      <li>
+        <div style="color:white">
+      <label for="confidence" style="font-size: 13px; margin-top: 29px;">Min confidence (%):</label>
+                     <input type="range" id="confidence" name="confidence" style="width: 50px; height: 10px; font-size: 10px;"
                                  value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
                      <output>20</output>
                      <br>
-                  </div>
+         </div>
+       </li>
 
-                  <div style="margin-left: 35%; width: 30%; display: table-cell;">
+        <li>
+          <div style="color:white">
+           <label for="building" style="font-size: 13px; margin-top: 15px;">Building/s:</label>
+           <select class="selectpicker" multiple data-live-search="true"  name="building" id="building" data-style="btn-custom">
+              <option value="All" selected>All</option>
+              <option  value="Nano"> Nano </option>
+              <option  value="Helmy"> Helmy </option>
+              <option  value="Gate1"> Gate1 </option>
 
+           </select>
+           </div>
+         </li>
 
-                      <!--                     building-->
-                     <label for="building" style="color:#01486b">Building/s:</label>
-                     <select class="selectpicker" multiple data-live-search="true"  name="building" id="building" data-style="btn-info" multiple>
+        <li>
+         <div style="color:white">
+          <label for="location" style="font-size: 13px; margin-top: 24px;">Location/s:</label>
+          <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-custom" >
+             <option value="All" selected>All</option>
+             <option value="test">test</option>
+             {% for a in raw_results.distinct('location') %}
+             <option  value="{{a}}"> {{a}} </option>
+             {% endfor %}
+          </select>
+          </div>
+        </li>
+
+        <li>
+         <div style="color:white">
+          <label for="camera_id" style="font-size: 13px">Camera/s:</label>
+                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-custom" multiple >
                         <option value="All" selected>All</option>
-                        {% for a in raw_results.distinct('building') %}
+                        {% for a in raw_results.distinct('camera_id') %}
                         <option  value="{{a}}"> {{a}} </option>
                         {% endfor %}
                      </select>
+          </div>
+        </li>
 
-                  <br>
-                  <br>
+        <li>
+          <div style="color:white">
+           <label for="start_date" style="font-size: 13px">Start date:</label>
+                      <input type="date" style="width: 115px; height: 20px; color:black; font-size: 13px; "
+                         id="start_date" name="start_date"
+                          min="2001-01-01" max="2099-12-31" value="2001-01-01">
+                      <br>
 
-                     <!--                     location-->
-                     <label for="location" style="color:#01486b">Location/s:</label>
-                     <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-info" multiple>
-                        <option value="All" selected>All</option>
-<!--                        {% for a in raw_results.distinct('location') %}-->
-<!--                        <option  value="{{a}}"> {{a}} </option>-->
-<!--                        {% endfor %}-->
-                     </select>
+                      <label for="start_time" style="font-size: 13px">Start time:</label>
+                      <input type="time"
+                         id="start_time" name="start_time" step=1 style="width: 115px; height: 20px; color:black; font-size: 13px;"
+                         min="00:00:00" max="24:00:00" value="00:00:00">
+                      <br>
+           </div>
+         </li>
 
-                  <br>
-                  <br>
+         <br>
 
-                     <!--  start-->
-                     <label for="start_date" style="color:#01486b">Start date:</label>
-                     <input type="date"
-                        id="start_date" name="start_date" style="color:black"
-                         min="2001-01-01" max="2099-12-31" value="2001-01-01">
-                     <br>
+        <li>
+          <div style="color:white; ">
+          <label for="end_date" style="font-size: 13px">End date:</label>
+          <input type="date"
+             id="end_date" name="end_date" style="width: 115px; height: 20px; color:black; font-size: 13px;"
+             min="2001-01-01" max="2099-12-31" value="2099-12-31">
+          <br>
 
-                     <label for="start_time" style="color:#01486b">Start time:</label>
-                     <input type="time"
-                        id="start_time" name="start_time" step=1 style="color:black"
-                        min="00:00:00" max="24:00:00" value="00:00:00">
-                     <br>
+          <label for="end_time" style="font-size: 13px">End time:</label>
+          <input type="time"
+             id="end_time" name="end_time" step=1 style="width: 115px; height: 20px; color:black; font-size: 13px;"
+             min="00:00:00" max="23:59:59" value="23:59:59">
+          </div>
+        </li>
 
-                  </div>
+        <br>
+        <li>
+        <input type="submit" name="filter" value="Filter" style="margin-left: 65px; background-color: rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;">
+    </li>
 
-                  <div  style="margin-left: 70%; width: 30%; display: table-cell;">
 
-<!--                     camera-->
-                     <label for="camera_id" style="color:#01486b">Camera/s:</label>
+    </form>
 
-                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-info" multiple >
-                        <option value="All" selected>All</option>
-<!--                        {% for a in raw_results.distinct('camera_id') %}-->
-<!--                        <option  value="{{a}}"> {{a}} </option>-->
-<!--                        {% endfor %}-->
-                     </select>
 
-                     <br>
-                  <br>
+    <form action="{{ url_for("sorting")}}" method="post">
 
-                     <!--                     end-->
-                     <label for="end_date" style="color:#01486b">End date:</label>
-                     <input type="date"
-                        id="end_date" name="end_date" style="color:black"
-                        min="2001-01-01" max="2099-12-31" value="2099-12-31">
-                     <br>
 
-                     <label for="end_time" style="color:#01486b">End time:</label>
-                     <input type="time"
-                        id="end_time" name="end_time" step=1 style="color:black"
-                        min="00:00:00" max="23:59:59" value="23:59:59">
-
-                  </div>
-               </div>
-
-               <div style="display: table-row; ">
-                  <div  style="margin-left: 50%;  display: table-cell;">
-                     <br>
-
-                     <input type="submit" name="filter" value="Filter" style="margin-left: 1280%; color:black;">
-                     <br>
-                  </div>
-               </div>
-            </div>
-         </form>
-         
-
-      </section>
-
-<!--      Sorting-->
-      <section style=" background: #96dbe3;">
-         <form action="{{ url_for("sorting")}}" method="post">
-            <div class="u-clearfix u-sheet u-sheet-1">
-               <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Sort by:</h4>
-               <div style=" margin-left: 32%" class="u-clearfix u-custom-html u-custom-html-2">
-                  <select style="color:black; " class="selectpicker" data-style="btn-info" name="sorting" id="sorting" >
+      <li>
+        <div style="color:white">
+          <span style="color:white; font-size: 15px; font-weight: bold; margin-bottom: 6px;">Sort by:</span>
+          <br>
+                <select  class="selectpicker" data-style="btn-custom" name="sorting" id="sorting">
                      <option  value="camera_id">Camera_id</option>
                      <option  value="start" selected>Start</option>
                      <option  value="end">End</option>
@@ -310,138 +239,145 @@
                      <option  value="clip">Clip</option>
                      <option  value="location">Location</option>
                      <option  value="location">Building</option>
+                   </select>
 
-
-
-                  </select>
-
-                  <select style="color:black; " class="selectpicker" data-style="btn-info" name="sorting_order" id="sorting_order"  >
-                     <option  value="Ascending">Ascending</option>
-                     <option  value="Descending" selected>Descending</option>
-                  </select>
-<br>
-<br>
-               <input type="submit" name="sorting" value="sort" style="margin-left: 25.8%; color:black;">
-
-               <br>
-
-               </div>
-            </div>
-            <br>
-
-         </form>         
-      </section>
-
-
-      <section style=" background: #96dbe3;">
-         <form action="{{ url_for("index")}}" method=["post","get"]>
-            <div class="u-clearfix u-sheet u-sheet-1">
-               <h4 class="u-text u-text-default u-text-1" style="color:#01486b">Visualize Results:</h4>
-                  <input type="submit" name="visualize" value="visualize" style="margin-left: 48.5%; color:black;">
-            </div>
-         </form>         
-      </section>
-
-      <section class="u-clearfix u-palette-4-base u-section-2" id="carousel_dd2b">
-         <div class="u-clearfix u-layout-wrap u-layout-wrap-1">
-            <div class="u-gutter-0 u-layout">
-               <div class="u-layout-row">
-                  <div class="u-size-10">
-                     <div class="u-layout-col">
-                        <div class="u-container-style u-hidden-sm u-hidden-xs u-image u-layout-cell u-left-cell u-size-60 u-image-1"
-                           data-image-width="1200" data-image-height="815">
-                           <div class="u-container-layout u-container-layout-1"></div>
-                        </div>
-                     </div>
+                   <select style="color:black; " class="selectpicker" data-style="btn-custom" name="sorting_order" id="sorting_order"  >
+                      <option  value="Ascending" selected>Ascending</option>
+                      <option  value="Descending" selected>Descending</option>
+                   </select>
                   </div>
-                  <div class="u-size-50">
-                     <div class="u-layout-col">
-                        <div class="u-align-left u-border-no-bottom u-border-no-left u-border-no-right u-border-no-top u-container-style u-layout-cell u-right-cell u-size-60 u-white u-layout-cell-2">
-                           <div class="u-container-layout u-container-layout-2">
-                              <h2 class="u-text u-text-default u-text-palette-4-base u-text-1">HISTORY</h2>
-                              <p class="u-text u-text-2">The history for the previous x days.
-                              </p>
-                              <div class="u-expanded-width u-table u-table-responsive u-table-1">
-                                 <table class="u-table-entity u-table-entity-1" id="dataTable">
-                                    <colgroup>
-                                       <col width="14.3%">
-                                       <col width="14.3%">
-                                       <col width="14.3%">
-                                       <col width="14.3%">
-                                       <col width="14.3%">
-                                       <col width="14.500000000000005%">
-                                       <col width="13.900000000000006%">
-                                    </colgroup>
-                                    <thead class="u-table-header u-table-header-1">
-                                       <tr style="height: 47px;">
-                                          <!-- add column headers -->
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Camera ID
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Start
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             End
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Action
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Confidence
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Clip
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Location
-                                          </th>
-                                          <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                             Building
-                                          </th>
-                                       </tr>
-                                    </thead>
-                                    <tbody class="u-table-body">
-                                       <!-- add rows from dataframe sent by logs function to the table-->
-                                       {% for row in results %}
-                                       <tr style="height: 46px;">
-                                          <td class="u-table-cell">{{ row.camera_id }}</td>
-                                          <td class="u-table-cell">{{ row.start }}</td>
-                                          <td class="u-table-cell">{{ row.end }}</td>
-                                          <td class="u-table-cell">{{ row.action }}</td>
-                                          <td class="u-table-cell">{{ row.confidence }}%</td>
-                                          <td class="u-table-cell">{{ row.clip }}</td>
-                                          <td class="u-table-cell">{{ row.location }}</td>
-                                          <td class="u-table-cell">{{ row.building }}</td>
-                                          {% endfor %}
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-      <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-adb1">
-         <div class="u-clearfix u-sheet u-sheet-1">
-            <p class="u-small-text u-text u-text-variant u-text-1">Sample text. Click to select the text box. Click again or
-               double click to start editing the text.
-            </p>
-         </div>
-      </footer>
-      <section class="u-backlink u-clearfix u-grey-80">
-         <a class="u-link" href="https://nicepage.com/templates" target="_blank">
-         <span>Template</span>
-         </a>
-         <p class="u-text">
-            <span>created with</span>
-         </p>
-         <a class="u-link" href="" target="_blank">
-         <span>Website Builder Software</span>
-         </a>.
-      </section>
-   </body>
+                </li>
+
+                <input type="submit" name="sorting" value="Sort" style="margin-left: 65px; margin-top: 8px; background-color:  rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;" >
+
+              </form>
+
+              <li class="log_out">
+                <a href="/">
+                  <i class='bx bx-log-out'></i>
+                  <span class="links_name">Log out</span>
+                </a>
+              </li>
+
+  </ul>
+  </div>
+
+    <section class="home-section">
+
+      <nav>
+        <div class="sidebar-button">
+          <i class='bx bx-menu sidebarBtn'></i>
+          <span class="dashboard">Logs</span>
+        </div>
+      </nav>
+
+    <div class="home-content">
+
+
+
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+              <div class="title" >History</div>
+
+
+              <section class="u-clearfix u-palette-4-base u-section-2" id="carousel_dd2b">
+                <div class="u-clearfix u-layout-wrap u-layout-wrap-1">
+                   <div class="u-gutter-0 u-layout">
+
+                         <div class="u-size-50">
+                            <div class="u-layout-col">
+                               <div class="u-align-left u-border-no-bottom u-border-no-left u-border-no-right u-border-no-top u-container-style u-layout-cell u-right-cell u-size-60 u-white u-layout-cell-2">
+                                  <div class="u-container-layout u-container-layout-2">
+                                     <h2 class="u-text u-text-default u-text-palette-4-base u-text-1"></h2>
+                                     <p class="u-text u-text-2">
+                                     </p>
+                                     <div class="u-expanded-width u-table u-table-responsive u-table-1">
+                                        <table class="u-table-entity u-table-entity-1" id="dataTable">
+                                           <colgroup>
+                                              <col width="14.3%">
+                                              <col width="14.3%">
+                                              <col width="14.3%">
+                                              <col width="14.3%">
+                                              <col width="14.3%">
+                                              <col width="14.500000000000005%">
+                                              <col width="13.900000000000006%">
+                                           </colgroup>
+                                           <thead class="u-table-header u-table-header-1">
+                                              <tr style="height: 47px;">
+                                                 <!-- add column headers -->
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Camera ID
+                                                 </th>
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Start
+                                                 </th>
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    End
+                                                 </th>
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Action
+                                                 </th>
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Confidence
+                                                 </th>
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Clip
+                                                 </th>
+
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Location
+                                                 </th>
+                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
+                                                    Building
+                                                 </th>
+                                              </tr>
+                                           </thead>
+                                           <tbody class="u-table-body">
+                                              <!-- add rows from dataframe sent by logs function to the table-->
+                                              {% for row in results %}
+                                              <tr style="height: 46px;">
+                                                 <td class="u-table-cell">{{ row.camera_id }}</td>
+                                                 <td class="u-table-cell">{{ row.start }}</td>
+                                                 <td class="u-table-cell">{{ row.end }}</td>
+                                                 <td class="u-table-cell">{{ row.action }}</td>
+                                                 <td class="u-table-cell">{{ row.confidence }}%</td>
+                                                 <td class="u-table-cell">{{ row.clip }}</td>
+                                                 <td class="u-table-cell">{{ row.location }}</td>
+                                                 <td class="u-table-cell">{{ row.building }}</td>
+                                                 {% endfor %}
+                                           </tbody>
+                                        </table>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                   </div>
+                </div>
+             </section>
+
+           </div>
+
+        </div>
+<br>
+
+</div>
+
+</section>
+ <!--
+    <script>
+      let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".sidebarBtn");
+     sidebarBtn.onclick = function() {
+     sidebar.classList.toggle("active");
+     if(sidebar.classList.contains("active")){
+     sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+    }else
+     sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+    </script> -->
+
+</body>
+
+
 </html>

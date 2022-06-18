@@ -24,26 +24,27 @@
 <body >
   <div class="sidebar">
     <div class="logo-details">
-      <i class='bx bxl-c-plus-plus'></i>
       <span class="logo_name"></span>
     </div>
       <ul class="nav-links">
         <li>
-          <a href="#" class="active">
+          <a href="/visualize/" class="active">
             <i class='bx bx-grid-alt' ></i>
             <span class="links_name">Dashboard</span>
           </a>
         </li>
+
         <li>
-          <a href="#">
-            <i class='bx bx-box' ></i>
-            <span class="links_name">Home</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
+          <a href="/logs/">
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Logs</span>
+          </a>
+        </li>
+
+        <li class="log_out">
+          <a href="/">
+            <i class='bx bx-log-out'></i>
+            <span class="links_name">Log out</span>
           </a>
         </li>
         
@@ -131,7 +132,7 @@
 
 </section>
 
-    <script>
+   <!-- <script>
       let sidebar = document.querySelector(".sidebar");
       let sidebarBtn = document.querySelector(".sidebarBtn");
      sidebarBtn.onclick = function() {
@@ -141,7 +142,7 @@
     }else
      sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
     }
-    </script>
+    </script> -->
 
 </body>
 

@@ -6,6 +6,37 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
+
+.bootstrap-select {
+  width: 100px !important;
+  height: 20px !important;
+}
+
+
+
+.btn-custom {
+  color: #fff;
+  background-color: transparent;
+  border-color: white;
+}
+
+.btn {
+  padding: 5px!important;
+height: 30px;
+border-color: #2697FF;
+}
+
+.dropdown-menu>li>a {
+  font-size: small;
+  padding: 10px;
+}
+
+
+.filter-option {
+  font-size: 13px;
+}
+
 .sidebar{
   position: fixed;
   height: 100%;
@@ -13,6 +44,9 @@
   background: #0A2558;
   transition: all 0.5s ease;
 }
+
+
+
 .sidebar.active{
   width: 60px;
 }
@@ -41,6 +75,9 @@
   list-style: none;
   height: 50px;
 }
+
+
+
 .sidebar .nav-links li a{
   height: 100%;
   width: 100%;
@@ -263,7 +300,7 @@ nav .profile-details i{
 
 /* left box */
 .home-content .sales-boxes .recent-sales{
-  width: 60%;
+  width: 100%;
   background: #fff;
   padding: 20px 30px;
   margin: 0 20px;
@@ -440,4 +477,6 @@ nav .profile-details i{
     left: 60px;
     width: calc(100% - 60px);
   }
+
+
 }

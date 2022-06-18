@@ -21,10 +21,20 @@ results_data = db.results
 app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
 
 
-@app.route('/')
-def homepage():
+@app.route("/", methods=["POST", "GET"])
+def login():
     results_data.remove({})
-    return render_template('homepage.html')
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("pass")
+
+        if (username == "Admin") & (password=="123"):
+            return redirect(url_for("logs"))
+        else:
+            flash("Incorrect Username or Password!")
+
+
+    return render_template('login.html')
 
 
 @app.route('/connect/')
@@ -60,7 +70,7 @@ def logs():
     #                              "clip": 10, "location": 'location2'})
     n = 1000
     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
-    # print("RESULTS:::::::\n")
+    # print("RESULTS::::::\n")
     # r = results
     # for i in r:
     #     print(i)
@@ -95,7 +105,7 @@ def filtering():
 
     # keys = ["action", "confidence", "clip", "location", "camera",
     #        "start_date", "start_time", "end_date", "end_time"]
-    print("HEREEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date,start_time,end_date,end_time))
+    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date,start_time,end_date,end_time))
 
     all_filters = {
         'action': action,
