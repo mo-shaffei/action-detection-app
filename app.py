@@ -29,9 +29,9 @@ def login():
         if (username == "Admin") & (password == "123"):
 
             # Start the inference
-            t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
-            t.setDaemon(True)
-            t.start()  # start thread
+            #t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
+            #t.setDaemon(True)
+            #t.start()  # start thread
 
             return redirect(url_for("logs"))
         else:
@@ -50,15 +50,17 @@ def connect():
 
 @app.route('/logs/')
 def logs():
-    # results_data.insert_one({"camera_id": '001', "start": 0, "end": 1,
-    #                              "action": "smoking", "confidence": 50,
-    #                              "clip": 2, "location": 'location'})
-    # results_data.insert_one({"camera_id": '002', "start": 5, "end": 6,
-    #                              "action": "eating", "confidence": 30,
-    #                              "clip": 5, "location": 'location'})
-    # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
-    #                              "action": "drinking", "confidence": 30,
-    #                              "clip": 9, "location": 'location2'})
+     start, end = logic.map_time(0, 1)
+     start2, end2 = logic.map_time(3, 15)
+     results_data.insert_one({"camera_id": '001', "start": start, "end": end,
+                                  "action": "smoking", "confidence": 50,
+                                  "clip": 2, "location": 'location'})
+     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
+                                  "action": "eating", "confidence": 30,
+                                  "clip": 5, "location": 'location'})
+     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
+                                  "action": "drinking", "confidence": 30,
+                                  "clip": 9, "location": 'location2'})
     # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
     #                              "action": "eating", "confidence": 30,
     #                              "clip": 9, "location": 'location2'})
@@ -71,13 +73,13 @@ def logs():
     # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
     #                              "action": "eating", "confidence": 80,
     #                              "clip": 10, "location": 'location2'})
-    n = 1000
-    results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
+     n = 1000
+     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
     # print("RESULTS::::::\n")
     # r = results
     # for i in r:
     #     print(i)
-    return render_template('logs.html', results=results, raw_results=results)
+     return render_template('logs.html', results=results, raw_results=results)
 
 
 @app.route('/filtering/', methods=["GET", "POST"])
