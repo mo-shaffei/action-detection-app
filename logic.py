@@ -1,6 +1,6 @@
 import helpers
-#from models.recognizer import RecognizerModel
-#from models.detection import DetectionModel
+from models.recognizer import RecognizerModel
+from models.detection import DetectionModel
 import time
 import random
 from datetime import datetime, timedelta
@@ -22,8 +22,7 @@ def map_time(beg, end):
     return beg, end
 
 
-
-#def connect_thread(app):
+def connect_thread(app):
     """
     Wrapper around connect button function to make it run in a separate thread
     @param app: flask app (used to extract configurations for model and video)
@@ -52,11 +51,6 @@ def map_time(beg, end):
         model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
     else:
         model = DetectionModel(person_bbox_threshold=bbox_threshold, device=device)
-
-    # For now we will define a constant camera id and location
-
-    # camera_id = "NB-1001"
-    # location = "Studio"
 
     # cameras' ids, the floor number, location, and the building in ZC
     camera_floor_loc_build = [["CAM1", "Computer Lab S008", "Helmy"],   # cam num
