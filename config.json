@@ -3,7 +3,7 @@
     "model_type": "recognition",
     "model_name": "mvit",
     "device": "cpu",
-    "visualize": true,
+    "visualize": false,
     "bbox_threshold": 0.5,
     "recognition_threshold": 0.1
   },
