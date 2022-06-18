@@ -70,14 +70,13 @@
 
       <form action="{{ url_for("filtering")}}" method="post">
 
-        <li>
-            <span style="color:white; font-size: 15px; font-weight: bold">Filter by:</span>
-          </a>
-        </li>
+
 
         <li>
         <div >
-          <label for="action" style="color:white; font-size: 13px">Action/s:   </label>
+          <span style="color:white; font-size: 15px; font-weight: bold; margin-bottom: 4px;">Filter by:</span>
+<br>
+          <label for="action" style="color:white; font-size: 13px; margin-top: 15px;">Action/s:   </label>
                  <select class="selectpicker"  multiple data-live-search="true"  name="action" id="action" data-style="btn-custom" multiple>
                     <option value="All" selected>All</option>
                     {% for a in raw_results.distinct('action') %}
@@ -90,7 +89,7 @@
        
       <li>
         <div style="color:white">
-      <label for="confidence" style="font-size: 13px">Min confidence (%):</label>
+      <label for="confidence" style="font-size: 13px; margin-top: 29px;">Min confidence (%):</label>
                      <input type="range" id="confidence" name="confidence" style="width: 50px; height: 10px; font-size: 10px;"
                                  value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
                      <output>20</output>
@@ -100,7 +99,7 @@
 
         <li>
          <div style="color:white">
-          <label for="location" style="font-size: 13px">Location/s:</label>
+          <label for="location" style="font-size: 13px; margin-top: 24px;">Location/s:</label>
           <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-custom" multiple>
              <option value="All" selected>All</option>
              <option value="test">test</option>
@@ -111,6 +110,18 @@
           </div> 
         </li>
 
+        <li>
+          <div style="color:white">
+           <label for="location" style="font-size: 13px; margin-top: 15px;">Location/s:</label>
+           <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-custom" multiple>
+              <option value="All" selected>All</option>
+              <option value="test">test</option>
+              {% for a in raw_results.distinct('location') %}
+              <option  value="{{a}}"> {{a}} </option>
+              {% endfor %}
+           </select>
+           </div> 
+         </li>
 
         
 
@@ -130,7 +141,7 @@
         <li>
           <div style="color:white">
            <label for="start_date" style="font-size: 13px">Start date:</label>
-                      <input type="date" style="width: 115px; height: 20px; color:black; font-size: 13px;"
+                      <input type="date" style="width: 115px; height: 20px; color:black; font-size: 13px; "
                          id="start_date" name="start_date" 
                           min="2001-01-01" max="2099-12-31" value="2001-01-01">
                       <br>
@@ -146,7 +157,7 @@
          <br>
 
         <li>
-          <div style="color:white">
+          <div style="color:white; ">
           <label for="end_date" style="font-size: 13px">End date:</label>
           <input type="date"
              id="end_date" name="end_date" style="width: 115px; height: 20px; color:black; font-size: 13px;"
@@ -171,13 +182,11 @@
 
     <form action="{{ url_for("sorting")}}" method="post">
 
-      <li>
-        <span style="color:white; font-size: 15px; font-weight: bold">Sort by:</span>
-      </a>
-    </li>
-
+   
       <li>
         <div style="color:white">
+          <span style="color:white; font-size: 15px; font-weight: bold; margin-bottom: 6px;">Sort by:</span>
+          <br>
                 <select  class="selectpicker" data-style="btn-custom" name="sorting" id="sorting">
                       <option  value="confidence" selected>confidence</option>
                       <option  value="start" selected>start</option>
@@ -194,8 +203,8 @@
                    </select>
                   </div> 
                 </li>
-       
-                <input type="submit" name="sorting" value="sort" style="margin-left: 65px; background-color:  rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;" >
+
+                <input type="submit" name="sorting" value="Sort" style="margin-left: 65px; margin-top: 8px; background-color:  rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;" >
 
               </form>
 
