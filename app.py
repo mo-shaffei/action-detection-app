@@ -1,12 +1,10 @@
-from flask import Flask, render_template, Response, request, redirect, url_for, flash, jsonify, session
-import threading
-import logic
-import pandas as pd
-import pymongo
-from pymongo import MongoClient
 import json
-import visualize
+import threading
 from datetime import datetime
+import pymongo
+from flask import Flask, render_template, Response, request, redirect, url_for, flash, session
+import logic
+import visualize
 
 with open('config.json') as f:
     config = json.load(f)
@@ -28,11 +26,16 @@ def login():
         username = request.form.get("username")
         password = request.form.get("pass")
 
-        if (username == "Admin") & (password=="123"):
+        if (username == "Admin") & (password == "123"):
+
+            # Start the inference
+            t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
+            t.setDaemon(True)
+            t.start()  # start thread
+
             return redirect(url_for("logs"))
         else:
             flash("Incorrect Username or Password!")
-
 
     return render_template('login.html')
 
@@ -105,7 +108,7 @@ def filtering():
 
     # keys = ["action", "confidence", "clip", "location", "camera",
     #        "start_date", "start_time", "end_date", "end_time"]
-    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date,start_time,end_date,end_time))
+    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date, start_time, end_date, end_time))
 
     all_filters = {
         'action': action,
@@ -216,10 +219,9 @@ def cb():
 @app.route('/visualize/', methods=['POST', 'GET'])
 def index():
     [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results_data, action='eating')
-    return render_template('visualize.html',  graphJSON=g1, graph2JSON=g2, 
-                          graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4)
+    return render_template('visualize.html', graphJSON=g1, graph2JSON=g2,
+                           graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
