@@ -7,7 +7,7 @@ from bson.json_util import dumps
 
 
 def plots(results, action='eating'):       #returns all plots and statistics of dashboard
-
+    print("resultssssssss type is {}".format(type(results)))
     filtered_data = results.aggregate([     #filtered data for g2 and g4
             {
                 "$group" : {
@@ -22,6 +22,7 @@ def plots(results, action='eating'):       #returns all plots and statistics of 
             }
         ])
         
+    filtered_data = filtered_data.find()    
     list_data = list(filtered_data)
     df = DataFrame(list_data)
     x=[]; y=[]; z=[]; i=-1
@@ -62,7 +63,7 @@ def plots(results, action='eating'):       #returns all plots and statistics of 
         list_data = list(filtered_data)
         df = DataFrame(list_data)
 
-        fig = px.line(df, x="_id", y="count", labels={'x': 'start'}).update_layout(xaxis_title="start time")
+        fig = px.bar(df, x="_id", y="count", labels={'x': 'start'}).update_layout(xaxis_title="start time")
         
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         

@@ -2,14 +2,31 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/css/visualize.css">
+    <link rel="stylesheet" href="../static/css/logs.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta charset="utf-8">
+      <meta name="keywords"
+         content="Mobile Development, Expertise, Nam ultrices ultrices nec tortor pulvinar esteras loremips est, Experiences, Get yours today, Software Development, Get a demo">
+      <meta name="description" content="">
+      <title>logs</title>
+      <link rel="stylesheet" href="../static/css/nicepage.css" media="screen">
+      <script class="u-script" type="text/javascript" src="../static/js/jquery.js" defer=""></script>
+      <script class="u-script" type="text/javascript" src="../static/js/nicepage.js" defer=""></script>
+      <meta name="generator" content="Nicepage 4.7.1, nicepage.com">
+
     <script>
         function cb(selection) {
             $.getJSON({
@@ -19,6 +36,10 @@
             });
         }
     </script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body >
@@ -40,6 +61,119 @@
             <span class="links_name">Logs</span>
           </a>
         </li>
+
+        <br>
+
+      <form action="{{ url_for("filter_visualizations")}}" method="post">
+
+
+
+        <li>
+        <div >
+          <span style="color:white; font-size: 15px; font-weight: bold; margin-bottom: 4px;">Filter by:</span>
+<br>
+          <label for="action" style="color:white; font-size: 13px; margin-top: 15px;">Action/s:   </label>
+                 <select class="selectpicker"  multiple data-live-search="true"  name="action" id="action" data-style="btn-custom" multiple>
+                    <option value="All" selected>All</option>
+                    {% for a in raw_results.distinct('action') %}
+                    <option  value="{{a}}"> {{a}} </option>
+                    {% endfor %}
+                 </select>
+        </div>
+      </li>
+
+
+      <li>
+        <div style="color:white">
+      <label for="confidence" style="font-size: 13px; margin-top: 29px;">Min confidence (%):</label>
+                     <input type="range" id="confidence" name="confidence" style="width: 50px; height: 10px; font-size: 10px;"
+                                 value = 20 min = 20 max = 100 oninput="this.nextElementSibling.value = this.value">
+                     <output>20</output>
+                     <br>
+         </div>
+       </li>
+
+        <li>
+          <div style="color:white">
+           <label for="building" style="font-size: 13px; margin-top: 24px;">Building/s:</label>
+           <select class="selectpicker" multiple data-live-search="true"  name="building" id="building" data-style="btn-custom">
+              <option value="All" selected>All</option>
+              <option  value="Nano"> Nano </option>
+              <option  value="Helmy"> Helmy </option>
+              <option  value="Gate1"> Gate1 </option>
+
+           </select>
+           </div>
+         </li>
+
+        <li>
+         <div style="color:white">
+          <label for="location" style="font-size: 13px; margin-top: 15px;">Location/s:</label>
+          <select class="selectpicker" multiple data-live-search="true"  name="location" id="location" data-style="btn-custom" >
+             <option value="All" selected>All</option>
+             <option value="test">test</option>
+             {% for a in raw_results.distinct('location') %}
+             <option  value="{{a}}"> {{a}} </option>
+             {% endfor %}
+          </select>
+          </div>
+        </li>
+
+        <li>
+         <div style="color:white">
+          <label for="camera_id" style="font-size: 13px">Camera/s:</label>
+                     <select  class="selectpicker" multiple data-live-search="true" name="camera_id" id="camera_id" data-style="btn-custom" multiple >
+                        <option value="All" selected>All</option>
+                        {% for a in raw_results.distinct('camera_id') %}
+                        <option  value="{{a}}"> {{a}} </option>
+                        {% endfor %}
+                     </select>
+          </div>
+        </li>
+
+        <li>
+          <div style="color:white">
+           <label for="start_date" style="font-size: 13px">Start date:</label>
+                      <input type="date" style="width: 115px; height: 20px; color:black; font-size: 13px; "
+                         id="start_date" name="start_date"
+                          min="2001-01-01" max="2099-12-31" value="2001-01-01">
+                      <br>
+
+                      <label for="start_time" style="font-size: 13px">Start time:</label>
+                      <input type="time"
+                         id="start_time" name="start_time" step=1 style="width: 115px; height: 20px; color:black; font-size: 13px;"
+                         min="00:00:00" max="24:00:00" value="00:00:00">
+                      <br>
+           </div>
+         </li>
+
+         <br>
+
+        <li>
+          <div style="color:white; ">
+          <label for="end_date" style="font-size: 13px">End date:</label>
+          <input type="date"
+             id="end_date" name="end_date" style="width: 115px; height: 20px; color:black; font-size: 13px;"
+             min="2001-01-01" max="2099-12-31" value="2099-12-31">
+          <br>
+
+          <label for="end_time" style="font-size: 13px">End time:</label>
+          <input type="time"
+             id="end_time" name="end_time" step=1 style="width: 115px; height: 20px; color:black; font-size: 13px;"
+             min="00:00:00" max="23:59:59" value="23:59:59">
+          </div>
+        </li>
+
+        <br>
+        <li>
+        <input type="submit" name="filter" value="Filter" style="margin-left: 65px; background-color: rgb(47, 169, 246);  width: 60px; height: 30px; border-radius: 10%; color:black; border-color: transparent;">
+    </li>
+
+
+    </form>
+
+
+
 
         <li class="log_out">
           <a href="/">
