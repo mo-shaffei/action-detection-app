@@ -23,13 +23,13 @@ app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
 
 @app.route('/')
 def homepage():
-    results_data.remove({})
+    # results_data.remove({})
     return render_template('homepage.html')
 
 
 @app.route('/connect/')
 def connect():
-    t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
+    t = threading.Thread(target=logic.inference_thread, args=[app, True, 5554])  # create new thread
     t.setDaemon(True)
     t.start()  # start thread
     return Response(status=204)
@@ -37,8 +37,8 @@ def connect():
 
 @app.route('/logs/')
 def logs():
-    n = 1000
-    results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
+    n = 50
+    results = results_data.find().sort("start", -1).limit(n)
     return render_template('logs.html', results=results, raw_results=results)
 
 
