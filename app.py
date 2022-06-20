@@ -33,7 +33,7 @@ def login():
         if (username == "Admin") & (password == "123"):
 
             # Start the inference
-            t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
+            t = threading.Thread(target=logic.inference_thread, args=[app, [5555], True])  # create new thread
             t.setDaemon(True)
             t.start()  # start thread
 
@@ -42,14 +42,6 @@ def login():
             flash("Incorrect Username or Password!")
 
     return render_template('login.html')
-
-
-@app.route('/connect/')
-def connect():
-    t = threading.Thread(target=logic.inference_thread, args=[app, [5555], True])  # create new thread
-    t.setDaemon(True)
-    t.start()  # start thread
-    return Response(status=204)
 
 
 @app.route('/logs/')
@@ -199,13 +191,13 @@ def cb():
 
 @app.route('/visualize/', methods=['GET', 'POST'])
 def index():
-
     # [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results_data, action='eating')
 
-    [g1,g2,g3,g4] = visualize.plot_all(results_data, action='eating')
+    [g1, g2, g3, g4] = visualize.plot_all(results_data, action='Eating')
     [s1, s2, s3, s4] = visualize.statistics_all(results_data)
     return render_template('visualize.html', graphJSON=g1, graph2JSON=g2,
-                           graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4, raw_results=results_data)
+                           graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4,
+                           raw_results=results_data)
 
 
 @app.route('/filter_visualizations/', methods=["GET", "POST"])
@@ -311,13 +303,14 @@ def filter_visualizations():
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
     # session["filtered_data"]=dumps(results_data.find(filter=filters))
 
-
     # [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results, action='eating')
-    [g1,g2,g3,g4] = visualize.plot_all(results, action='eating')
+    [g1, g2, g3, g4] = visualize.plot_all(results, action='Eating')
     [s1, s2, s3, s4] = visualize.statistics_all(results)
 
     return render_template('visualize.html', graphJSON=g1, graph2JSON=g2,
-                           graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4, raw_results=results_data)
+                           graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4,
+                           raw_results=results_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

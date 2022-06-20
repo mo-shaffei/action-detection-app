@@ -53,5 +53,5 @@ def output(time_beg: datetime, time_end: datetime, action: str,
 
     # inserting results into the database
     app.results_data.insert_one({"camera_id": camera_id, "start": time_beg, "end": time_end,
-                                 "action": action, "confidence": confidence, "location": area,
+                                 "action": action.capitalize(), "confidence": confidence, "location": area,
                                  'building': building})  # inserting results into database

@@ -18,6 +18,7 @@ action_confs_map = {
     'smoking': 0.8
 }
 
+
 def predict_stream(port, segment_len, stride, model, visualize, fps=25):
     client = NetGear(port=str(port), receive_mode=True)
     metadata = port_mapping[port]

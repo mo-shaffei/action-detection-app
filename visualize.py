@@ -8,7 +8,6 @@ import pymongo
 
 
 def helper(results):
-
     # Handling cursor problem for filtered data
     coll = False
     if type(results) == pymongo.cursor.Cursor:
@@ -28,40 +27,42 @@ def helper(results):
     if coll:
         results = coll
 
-
     print("resultssssssss type is {}".format(type(results)))
-    filtered_data = results.aggregate([     #filtered data for g2 and g4
+    filtered_data = results.aggregate([  # filtered data for g2 and g4
         {
-            "$group" : {
-                "_id" :  {  "location": "$location", "action": "$action"} ,
-                "count": { "$sum" : 1 } }
+            "$group": {
+                "_id": {"location": "$location", "action": "$action"},
+                "count": {"$sum": 1}}
         },
 
         {
-            "$group" : {"_id" : "$_id.location", "actions": {
-                "$push": { "action":"$_id.action", "count":"$count" }
-            } }
+            "$group": {"_id": "$_id.location", "actions": {
+                "$push": {"action": "$_id.action", "count": "$count"}
+            }}
         }
     ])
 
     # filtered_data = filtered_data.find()
     list_data = list(filtered_data)
     df = DataFrame(list_data)
-    x=[]; y=[]; z=[]; i=-1
+    x = [];
+    y = [];
+    z = [];
+    i = -1
     for location in df._id:
-        i=i+1
+        i = i + 1
         for item in df.actions[i]:
             x.append(item.pop('action'))
             y.append(item.pop('count'))
             z.append(location)
 
-        new_df = DataFrame(list(zip(x, y, z)),    #dataframe used in g2 and g4
-                           columns = ['action','count', 'location'])
+        new_df = DataFrame(list(zip(x, y, z)),  # dataframe used in g2 and g4
+                           columns=['action', 'count', 'location'])
     ############################################################################
 
-    counted_actions = results.aggregate([       #counted actions needed in g3 and s1
+    counted_actions = results.aggregate([  # counted actions needed in g3 and s1
         {
-            "$group" : {"_id" : "$action", "count": {"$sum" : 1}}
+            "$group": {"_id": "$action", "count": {"$sum": 1}}
         }
     ])
     list_counted_data = list(counted_actions)
@@ -90,7 +91,6 @@ def g1(results, action):  # plots graph 1 (g1)
 
     if coll:
         results = coll
-
 
     filtered_data = results.aggregate([
         {
@@ -134,7 +134,7 @@ def g3(list_counted_data):  # plots graph 3 (g3)
     return graph3JSON
 
 
-def g4(x,y,z):  # plots graph 4 (g4)
+def g4(x, y, z):  # plots graph 4 (g4)
 
     fig4 = go.Figure(data=go.Heatmap({'z': y, 'x': x, 'y': z}))  # a heatmap of actions vs locations
 
@@ -164,17 +164,15 @@ def s4(df_original):  # return statistics 4 (camera that captured least actions)
     return min_camera
 
 
-
 ####### The below functions will be called in app.py
 
 
-def plot_all(results, action='eating'):
-    filtered_data, new_df, list_counted_data,x, y, z = helper(results)
-    return [g1(results,action), g2(new_df) , g3(list_counted_data), g4(x,y,z)]
+def plot_all(results, action='Eating'):
+    filtered_data, new_df, list_counted_data, x, y, z = helper(results)
+    return [g1(results, action), g2(new_df), g3(list_counted_data), g4(x, y, z)]
 
 
 def statistics_all(results):
-
     # Handling cursor problem for filtered data
     coll = False
     if type(results) == pymongo.cursor.Cursor:
@@ -194,12 +192,8 @@ def statistics_all(results):
     if coll:
         results = coll
 
-
     results_data = list(results.find())
     df_original = DataFrame(results_data)
     return [s1(df_original), s2(df_original), s3(df_original), s4(df_original)]
 
-
 #######################################################################################################
-
-
