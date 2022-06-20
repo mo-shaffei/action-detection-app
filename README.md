@@ -111,6 +111,7 @@ Insert gif or link to demo
 ## Authors <a name="authors"></a>
 
 - [@Fatma Moanes](https://www.github.com/Fatma-Moanes) [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fatma-moanes/)
+- [@Mohamed Elshaffei](https://www.github.com/mo-shaffei) [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mohamed99elshaffei/)
 
 
 
@@ -124,5 +125,5 @@ We are a group of students studying Communications and Information Engineering a
 To contact us:
 
 fmoanesnoureldin@gmail.com
-
+s-mohamed_chaffei@zewailcity.edu.eg
 
