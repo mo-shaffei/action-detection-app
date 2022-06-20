@@ -41,51 +41,51 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-<!--       for dropdown lists-->
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-         <script>
-         var buildingObject = {
-           "Helmy": {
-             "Computer Lab S008": ["CAM1"]
-           },
-           "Nano": {
-             "B06-S-CorridorA": ["CAM1", "CAM2", "CAM3", "CAM4", "CAM5"],
-             "B06-G-Elevator": ["CAM1"]
-             "B06-S-Elevator": ["CAM1"]
-             "B06-G-Entrance": ["CAM1"]
-             "Computer Lab S013": ["CAM1"]
-           },
-           "Gate1": {
-             "Outdoor": ["CAM1", "CAM2"]
-           }
-         }
-         window.onload = function() {
-           var buildingSel = document.getElementById("building");
-           var locationSel = document.getElementById("location");
-           var camera_idSel = document.getElementById("camera_id");
-           for (var x in buildingObject) {
-             buildingSel.options[buildingSel.options.length] = new Option(x, x);
-           }
-           building.onchange = function() {
-            //empty camera_ids- and locations- dropdowns
-            camera_idSel.length = 1;
-            locationSel.length = 1;
-              //display correct values
-             for (var y in buildingObject[this.value]) {
-               locationSel.options[locationSel.options.length] = new Option(y, y);
-             }
-           }
-           locationSel.onchange = function() {
-             //empty camera_ids dropdown
-             camera_idSel.length = 1;
-             //display correct values
-             var z = buildingObject[buildingSel.value][this.value];
-             for (var i = 0; i < z.length; i++) {
-               camera_idSel.options[camera_idSel.options.length] = new Option(z[i], z[i]);
-             }
-           }
-         }
-         </script>
+<!--&lt;!&ndash;       for dropdown lists&ndash;&gt;-->
+<!--      <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--         <script>-->
+<!--         var buildingObject = {-->
+<!--           "Helmy": {-->
+<!--             "Computer Lab S008": ["CAM1"]-->
+<!--           },-->
+<!--           "Nano": {-->
+<!--             "B06-S-CorridorA": ["CAM1", "CAM2", "CAM3", "CAM4", "CAM5"],-->
+<!--             "B06-G-Elevator": ["CAM1"]-->
+<!--             "B06-S-Elevator": ["CAM1"]-->
+<!--             "B06-G-Entrance": ["CAM1"]-->
+<!--             "Computer Lab S013": ["CAM1"]-->
+<!--           },-->
+<!--           "Gate1": {-->
+<!--             "Outdoor": ["CAM1", "CAM2"]-->
+<!--           }-->
+<!--         }-->
+<!--         window.onload = function() {-->
+<!--           var buildingSel = document.getElementById("building");-->
+<!--           var locationSel = document.getElementById("location");-->
+<!--           var camera_idSel = document.getElementById("camera_id");-->
+<!--           for (var x in buildingObject) {-->
+<!--             buildingSel.options[buildingSel.options.length] = new Option(x, x);-->
+<!--           }-->
+<!--           building.onchange = function() {-->
+<!--            //empty camera_ids- and locations- dropdowns-->
+<!--            camera_idSel.length = 1;-->
+<!--            locationSel.length = 1;-->
+<!--              //display correct values-->
+<!--             for (var y in buildingObject[this.value]) {-->
+<!--               locationSel.options[locationSel.options.length] = new Option(y, y);-->
+<!--             }-->
+<!--           }-->
+<!--           locationSel.onchange = function() {-->
+<!--             //empty camera_ids dropdown-->
+<!--             camera_idSel.length = 1;-->
+<!--             //display correct values-->
+<!--             var z = buildingObject[buildingSel.value][this.value];-->
+<!--             for (var i = 0; i < z.length; i++) {-->
+<!--               camera_idSel.options[camera_idSel.options.length] = new Option(z[i], z[i]);-->
+<!--             }-->
+<!--           }-->
+<!--         }-->
+<!--         </script>-->
 
 </head>
 
@@ -236,7 +236,6 @@
                      <option  value="end">End</option>
                      <option  value="action">Action</option>
                      <option  value="confidence">Confidence</option>
-                     <option  value="clip">Clip</option>
                      <option  value="location">Location</option>
                      <option  value="location">Building</option>
                    </select>
@@ -320,9 +319,6 @@
                                                  <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Confidence
                                                  </th>
-                                                 <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
-                                                    Clip
-                                                 </th>
 
                                                  <th style="font-weight: bold" class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">
                                                     Location
@@ -341,7 +337,6 @@
                                                  <td class="u-table-cell">{{ row.end }}</td>
                                                  <td class="u-table-cell">{{ row.action }}</td>
                                                  <td class="u-table-cell">{{ row.confidence }}%</td>
-                                                 <td class="u-table-cell">{{ row.clip }}</td>
                                                  <td class="u-table-cell">{{ row.location }}</td>
                                                  <td class="u-table-cell">{{ row.building }}</td>
                                                  {% endfor %}

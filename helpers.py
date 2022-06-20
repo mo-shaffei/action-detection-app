@@ -44,10 +44,10 @@ def video2segments(path: str, filename: str, segment_len: int = 10, stride: int 
 
 
 def output(camera_id: str, time_beg: datetime, time_end: datetime, action: str,
-           confidence: float, reference: int, location: str, building: str) -> None:
+           confidence: float, location: str, building: str) -> None:
     confidence = round(confidence * 100)
 
     # inserting results into the database
     app.results_data.insert_one({"camera_id": camera_id, "start": time_beg, "end": time_end,
                                  "action": action, "confidence": confidence,
-                                 "clip": reference, "location": location, "building": building})
+                                 "location": location, "building": building})

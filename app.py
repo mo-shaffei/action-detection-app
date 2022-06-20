@@ -54,19 +54,19 @@ def logs():
     start2, end2 = logic.map_time(3, 15)
     results_data.insert_one({"camera_id": '001', "start": start, "end": end,
                              "action": "smoking", "confidence": 50,
-                             "clip": 2, "location": 'location'})
+                              "location": 'location'})
     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
                              "action": "eating", "confidence": 30,
-                             "clip": 5, "location": 'location'})
+                              "location": 'location'})
     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
                              "action": "drinking", "confidence": 30,
-                             "clip": 9, "location": 'location2'})
+                              "location": 'location2'})
     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
                              "action": "drinking", "confidence": 30,
-                             "clip": 9, "location": 'location2'})
+                             "location": 'location2'})
     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
                              "action": "drinking", "confidence": 30,
-                             "clip": 9, "location": 'location2'})
+                             "location": 'location2'})
     # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
     #                              "action": "eating", "confidence": 30,
     #                              "clip": 9, "location": 'location2'})
@@ -348,14 +348,6 @@ def filter_visualizations():
 
     return render_template('visualize.html', graphJSON=g1, graph2JSON=g2,
                            graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4, raw_results=results_data)
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
