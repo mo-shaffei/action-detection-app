@@ -1,19 +1,20 @@
+# Action Detection in Smart Surveillance Systems - Web Application
 ![Logo](https://www.theigclub.com/wp-content/uploads/2020/12/IMG-20210123-WA0130.jpg)
 
 # Table of Contents
-1. [Features](#Features)
+1. [Introduction] [#intro]
+2.  [Features](#Features)
     * [Logs Page](#Logs)
     * [Visualizations Page](#Visualizations)
-2. [Demo](#demo)
-3. [Screenshots](#screenshots)
-4. [How to Run the Code](#run)
-5. [Authors](#authors)
-6. [🚀 About Us](#about)
-7. [Contact](#contact)
+3.  [Demo](#demo)
+4. [Screenshots](#screenshots)
+5. [How to Run the Code](#run)
+6. [Authors](#authors)
+7. [🚀 About Us](#about)
+8. [Contact](#contact)
 
 
-# Action Detection in Smart Surveillance Systems - Web Application
-
+## Introduction  <a name="intro"></a>
 In this project, AI-based smart surveillance system capable of automatically detecting different actions was implemented on the Zewail City video surveillance system.
 The system reached a recall of 80% and a precision of 70% without fine-tuning using custom data. The system provided different features for the end-user through its graphical interface allowing for easy and convenient data retrieval.
 
