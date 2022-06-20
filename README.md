@@ -2,7 +2,7 @@
 ![Logo](https://www.theigclub.com/wp-content/uploads/2020/12/IMG-20210123-WA0130.jpg)
 
 # Table of Contents
-1. [Introduction] [#intro]
+1. [Introduction] (#intro)
 2.  [Features](#Features)
     * [Logs Page](#Logs)
     * [Visualizations Page](#Visualizations)
