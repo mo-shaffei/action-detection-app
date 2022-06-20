@@ -17,6 +17,8 @@ from pytorchvideo.transforms import (
 from pytorchvideo.models.hub.vision_transformers import mvit_base_32x3
 from pytorchvideo.models.hub.slowfast import slowfast_r50
 import cv2
+from typing import Union
+from datetime import datetime
 
 
 class RecognizerModel:
@@ -54,6 +56,7 @@ class RecognizerModel:
         self._video_data = None
         self._preds = None
         self._clip_no = -1
+        self._timestamp = datetime.now()
 
     def _load_label_map(self, path: str = "models/kinetics_classnames.json"):
         """
@@ -182,7 +185,7 @@ class RecognizerModel:
         """
         load video from video_path into pytorch tensor
         :param video_path: path of video to load
-        :return: torch.Tensor [3, num_frames, frame_height, frame_width]
+        :return: torch.Tensor [C, T, H, W] where T is the number of frames
         """
         video_data = skvideo.io.vread(video_path)  # load video to np.ndarray
         video_data = np.einsum('klij->jkli', video_data)  # reorder ndarray dimensions to match pytorch
@@ -261,25 +264,27 @@ class RecognizerModel:
             self._video_data[i, :, :, :] = img
         skvideo.io.vwrite(video_name, self._video_data)
 
-    def inference(self, video_path: str, visualize=False):
+    def inference(self, video: Union[str, np.ndarray], visualize=False):
         """
-        Perform action detection inference on video
-        @param video_path: path of query video
+        Perform action detection inference on video numpy ndarray
+        @param video: video either filename or np.ndarray of shape [T, H, W, C] where T is number of frames
         @param visualize: if true an output video containing action detection visualization is written to disk
         @return: list of dictionaries where each dictionary contains action confidence pairs for each person detected
         """
-        self._video_data = self._load_video(video_path)  # load video to tensor
+        if isinstance(video, str):
+            self._video_data = self._load_video(video)  # load video to tensor
+        else:
+            self._video_data = np.einsum('klij->jkli', video)  # reorder ndarray dimensions to match pytorch
+            self._video_data = torch.from_numpy(self._video_data)  # convert ndarray to pytorch tensor
         predicted_boxes = self._get_person_bboxes()  # get bboxes of persons in video
         self._clip_no += 1
         if len(predicted_boxes) == 0:  # if no persons detected in video skip it
-            print("Skipping clip no persons detected at clip: ", video_path)
             return None
 
         actions = []
         for person_id, person_bbox in enumerate(predicted_boxes):  # for each person detected
             # crop person from video
-            person_data = self._crop_person(person_bbox, output_video=False,
-                                            video_name=f"output/video_{self._clip_no}_person{person_id}.mp4")
+            person_data = self._crop_person(person_bbox, output_video=False)
             # transform video data before feeding into the model
             person_data = self._transform(person_data)
             if "slowfast" in self._model_name:
@@ -299,5 +304,5 @@ class RecognizerModel:
             for p in actions:
                 labels.append(f"{list(p.keys())[0]} {round(100 * list(p.values())[0])}")
             # output video with bboxes and labels
-            self._draw_bboxes(video_path, predicted_boxes, labels)
+            self._draw_bboxes('video/' + str(self._clip_no) + '.mp4', predicted_boxes, labels)
         return actions
