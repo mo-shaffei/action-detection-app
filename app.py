@@ -29,7 +29,7 @@ def homepage():
 
 @app.route('/connect/')
 def connect():
-    t = threading.Thread(target=logic.inference_thread, args=[app, True, 5554])  # create new thread
+    t = threading.Thread(target=logic.inference_thread, args=[app, [5554, 5555], True])  # create new thread
     t.setDaemon(True)
     t.start()  # start thread
     return Response(status=204)

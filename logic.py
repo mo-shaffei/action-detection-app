@@ -1,10 +1,9 @@
 from datetime import datetime, timedelta
-
 import helpers
 from models.recognizer import RecognizerModel
-from models.detection import DetectionModel
 from vidgear.gears import NetGear
 import numpy as np
+import threading
 
 port_mapping = {
     5554: ('Helmy', 'Computer Lab S008', 'CAM01'),
@@ -83,7 +82,7 @@ def predict_video(video_name, segment_len, stride, model, visualize):
     print("Inference thread finished!")
 
 
-def inference_thread(app, use_stream=False, port=0):
+def inference_thread(app, ports, use_stream=False):
     """
     Wrapper around connect button function to make it run in a separate thread
     @param app: flask app (used to extract configurations for model and video)
@@ -92,7 +91,7 @@ def inference_thread(app, use_stream=False, port=0):
     @return: None
     """
 
-    print(f"Inference thread {port} started...")
+    print(f"Inference thread {ports[0]} started...")
     # minimum confidence threshold for top1 action to store it
     confidence_thresh = app.config["model"]["recognition_threshold"]
     # stride length (in seconds) of temporal window which segments the input video
@@ -102,14 +101,16 @@ def inference_thread(app, use_stream=False, port=0):
     bbox_threshold = app.config["model"]["bbox_threshold"]  # store person bbox minimum confidence threshold
     visualize = app.config["model"]["visualize"]  # store whether to visualize results or not
     device = app.config["model"]["device"]  # store device used for inference
-    if app.config["model"]["model_type"] == "recognition":  # load appropriate model
-        model_name = app.config["model"]["model_name"]
-        model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
-    else:
-        model = DetectionModel(person_bbox_threshold=bbox_threshold, device=device)
+    model_name = app.config["model"]["model_name"]
 
     if use_stream:
-        predict_stream(port, segment_len, stride, model, visualize)
+        for port in ports:
+            model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
+            args = [port, segment_len, stride, model, visualize]
+            t = threading.Thread(target=predict_stream, args=args)
+            t.setDaemon(True)
+            t.start()
     else:
         video_name = app.config["video"]["video_name"]  # store name of video to process
+        model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
         predict_video(video_name, segment_len, stride, model, visualize)
