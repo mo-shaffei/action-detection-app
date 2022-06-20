@@ -4,9 +4,30 @@ from pandas import DataFrame
 import plotly.graph_objects as go
 import json
 from bson.json_util import dumps
+import pymongo
 
 
 def helper(results):
+
+    # Handling cursor problem for filtered data
+    coll = False
+    if type(results) == pymongo.cursor.Cursor:
+        print("ENTERED HEREEEEEEEE\n\n\n")
+        client = pymongo.MongoClient()
+        db = client["data"]
+        coll = db["DATA"]
+
+        list_dict = []
+
+        for i in results:
+            list_dict.append(i.copy())
+
+        for dictionary in list_dict:
+            coll.insert_one(dictionary)
+
+    if coll:
+        results = coll
+
 
     print("resultssssssss type is {}".format(type(results)))
     filtered_data = results.aggregate([     #filtered data for g2 and g4
@@ -50,6 +71,26 @@ def helper(results):
 
 
 def g1(results, action):  # plots graph 1 (g1)
+
+    # Handling cursor problem for filtered data
+    coll = False
+    if type(results) == pymongo.cursor.Cursor:
+        print("ENTERED HEREEEEEEEE\n\n\n")
+        client = pymongo.MongoClient()
+        db = client["data"]
+        coll = db["DATA"]
+
+        list_dict = []
+
+        for i in results:
+            list_dict.append(i.copy())
+
+        for dictionary in list_dict:
+            coll.insert_one(dictionary)
+
+    if coll:
+        results = coll
+
 
     filtered_data = results.aggregate([
         {
@@ -133,6 +174,27 @@ def plot_all(results, action='eating'):
 
 
 def statistics_all(results):
+
+    # Handling cursor problem for filtered data
+    coll = False
+    if type(results) == pymongo.cursor.Cursor:
+        print("ENTERED HEREEEEEEEE\n\n\n")
+        client = pymongo.MongoClient()
+        db = client["data"]
+        coll = db["DATA"]
+
+        list_dict = []
+
+        for i in results:
+            list_dict.append(i.copy())
+
+        for dictionary in list_dict:
+            coll.insert_one(dictionary)
+
+    if coll:
+        results = coll
+
+
     results_data = list(results.find())
     df_original = DataFrame(results_data)
     return [s1(df_original), s2(df_original), s3(df_original), s4(df_original)]

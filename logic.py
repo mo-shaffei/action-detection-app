@@ -89,7 +89,7 @@ def connect_thread(app):
                 end = beg + segment_len  # end time of segment = beg time + segment length
                 beg, end = map_time(beg, end)
 
-                helpers.output(camera_id, beg, end, action, confidence, i, location, building)
+                helpers.output(camera_id, beg, end, action, confidence, location, building)
 
     stop_time = time.time()
     print("Inference thread finished!")
