@@ -1,14 +1,26 @@
 ![Logo](https://www.theigclub.com/wp-content/uploads/2020/12/IMG-20210123-WA0130.jpg)
 
+# Table of Contents
+1. [Features](#Features)
+    * [Logs Page](#Logs)
+    * [Visualizations Page](#Visualizations)
+2. [Demo](#demo)
+3. [Screenshots](#screenshots)
+4. [How to Run the Code](#run)
+5. [Authors](#authors)
+6. [🚀 About Us](#about)
+7. [Contact](#contact)
+
+
 # Action Detection in Smart Surveillance Systems - Web Application
 
 In this project, AI-based smart surveillance system capable of automatically detecting different actions was implemented on the Zewail City video surveillance system.
 The system reached a recall of 80% and a precision of 70% without fine-tuning using custom data. The system provided different features for the end-user through its graphical interface allowing for easy and convenient data retrieval.
 
 
-## Features
+## Features  <a name="Features"></a>
 
-**Logs page:**
+**Logs page:** <a name="Logs"></a>
 
 
 1- The user can view the history of actions along with some metadata:
@@ -26,24 +38,22 @@ The system reached a recall of 80% and a precision of 70% without fine-tuning us
     - Camera 
     - Start, end date and time.
 
-**Visualizations page:**
+**Visualizations page:**  <a name="Visualizations"></a>
 
 It provides different visualizations that deliver key insights to the user.
 
-## Demo
+## Demo <a name="demo"></a>
 
 Insert gif or link to demo
 
 
-## Screenshots
+## Screenshots  <a name="screenshots"></a>
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 
-## How to run the code
+## How to Run the Code <a name="run"></a>
 
-
-## Run Locally
 
 1- Clone the project
 
@@ -97,7 +107,7 @@ Insert gif or link to demo
 ```
 
 
-## Authors
+## Authors <a name="authors"></a>
 
 - [@Fatma Moanes](https://www.github.com/Fatma-Moanes) [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fatma-moanes/)
 
@@ -105,10 +115,10 @@ Insert gif or link to demo
 
 
 
-## 🚀 About Us
+## 🚀 About Us <a name="about"></a>
 We are a team studying Communications and Information Engineering at Zewail City of Science and Technology. This project is our Graduation Project.
 
-## Contact
+## Contact <a name="contact"></a>
 
 To contact us:
 
