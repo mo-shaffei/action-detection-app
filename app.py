@@ -29,9 +29,9 @@ def login():
         if (username == "Admin") & (password == "123"):
 
             # Start the inference
-            #t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
-            #t.setDaemon(True)
-            #t.start()  # start thread
+            t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
+            t.setDaemon(True)
+            t.start()  # start thread
 
             return redirect(url_for("logs"))
         else:
@@ -50,23 +50,23 @@ def connect():
 
 @app.route('/logs/')
 def logs():
-     start, end = logic.map_time(0, 1)
-     start2, end2 = logic.map_time(3, 15)
-     results_data.insert_one({"camera_id": '001', "start": start, "end": end,
-                                  "action": "smoking", "confidence": 50,
-                                  "clip": 2, "location": 'location'})
-     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
-                                  "action": "eating", "confidence": 30,
-                                  "clip": 5, "location": 'location'})
-     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
-                                  "action": "drinking", "confidence": 30,
-                                  "clip": 9, "location": 'location2'})
-     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
-                                  "action": "drinking", "confidence": 30,
-                                  "clip": 9, "location": 'location2'})   
-     results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
-                                  "action": "drinking", "confidence": 30,
-                                  "clip": 9, "location": 'location2'})                                                          
+    start, end = logic.map_time(0, 1)
+    start2, end2 = logic.map_time(3, 15)
+    results_data.insert_one({"camera_id": '001', "start": start, "end": end,
+                             "action": "smoking", "confidence": 50,
+                             "clip": 2, "location": 'location'})
+    results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
+                             "action": "eating", "confidence": 30,
+                             "clip": 5, "location": 'location'})
+    results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
+                             "action": "drinking", "confidence": 30,
+                             "clip": 9, "location": 'location2'})
+    results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
+                             "action": "drinking", "confidence": 30,
+                             "clip": 9, "location": 'location2'})
+    results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
+                             "action": "drinking", "confidence": 30,
+                             "clip": 9, "location": 'location2'})
     # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
     #                              "action": "eating", "confidence": 30,
     #                              "clip": 9, "location": 'location2'})
@@ -79,13 +79,13 @@ def logs():
     # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
     #                              "action": "eating", "confidence": 80,
     #                              "clip": 10, "location": 'location2'})
-     n = 1000
-     results = results_data.find({}).limit(n)  # getting results stored in the database (last n)
+    n = 50
+    results = results_data.find().sort("start", -1).limit(n)  # getting results stored in the database (last n)
     # print("RESULTS::::::\n")
     # r = results
     # for i in r:
     #     print(i)
-     return render_template('logs.html', results=results, raw_results=results)
+    return render_template('logs.html', results=results, raw_results=results)
 
 
 @app.route('/filtering/', methods=["GET", "POST"])
@@ -221,13 +221,19 @@ def sorting():
 # Implementing visualizations
 @app.route('/callback', methods=['POST', 'GET'])
 def cb():
-    return visualize.plots(results_data, request.args.get('data'))[0]
+    [g1, _, _, _] = visualize.plot_all(results_data, action=request.args.get('data'))
+    return g1
+
+    # return visualize.plots(results_data, request.args.get('data'))[0]
 
 
 @app.route('/visualize/', methods=['GET', 'POST'])
 def index():
 
-    [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results_data, action='eating')
+    # [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results_data, action='eating')
+
+    [g1,g2,g3,g4] = visualize.plot_all(results_data, action='eating')
+    [s1, s2, s3, s4] = visualize.statistics_all(results_data)
     return render_template('visualize.html', graphJSON=g1, graph2JSON=g2,
                            graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4, raw_results=results_data)
 
@@ -335,8 +341,11 @@ def filter_visualizations():
     # return "output " + action + confidence + clip + location + camera + start_date + start_time + end_date + end_time
     # session["filtered_data"]=dumps(results_data.find(filter=filters))
 
-    
-    [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results, action='eating')
+
+    # [g1, g2, g3, g4, s1, s2, s3, s4] = visualize.plots(results, action='eating')
+    [g1,g2,g3,g4] = visualize.plot_all(results, action='eating')
+    [s1, s2, s3, s4] = visualize.statistics_all(results)
+
     return render_template('visualize.html', graphJSON=g1, graph2JSON=g2,
                            graph3JSON=g3, graph4JSON=g4, top_action=s1, top_location=s2, top_camera=s3, min_camera=s4, raw_results=results_data)
 
