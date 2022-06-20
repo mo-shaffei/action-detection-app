@@ -304,5 +304,5 @@ class RecognizerModel:
             for p in actions:
                 labels.append(f"{list(p.keys())[0]} {round(100 * list(p.values())[0])}")
             # output video with bboxes and labels
-            self._draw_bboxes(str(self._clip_no), predicted_boxes, labels)
+            self._draw_bboxes(str(self._clip_no) + '.mp4', predicted_boxes, labels)
         return actions
