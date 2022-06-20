@@ -1,6 +1,6 @@
 import helpers
-#from models.recognizer import RecognizerModel
-#from models.detection import DetectionModel
+from models.recognizer import RecognizerModel
+from models.detection import DetectionModel
 import time
 import random
 from datetime import datetime, timedelta
