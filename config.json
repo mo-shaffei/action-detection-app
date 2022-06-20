@@ -3,13 +3,13 @@
     "model_type": "recognition",
     "model_name": "mvit",
     "device": "cpu",
-    "visualize": false,
+    "visualize": true,
     "bbox_threshold": 0.5,
     "recognition_threshold": 0.1
   },
   "video": {
     "video_name": "video.mp4",
-    "clip_length": 3,
-    "stride": 2
+    "clip_length": 4,
+    "stride": 1
   }
 }

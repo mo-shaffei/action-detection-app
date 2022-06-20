@@ -1,9 +1,13 @@
-import json
 import threading
 from datetime import datetime
-import pymongo
 from flask import Flask, render_template, Response, request, redirect, url_for, flash, session
 import logic
+import pandas as pd
+import pymongo
+from pymongo import MongoClient
+import json
+import uuid
+from bson.json_util import dumps
 import visualize
 
 with open('config.json') as f:
@@ -21,7 +25,7 @@ app.secret_key = 'detectionappdljsaklqk24e21cjn!Ew@@dsa5'
 
 @app.route("/", methods=["POST", "GET"])
 def login():
-    results_data.remove({})
+    # results_data.remove({})
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("pass")
@@ -42,7 +46,7 @@ def login():
 
 @app.route('/connect/')
 def connect():
-    t = threading.Thread(target=logic.connect_thread, args=[app])  # create new thread
+    t = threading.Thread(target=logic.inference_thread, args=[app, [5555], True])  # create new thread
     t.setDaemon(True)
     t.start()  # start thread
     return Response(status=204)
@@ -50,41 +54,8 @@ def connect():
 
 @app.route('/logs/')
 def logs():
-    start, end = logic.map_time(0, 1)
-    start2, end2 = logic.map_time(3, 15)
-    # results_data.insert_one({"camera_id": '001', "start": start, "end": end,
-    #                          "action": "smoking", "confidence": 50,
-    #                           "location": 'location'})
-    # results_data.insert_one({"camera_id": '002', "start": start2, "end": end2,
-    #                          "action": "eating", "confidence": 30,
-    #                           "location": 'location'})
-    # results_data.insert_one({"camera_id": '003', "start": start2, "end": end2,
-    #                          "action": "drinking", "confidence": 30,
-    #                           "location": 'location2'})
-    # results_data.insert_one({"camera_id": '004', "start": start2, "end": end2,
-    #                          "action": "drinking", "confidence": 30,
-    #                          "location": 'location2'})
-    # results_data.insert_one({"camera_id": '005', "start": start2, "end": end2,
-    #                          "action": "drinking", "confidence": 30,
-    #                          "location": 'location2'})
-    # results_data.insert_one({"camera_id": '002', "start": 7, "end": 8,
-    #                              "action": "eating", "confidence": 30,
-    #                              "clip": 9, "location": 'location2'})
-    # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
-    #                              "action": "drinking", "confidence": 40,
-    #                              "clip": 9, "location": 'location2'})
-    # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
-    #                              "action": "eating", "confidence": 70,
-    #                              "clip": 10, "location": 'location2'})
-    # results_data.insert_one({"camera_id": '002', "start": 8, "end": 9,
-    #                              "action": "eating", "confidence": 80,
-    #                              "clip": 10, "location": 'location2'})
     n = 50
-    results = results_data.find().sort("start", -1).limit(n)  # getting results stored in the database (last n)
-    # print("RESULTS::::::\n")
-    # r = results
-    # for i in r:
-    #     print(i)
+    results = results_data.find().sort("start", -1).limit(n)
     return render_template('logs.html', results=results, raw_results=results)
 
 
@@ -116,7 +87,6 @@ def filtering():
 
     # keys = ["action", "confidence", "clip", "location", "camera",
     #        "start_date", "start_time", "end_date", "end_time"]
-    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE-----------{},{},{},{}.".format(start_date, start_time, end_date, end_time))
 
     all_filters = {
         'action': action,

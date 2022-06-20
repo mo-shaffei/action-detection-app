@@ -1,5 +1,6 @@
 __pycache__/
 video/video_*.mp4
+video/*.mp4
 video/results.csv
 .idea/
 output/

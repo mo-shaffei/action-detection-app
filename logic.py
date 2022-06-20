@@ -1,96 +1,117 @@
+from datetime import datetime, timedelta
 import helpers
 from models.recognizer import RecognizerModel
 from models.detection import DetectionModel
 import time
-import random
-from datetime import datetime, timedelta
+from vidgear.gears import NetGear
+import numpy as np
+import threading
 
-now = datetime.now()
+port_mapping = {
+    5554: ('Helmy', 'Computer Lab S008', 'CAM01'),
+    5555: ('Nano', 'Computer Lab S012A', 'CAM01')
+}
+
+action_confs_map = {
+    'drinking': 0.10,
+    'eating': 0.25,
+    'smoking': 0.8
+}
+
+def predict_stream(port, segment_len, stride, model, visualize, fps=25):
+    client = NetGear(port=str(port), receive_mode=True)
+    metadata = port_mapping[port]
+    building, area, camera_id = metadata
+    frame = client.recv()
+    video = []
+    accumulated = 1
+    required = fps * segment_len
+    while True:
+        if frame is None:
+            break
+        video.append(frame)
+        accumulated += 1
+        print('Received frame, accumulated: ', accumulated)
+        if accumulated == required:
+            print('Performing Inference')
+            begin = datetime.now() - timedelta(seconds=segment_len)
+            persons = model.inference(np.asarray(video), visualize=visualize)
+            accumulated = 0
+            video = []
+            if not persons:  # if no persons detected skip this segment
+                print('Nothing detected for this clip')
+                continue
+
+            for person in persons:  # for each person detected
+                action = list(person.keys())[0]  # get top1 action
+                confidence = list(person.values())[0]  # get confidence of top1 action
+                print(f'Detected {action}, {confidence}, {action_confs_map[action]}')
+                if confidence >= action_confs_map[action]:  # only store action if confidence >= threshold
+                    end = begin + timedelta(seconds=segment_len)  # end time of segment = beg time + segment length
+                    helpers.output(begin, end, action, confidence, building, area, camera_id)
+        frame = client.recv()
+    client.close()
 
 
-def map_time(beg, end):
+def predict_video(video_name, segment_len, stride, model, visualize):
+    path = 'video/'  # store path of videos
+    # segment the input video into multiple segments as required by segment_len and stride, return the resulting
+    # number of segments
+    segments = helpers.video2segments(path, video_name, segment_len=segment_len, stride=stride)
+    # No stream = Debug mode so set metadata arbitrarily
+    building = 'Helmy'
+    area = 'Computer Lab S008'
+    camera_id = 'CAM01'
+    begin = datetime.now()
+    for i in range(segments):  # process segment by segment
+        print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
+        # perform inference on current segment
+        persons = model.inference(path + f"video_{i}.mp4", visualize=visualize)
+        if not persons:  # if no persons detected skip this segment
+            print('Nothing detected for this clip')
+            continue
 
-    beg = now + timedelta(seconds=beg)
-    end = now + timedelta(seconds=end)
+        for person in persons:  # for each person detected
+            action = list(person.keys())[0]  # get top1 action
+            confidence = list(person.values())[0]  # get confidence of top1 action
+            print(f'Detected {action}, {confidence}, {action_confs_map[action]}')
+            if confidence >= action_confs_map[action]:  # only store action if confidence >= threshold
+                beg = begin + timedelta(seconds=i * stride)
+                end = beg + timedelta(seconds=segment_len)  # end time of segment = beg time + segment length
+                helpers.output(beg, end, action, confidence, building, area, camera_id)
 
-    beg = beg.strftime("%Y-%m-%d, %H:%M:%S")
-    end = end.strftime("%Y-%m-%d, %H:%M:%S")
-
-    beg = datetime.strptime(beg, '%Y-%m-%d, %H:%M:%S')
-    end = datetime.strptime(end, '%Y-%m-%d, %H:%M:%S')
-
-    return beg, end
+    print("Inference thread finished!")
 
 
-def connect_thread(app):
+def inference_thread(app, ports, use_stream=False):
     """
     Wrapper around connect button function to make it run in a separate thread
     @param app: flask app (used to extract configurations for model and video)
+    @param use_stream: whether to use stream or read from video files
+    @param port: specify port of streaming server if using stream
     @return: None
     """
 
-    print("Inference thread started...")
+    print(f"Inference thread {ports[0]} started...")
     # minimum confidence threshold for top1 action to store it
     confidence_thresh = app.config["model"]["recognition_threshold"]
     # stride length (in seconds) of temporal window which segments the input video
     stride = app.config["video"]["stride"]
     # segment length (in seconds) of each mini video segment
     segment_len = app.config["video"]["clip_length"]
-    path = 'video/'  # store path of videos
-
-    video_name = app.config["video"]["video_name"]  # store name of video to process
-    # segment the input video into multiple segments as required by segment_len and stride, return the resulting
-    # number of segments
-    segments = helpers.video2segments(path, video_name, segment_len=segment_len, stride=stride)
-
     bbox_threshold = app.config["model"]["bbox_threshold"]  # store person bbox minimum confidence threshold
     visualize = app.config["model"]["visualize"]  # store whether to visualize results or not
     device = app.config["model"]["device"]  # store device used for inference
-    if app.config["model"]["model_type"] == "recognition":  # load appropriate model
-        model_name = app.config["model"]["model_name"]
-        model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
+    model_name = app.config["model"]["model_name"]
+
+    if use_stream:
+        for port in ports:
+            model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
+            args = [port, segment_len, stride, model, visualize]
+            t = threading.Thread(target=predict_stream, args=args)
+            t.setDaemon(True)
+            t.start()
     else:
-        model = DetectionModel(person_bbox_threshold=bbox_threshold, device=device)
-
-    # cameras' ids, the floor number, location, and the building in ZC
-    camera_floor_loc_build = [["CAM1", "Computer Lab S008", "Helmy"],   # cam num
-                              ["CAM1", "B06-S-CorridorA", "Nano"],
-                              ["CAM2", "B06-S-CorridorA", "Nano"],      # predicted that there's camera 2 in this place
-                              ["CAM3", "B06-S-CorridorA", "Nano"],
-                              ["CAM4", "B06-S-CorridorA", "Nano"],
-                              ["CAM5", "B06-S-CorridorA", "Nano"],
-                              ["CAM1", "B06-G-Elevator", "Nano"],
-                              ["CAM1", "B06-S-Elevator", "Nano"],
-                              ["CAM1", "B06-G-Entrance", "Nano"],       # cam num
-                              ["CAM1", "Computer Lab S013", "Nano"],    # cam num
-                              ["CAM1", "Outdoor", "Gate1"],
-                              ["CAM2", "Outdoor", "Gate1"]]
-
-    start_time = time.time()
-    for i in range(segments):  # process segment by segment
-
-        rand_choice = random.choice(camera_floor_loc_build)
-
-        print(f"progress: {int(i * 100 / segments)}%")  # print progress to terminal
-        # perform inference on current segment
-        persons = model.inference(path + f"video_{i}.mp4", visualize=visualize)
-        if not persons:  # if no persons detected skip this segment
-            continue
-
-        camera_id = rand_choice[0]
-        location = rand_choice[1]
-        building = rand_choice[2]
-
-        for person in persons:  # for each person detected
-            action = list(person.keys())[0]  # get top1 action
-            confidence = list(person.values())[0]  # get confidence of top1 action
-            if confidence >= confidence_thresh:  # only store action if confidence >= threshold
-                beg = i * stride  # beg time of segment = current segment index * stride length
-                end = beg + segment_len  # end time of segment = beg time + segment length
-                beg, end = map_time(beg, end)
-
-                helpers.output(camera_id, beg, end, action, confidence, location, building)
-
-    stop_time = time.time()
-    print("Inference thread finished!")
-    print(f"Time elapsed: {stop_time - start_time}")
+        video_name = app.config["video"]["video_name"]  # store name of video to process
+        model = RecognizerModel(model_name=model_name, person_bbox_threshold=bbox_threshold, device=device)
+        predict_video(video_name, segment_len, stride, model, visualize)
