@@ -25,7 +25,6 @@ def predict_stream(port, segment_len, stride, model, visualize, fps=25):
     video = []
     accumulated = 1
     required = fps * segment_len
-    begin = datetime.now()
     while True:
         if frame is None:
             break
@@ -34,6 +33,7 @@ def predict_stream(port, segment_len, stride, model, visualize, fps=25):
         print('Received frame, accumulated: ', accumulated)
         if accumulated == required:
             print('Performing Inference')
+            begin = datetime.now() - timedelta(seconds=segment_len)
             persons = model.inference(np.asarray(video), visualize=visualize)
             accumulated = 0
             video = []
@@ -48,8 +48,8 @@ def predict_stream(port, segment_len, stride, model, visualize, fps=25):
                 if confidence >= action_confs_map[action]:  # only store action if confidence >= threshold
                     end = begin + timedelta(seconds=segment_len)  # end time of segment = beg time + segment length
                     helpers.output(begin, end, action, confidence, building, area, camera_id)
-            begin = datetime.now()
         frame = client.recv()
+    client.close()
 
 
 def predict_video(video_name, segment_len, stride, model, visualize):
