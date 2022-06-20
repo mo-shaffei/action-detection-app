@@ -117,7 +117,7 @@ Insert gif or link to demo
 
 
 ## 🚀 About Us <a name="about"></a>
-We are a team studying Communications and Information Engineering at Zewail City of Science and Technology. This project is our Graduation Project.
+We are a group of students studying Communications and Information Engineering at Zewail City of Science and Technology in the final year. This project is our Graduation Project.
 
 ## Contact <a name="contact"></a>
 
