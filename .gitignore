@@ -6,3 +6,4 @@ video/results.csv
 output/
 *video/
 !video/video.mp4
+telegram-bot-token.txt
