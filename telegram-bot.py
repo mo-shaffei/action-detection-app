@@ -66,7 +66,8 @@ def messageHandler(update, context):
 
 
 def main():
-    token = '5024007838:AAF-m0hDKp1pPVpWEnQguvxLILmM7h4O9E0'
+    with open('telegram-bot-token.txt', 'r') as file:
+        token = file.read().strip()
     updater = Updater(token, use_context=True)
 
     # Get the dispatcher to register handlers
