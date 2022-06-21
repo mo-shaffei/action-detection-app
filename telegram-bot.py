@@ -2,12 +2,38 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 import signal
 import pymongo
+from datetime import datetime
 
 mongo_Client = pymongo.MongoClient('localhost', 27017)
 db = mongo_Client.webapp
 results_data = db.results
 state = None
 authorized = ['shaffei']
+alert = [911138085]
+last_smoking = datetime.now()
+alarm_interval = 1
+updater = None
+
+
+def alarm_handler(signum, stack):
+    global last_smoking
+    result = results_data.find({'action': 'Smoking'}).sort("start", -1).limit(1)[0]
+    if result['start'] > last_smoking:
+        message = 'Alert Smoking Detected!\n'
+        message += f'Time: {result["start"].strftime("%Y-%m-%d, %H:%M:%S")}\n'
+        message += f'Building: {result["building"]}\n'
+        message += f'Area: {result["location"]}\n'
+        message += f'Confidence: {result["confidence"]}%'
+        for user in alert:
+            updater.bot.send_message(user, message)
+        last_smoking = result['start']
+    signal.alarm(alarm_interval)
+
+
+def initialize_alert():
+    global last_smoking
+    result = results_data.find({'action': 'Smoking'}).sort("start", -1).limit(1)[0]
+    last_smoking = result['start']
 
 
 def is_authorized(update, context):
@@ -78,16 +104,18 @@ def messageHandler(update, context):
 
 
 def main():
+    global updater
+    signal.signal(signal.SIGALRM, alarm_handler)
+    signal.alarm(1)
+    initialize_alert()
     with open('telegram-bot-token.txt', 'r') as file:
         token = file.read().strip()
     updater = Updater(token, use_context=True)
-
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, messageHandler))
