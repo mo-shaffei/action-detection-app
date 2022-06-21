@@ -1,15 +1,26 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+import signal
 import pymongo
 
 mongo_Client = pymongo.MongoClient('localhost', 27017)
 db = mongo_Client.webapp
 results_data = db.results
 state = None
+authorized = ['shaffei']
+
+
+def is_authorized(update, context):
+    if update.message.from_user['username'] in authorized:
+        return True
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Access Denied")
+    return False
 
 
 def start(update, context):
     global state
+    if not is_authorized(update, context):
+        return
     state = 'location'
     locations = ["Helmy", "Nano"]
     buttons = [[KeyboardButton(location) for location in locations[:3]], [KeyboardButton('Cancel')]]
@@ -22,8 +33,6 @@ def display_locations(location, update, context):
     if location == 'Helmy':
         locations = ['Biomedical Lab F024', 'Biology Lab B004']
         buttons = [[KeyboardButton(location) for location in locations[:3]], [KeyboardButton('Cancel')]]
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Choose Area", reply_markup=ReplyKeyboardMarkup(buttons))
         state = 'Helmy'
     elif location == 'Nano':
         locations = ['Computer Lab S012A', 'Computer Lab S012B', 'Electronics Lab S013']
@@ -50,6 +59,9 @@ def send_data(n, update, context):
 
 def messageHandler(update, context):
     global state
+    if not is_authorized(update, context):
+        return
+    print(update.message.from_user['username'])
     text = update.message.text
     if text in ["Helmy", "Nano"]:
         display_locations(text, update, context)
