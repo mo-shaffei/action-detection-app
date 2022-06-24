@@ -3,20 +3,25 @@
 
 # Table of Contents
 1. [Introduction](#intro)
-2.  [Features](#Features)
+2. [System Block Diagram](#block)
+3.  [Features](#Features)
     * [Logs Page](#Logs)
     * [Visualizations Page](#Visualizations)
-3.  [Demo](#demo)
-4. [Screenshots](#screenshots)
-5. [How to Run the Code](#run)
-6. [Authors](#authors)
-7. [🚀 About Us](#about)
-8. [Contact](#contact)
+4.  [Demo](#demo)
+5. [Screenshots](#screenshots)
+6. [How to Run the Code](#run)
+7. [Authors](#authors)
+8. [🚀 About Us](#about)
+9. [Contact](#contact)
 
 
 ## Introduction  <a name="intro"></a>
 In this project, AI-based smart surveillance system capable of automatically detecting different actions was implemented on the Zewail City video surveillance system.
 The system reached a recall of 80% and a precision of 70% without fine-tuning using custom data. The system provided different features for the end-user through its graphical interface allowing for easy and convenient data retrieval.
+
+
+## System Block Diagram    <a name="block"></a>
+![block diagram](https://user-images.githubusercontent.com/57066226/175679868-76c93abe-95d8-42b1-afb2-c2f155e13759.png)
 
 
 ## Features  <a name="Features"></a>
