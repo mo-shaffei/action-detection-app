@@ -54,7 +54,7 @@ https://user-images.githubusercontent.com/57066226/175558538-00bfa5c3-3dae-4160-
 
 ![logs (1)](https://user-images.githubusercontent.com/57066226/175560338-8e0e81f3-92ae-4bc1-8362-e3dbdea0cb92.png)
 
-![dashboard (1)](https://user-images.githubusercontent.com/57066226/175560346-7de17714-e984-4f29-9f3c-c2c0377978a8.PNG)
+![photo_2022-06-19_12-21-10](https://user-images.githubusercontent.com/57066226/175560675-a78188f7-52fc-4a21-b13e-e986c980b2d5.jpg)
 
 ## How to Run the Code <a name="run"></a>
 
