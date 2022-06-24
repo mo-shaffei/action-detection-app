@@ -45,12 +45,15 @@ It provides different visualizations that deliver key insights to the user.
 
 ## Demo <a name="demo"></a>
 
-Insert gif or link to demo
+https://user-images.githubusercontent.com/57066226/175558538-00bfa5c3-3dae-4160-868b-5ebbd8ed68ed.mp4
 
 
 ## Screenshots  <a name="screenshots"></a>
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+
+
 
 
 ## How to Run the Code <a name="run"></a>
