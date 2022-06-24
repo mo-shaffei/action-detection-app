@@ -50,11 +50,11 @@ https://user-images.githubusercontent.com/57066226/175558538-00bfa5c3-3dae-4160-
 
 ## Screenshots  <a name="screenshots"></a>
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![login2](https://user-images.githubusercontent.com/57066226/175560297-329e5343-85f8-492e-9743-5e621e687a2c.png)
 
+![logs (1)](https://user-images.githubusercontent.com/57066226/175560338-8e0e81f3-92ae-4bc1-8362-e3dbdea0cb92.png)
 
-
-
+![dashboard (1)](https://user-images.githubusercontent.com/57066226/175560346-7de17714-e984-4f29-9f3c-c2c0377978a8.PNG)
 
 ## How to Run the Code <a name="run"></a>
 
