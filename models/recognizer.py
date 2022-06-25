@@ -1,9 +1,12 @@
+import torch
 from detectron2.config import get_cfg
 from detectron2 import model_zoo
 from detectron2.engine import DefaultPredictor
 import numpy as np
+import cv2
+from datetime import datetime
 import skvideo.io
-import torch
+
 import json
 from torchvision.transforms import Compose, Lambda
 from torchvision.transforms._transforms_video import (
@@ -16,9 +19,9 @@ from pytorchvideo.transforms import (
 )
 from pytorchvideo.models.hub.vision_transformers import mvit_base_32x3
 from pytorchvideo.models.hub.slowfast import slowfast_r50
-import cv2
+
 from typing import Union
-from datetime import datetime
+
 
 
 class RecognizerModel:
