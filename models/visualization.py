@@ -3,15 +3,15 @@
 # TODO: Migrate this into the core PyTorchVideo libarary.
 
 from __future__ import annotations
-
+import numpy as np
+import torch
 import itertools
 import logging
 from types import SimpleNamespace
 from typing import Dict, List, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
-import numpy as np
-import torch
+
 from detectron2.utils.visualizer import Visualizer
 
 logger = logging.getLogger(__name__)
