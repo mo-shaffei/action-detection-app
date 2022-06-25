@@ -6,7 +6,7 @@ import torch
 from detectron2.config import get_cfg
 from detectron2 import model_zoo
 from detectron2.engine import DefaultPredictor
-
+from models.visualization import VideoVisualizer
 import pytorchvideo
 from pytorchvideo.transforms.functional import (
     uniform_temporal_subsample,
@@ -17,7 +17,7 @@ from torchvision.transforms._functional_video import normalize
 from pytorchvideo.data.ava import AvaLabeledVideoFramePaths
 from pytorchvideo.models.hub import slowfast_r50_detection  # Another option is slowfast_r50_detection
 
-from models.visualization import VideoVisualizer
+
 
 
 class DetectionModel:
