@@ -1,10 +1,11 @@
 # import libraries
 import time
 import threading
-from vidgear.gears import VideoGear
-from vidgear.gears import NetGear
 import sys
 import cv2
+from vidgear.gears import VideoGear
+from vidgear.gears import NetGear
+
 
 FPS = 25
 

@@ -1,6 +1,6 @@
+from pandas import DataFrame
 import plotly
 import plotly.express as px
-from pandas import DataFrame
 import plotly.graph_objects as go
 import json
 from bson.json_util import dumps
