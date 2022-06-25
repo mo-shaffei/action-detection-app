@@ -1,25 +1,22 @@
 from datetime import datetime, timedelta
 import helpers
-from models.recognizer import RecognizerModel
-from models.detection import DetectionModel
 import time
 from vidgear.gears import NetGear
 import numpy as np
 import threading
-
-
-action_confs_map = {
-    'drinking': 0.10,
-    'eating': 0.25,
-    'smoking': 0.8
-}
+from models.recognizer import RecognizerModel
+from models.detection import DetectionModel
 
 port_mapping = {
     5554: ('Helmy', 'Computer Lab S008', 'CAM01'),
     5555: ('Nano', 'Computer Lab S012A', 'CAM01')
 }
 
-
+action_confs_map = {
+    'drinking': 0.10,
+    'eating': 0.25,
+    'smoking': 0.8
+}
 
 
 # predict video from streaming server
