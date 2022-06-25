@@ -7,10 +7,6 @@ from vidgear.gears import NetGear
 import numpy as np
 import threading
 
-port_mapping = {
-    5554: ('Helmy', 'Computer Lab S008', 'CAM01'),
-    5555: ('Nano', 'Computer Lab S012A', 'CAM01')
-}
 
 action_confs_map = {
     'drinking': 0.10,
@@ -18,7 +14,15 @@ action_confs_map = {
     'smoking': 0.8
 }
 
+port_mapping = {
+    5554: ('Helmy', 'Computer Lab S008', 'CAM01'),
+    5555: ('Nano', 'Computer Lab S012A', 'CAM01')
+}
 
+
+
+
+# predict video from streaming server
 def predict_stream(port, segment_len, stride, model, visualize, fps=25):
     client = NetGear(port=str(port), receive_mode=True)
     metadata = port_mapping[port]
